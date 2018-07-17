@@ -10,18 +10,17 @@
 #                                                                              #
 #******************************************************************************#
 
-NAME	#=	PROJECT_NAME
+NAME	=	corewar
 
-FLAGS	=	-Wall -Werror -Wextra -I./headers -I./libft/headers \
-			-I./libft/library/headers/
+FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers
 
 SRCDIR	=	./sources/
 
 OBJDIR	=	./objects/
 
-LIBDIR	=	./libft/
+LIBDIR	=	../libft/
 
-SRC		#=	SOURCE FILES
+SRC		=	main.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

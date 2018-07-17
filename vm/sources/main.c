@@ -9,3 +9,13 @@
 /*   Updated: 2018/07/17 15:32:32 by ollevche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "vm.h"
+
+int	main(int argc, char **args)
+{
+	(void)argc;
+	(void)args;
+	ft_printf("hello world!\n");
+	return (0);
+}
