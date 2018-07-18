@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   read_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/17 15:32:31 by ollevche          #+#    #+#             */
-/*   Updated: 2018/07/17 15:32:32 by ollevche         ###   ########.fr       */
+/*   Created: 2018/07/18 14:24:49 by ollevche          #+#    #+#             */
+/*   Updated: 2018/07/18 14:24:49 by ollevche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-#include "fcntl.h"
 
-int	main(int argc, char **args)
+t_champ	*read_input(int argc, char **args)
 {
-	// t_champ	*champs;
+	t_champ	*champs;
+	t_uchar	*buffer;
+	int		i;
+	char	*err_mes;
 
-	// champs = read_input(argc, args);
-	// play_the_game();
-	// print_result();
-
-	(void)argc;
-	(void)args;
-
-	// if (argc > 1)
-	// 	ft_printf("%x\n", args[argc - 1][0]);
-	// int fd = open("Gagnant.cor", O_RDONLY, 0);
-	// unsigned char buff[1];
-	// while (read(fd, buff, 1))
-	// 	ft_printf("%x\t%c\n", buff[0], buff[0]);
-	return (0);
+	i = 1;
+	while (i < argc)
+	{
+		if (validate_champ(args[i], &buffer, &err_mes)) // ft_strstr(args[i], ".cor") != NULL
+			add_champ(champs, buffer);
+		else if (!set_flag(args, &i))
+		{
+			free_champs(&champs);
+			EXIT_M(err_mes);
+		}
+		ft_bzero(buffer, CHAMP_MAX_SIZE);
+		i++;
+	}
+	return (champs);
 }
