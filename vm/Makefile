@@ -12,7 +12,7 @@
 
 NAME	=	corewar
 
-FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers
+FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers -g
 
 SRCDIR	=	./sources/
 
@@ -20,7 +20,7 @@ OBJDIR	=	./objects/
 
 LIBDIR	=	../libft/
 
-SRC		=	main.c
+SRC		=	main.c read_input.c validate_champ.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

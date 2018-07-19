@@ -15,6 +15,7 @@
 
 # include "vm.h"
 
-// t_champ	*read_input(int argc, char **args);
+t_champ	*read_input(int argc, char **args);
+bool	validate_champ(char *arg, t_uchar **buffer, char **err_mes);
 
 #endif

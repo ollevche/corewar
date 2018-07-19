@@ -15,12 +15,14 @@
 
 # include "libftprintf.h"
 # include "op.h"
-# include "vm_funcs.h"
-# include "stdbool.h"
+# include <stdbool.h>
+# include <fcntl.h>
 
 # define RET_CHECK(X, R) if (!X) return (R);
 # define EXIT_M(M) ft_printf("%s\n", M); free(M); exit(EXIT_FAILURE);
 # define EX_CHECK(X, M) if (!X) {EXIT_M(M)}
+
+# define HEADER_SIZE 4
 
 typedef unsigned char	t_uchar;
 

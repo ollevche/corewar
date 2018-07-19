@@ -11,18 +11,16 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "vm_funcs.h"
 #include "fcntl.h"
 
 int	main(int argc, char **args)
 {
-	// t_champ	*champs;
+	t_champ	*champs;
 
-	// champs = read_input(argc, args);
+	champs = read_input(argc, args);
 	// play_the_game();
 	// print_result();
-
-	(void)argc;
-	(void)args;
 
 	// if (argc > 1)
 	// 	ft_printf("%x\n", args[argc - 1][0]);
