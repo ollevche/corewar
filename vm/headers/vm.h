@@ -23,6 +23,7 @@
 # define EX_CHECK(X, M) if (!X) {EXIT_M(M)}
 
 # define HEADER_SIZE 4
+# define CODELEN_SIZE 4
 
 typedef unsigned char	t_uchar;
 

@@ -25,6 +25,8 @@ void	add_champ(t_champ **champs, t_uchar *buffer)
 	(void)champs;
 	(void)buffer;
 	ft_printf("Hello, valid champ\n");
+	for (int i = 0; i < CHAMP_MAX_SIZE; i++)
+		ft_printf("%x\t%c\n", buffer[i], buffer[i]);
 }
 
 t_champ	*read_input(int argc, char **args)
@@ -46,6 +48,7 @@ t_champ	*read_input(int argc, char **args)
 			EXIT_M(err_mes);
 		}
 		ft_bzero(buffer, CHAMP_MAX_SIZE);
+		// free(err_mes);
 		i++;
 	}
 	return (champs);

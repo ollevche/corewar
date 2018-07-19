@@ -13,46 +13,68 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-char	*free_n_join(char *s1, char *s2, int f)
+#define TOO_SMALL " is too small to be a champion"
+#define HEADER_SAYS " has a code size that differ from what its header says"
+
+static bool	read_and_check(int fd, t_uchar *buffer, int len, char **err_mes)
 {
-	char *tmp1;
-	char *tmp2;
-	char *ret;
+	int bytes_read;
 
-	tmp2 = s2;
-	tmp1 = s1;
-	ret = ft_strjoin(s1, s2);
-	if (f == 1)
-		free(tmp1);
-	if (f == 2)
-		free(tmp2);
-	if (f == 3)
+	bytes_read = read(fd, buffer, len);
+	if (bytes_read != len)
 	{
-		free(tmp1);
-		free(tmp2);
-	}
-	return (ret);
-}
-
-static bool	validate_header(int fd, t_uchar *buffer, char **err_mes)
-{
-	int				bytes_read;
-	unsigned int	header;
-
-	bytes_read = read(fd, buffer, HEADER_SIZE);
-	if (bytes_read != HEADER_SIZE)
-	{
-		*err_mes = free_n_join(*err_mes, " is too small to be a champion", 1);
+		*err_mes = ft_strjoin_nfree(*err_mes, TOO_SMALL, 0);
 		return (false);
 	}
-	header = COREWAR_EXEC_MAGIC;
-	if (buffer[3] == *(t_uchar*)(&header)
-		&& buffer[2] == *((t_uchar*)(&header) + 1)
-		&& buffer[1] == *((t_uchar*)(&header) + 2)
-		&& buffer[0] == *((t_uchar*)(&header) + 3))
-		return (true);
-	*err_mes = free_n_join(*err_mes, " has an invalid header", 1);
-	return (false);
+	return (true);
+}
+
+static bool	validate_code(int fd, t_uchar *buffer, unsigned int code_len,
+							char **err_mes)
+{
+	unsigned int bytes_read;
+
+	bytes_read = (unsigned int)read(fd, buffer, code_len + 1);
+	if (bytes_read != code_len)
+	{
+		*err_mes = ft_strjoin_nfree(*err_mes, HEADER_SAYS, 0);
+		return (false);
+	}
+	return (true);
+}
+
+/*
+**	'PROG_NAME_LENGTH + 4' means 'name + 4 null bytes'
+**	as well as 'COMMENT_LENGTH + 4'
+*/
+
+static bool	validate_parts(int fd, t_uchar *buffer, char **err_mes)
+{
+	unsigned int	magic_bytes;
+	int				read;
+	unsigned int	code_len;
+
+	if (!read_and_check(fd, buffer, HEADER_SIZE, err_mes))
+		return (false);
+	read = HEADER_SIZE;
+	magic_bytes = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
+	if (magic_bytes != COREWAR_EXEC_MAGIC)
+	{
+		*err_mes = ft_strjoin_nfree(*err_mes, " has an invalid header", 0);
+		return (false);
+	}
+	if (!read_and_check(fd, buffer + read, PROG_NAME_LENGTH + 4, err_mes))
+		return (false);
+	read += PROG_NAME_LENGTH + 4;
+	if (!read_and_check(fd, buffer + read, CODELEN_SIZE, err_mes))
+		return (false);
+	code_len = (buffer + read)[0] << 24 | (buffer + read)[1] << 16 | (buffer + read)[2] << 8 | (buffer + read)[3];
+	read += CODELEN_SIZE;
+	if (!read_and_check(fd, buffer + read, COMMENT_LENGTH + 4, err_mes))
+		return (false);
+	if (!validate_code(fd, buffer + read, code_len, err_mes))
+		return (false);
+	return (true);
 }
 
 bool		validate_champ(char *arg, t_uchar **buffer, char **err_mes)
@@ -62,6 +84,7 @@ bool		validate_champ(char *arg, t_uchar **buffer, char **err_mes)
 
 	if (!ft_strstr(arg, ".cor"))
 		return (false);
+	is_champ = false;		
 	if ((fd = open(arg, O_RDONLY)) < 0)
 	{
 		*err_mes = ft_strjoin("Can't read source file ", arg);
@@ -69,15 +92,7 @@ bool		validate_champ(char *arg, t_uchar **buffer, char **err_mes)
 	}
 	*err_mes = ft_strjoin("Error: File ", arg);
 	if ((*buffer = (t_uchar*)ft_strnew(CHAMP_MAX_SIZE)))
-	{
-		is_champ = true;
-		is_champ = (is_champ ? validate_header(fd, *buffer, err_mes) : false);
-		// is_champ = (is_champ ? validate_name(fd, *buffer, err_mes) : false);
-		// is_champ = (is_champ ? validate_size(fd, *buffer, err_mes) : false);
-		// is_champ = (is_champ ? validate_comment(fd, *buffer, err_mes) : false);
-		// is_champ = (is_champ ? validate_code(fd, *buffer, err_mes) : false);
-		return (is_champ);
-	}
+		is_champ = validate_parts(fd, *buffer, err_mes);
 	close(fd);
-	return (false);
+	return (is_champ);
 }
