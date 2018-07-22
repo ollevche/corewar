@@ -20,7 +20,7 @@ OBJDIR	=	./objects/
 
 LIBDIR	=	../libft/
 
-SRC		=	main.c read_input.c validate_champ.c
+SRC		=	main.c play_the_game.c read_input.c util.c validation.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

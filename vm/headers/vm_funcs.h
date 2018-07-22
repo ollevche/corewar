@@ -16,22 +16,37 @@
 # include "vm.h"
 
 /*
+**  main.c
+*/
+
+void	terminate();
+
+/*
 **  read_input.c
 */
 
 t_champ	*read_input(int argc, char **args);
+bool	read_champ(t_champ **champs, char *filename);
+
 
 /*
-**  validate_champ.c
+**  validation.c
 */
 
-bool	validate_champ(char *arg, t_uchar **buffer, char **err_mes);
+bool	reading(t_champ **champs, int fd, char *filename);
 
 /*
 **  play_the_game.c
 */
 
-bool	play_the_game(t_champ *champs);
+t_champ	*play_the_game(t_champ *champs);
 
+
+/*
+**  util.c
+*/
+
+t_champ *new_champ(t_champ **champs);
+void    free_champs();
 
 #endif

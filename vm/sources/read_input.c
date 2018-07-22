@@ -16,16 +16,24 @@
 static bool	set_flag(char **args, int *i)
 {
 	(void)args;
-	(void)i;	
+	(void)i;
+	//	TODO: this
 	return (false);
 }
 
-static void	terminate_input(t_champ *champs)
+bool	read_champ(t_champ **champs, char *filename)
 {
-	// free_champs(champs);
-	if (errno)
-		perror("Default error: ");
-	exit(EXIT_FAILURE);
+	int		fd;
+	bool	is_champ;
+
+	if ((fd = open(filename, O_RDONLY)) < 0)
+	{
+		ft_printf("Can't read source file %s\n", filename);
+		return (false);
+	}
+	is_champ = reading(champs, fd, filename);
+	close(fd);
+	return (is_champ);
 }
 
 t_champ		*read_input(int argc, char **args)
@@ -38,8 +46,11 @@ t_champ		*read_input(int argc, char **args)
 	while (i < argc)
 	{
 		if (!set_flag(args, &i))
-			if (!read_champ(champs, args[i]))
-				terminate_input(champs);
+			if (!read_champ(&champs, args[i]))
+			{
+				free_champs(&champs);
+				terminate();
+			}
 		i++;
 	}
 	return (champs);

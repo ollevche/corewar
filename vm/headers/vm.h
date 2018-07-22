@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define RET_CHECK(X, R) if (!X) return (R);
+# define RET_CHECK(X, R) if (!(X)) return (R);
 
 # define HEADER_SIZE 4
 # define CODELEN_SIZE 4

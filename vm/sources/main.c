@@ -12,21 +12,26 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
-#include "fcntl.h"
 
-int	main(int argc, char **args)
+void	terminate()
+{
+	if (errno)
+		perror("Default error: ");
+	exit(EXIT_FAILURE);
+}
+
+int		main(int argc, char **args)
 {
 	t_champ	*champs;
+	t_champ	*winner;
 
 	champs = read_input(argc, args);
-	play_the_game(champs); // check for return type
-	// print_result();
-
-	// if (argc > 1)
-	// 	ft_printf("%x\n", args[argc - 1][0]);
-	// int fd = open("Gagnant.cor", O_RDONLY, 0);
-	// unsigned char buff[1];
-	// while (read(fd, buff, 1))
-	// 	ft_printf("%x\t%c\n", buff[0], buff[0]);
+	// if (!champs)
+	// 	display_usage(); //	terminating function
+	winner = play_the_game(champs);
+	if (!winner)
+		terminate();
+	// print_result(winner);
+	free_champs(&champs);
 	return (0);
 }
