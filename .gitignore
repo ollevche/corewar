@@ -3,3 +3,4 @@ objects
 libftprintf.a
 corewar
 .DS_Store
+defaults/*

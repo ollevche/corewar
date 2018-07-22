@@ -19,7 +19,7 @@ int	main(int argc, char **args)
 	t_champ	*champs;
 
 	champs = read_input(argc, args);
-	// play_the_game();
+	play_the_game(champs); // check for return type
 	// print_result();
 
 	// if (argc > 1)

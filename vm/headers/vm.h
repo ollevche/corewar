@@ -27,12 +27,25 @@
 
 typedef unsigned char	t_uchar;
 
-typedef struct			s_carry
+typedef struct			s_process
 {
 	t_uchar	regs[REG_SIZE];
 	t_uchar	pc;
-	bool	last_op;
-}						t_carry;
+	bool	carry;
+	t_uchar	inactive; //	inactive for N cycles (if a command requires N cycles to be executed)
+}						t_process;
+
+/*
+**	game state info
+*/
+
+typedef struct			s_session
+{
+	t_uchar	map[MEM_SIZE];
+	t_uchar	cycle;
+	t_uchar lives;
+	t_uchar cycle_to_die;
+}						t_session;
 
 /*
 **	buff stores all of the champion file
@@ -41,9 +54,7 @@ typedef struct			s_carry
 
 typedef struct			s_champ
 {
-	t_carry			**carrys;
-	int				id;
-	t_uchar			*buff;
+	t_process		**carrys;
 	t_uchar			*name;
 	t_uchar			*comment;
 	t_uchar			*code;

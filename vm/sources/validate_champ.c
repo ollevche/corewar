@@ -13,6 +13,8 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+//TODO: error management, CHAMP_MAX_SIZE is not max size of whole champion
+
 #define TOO_SMALL " is too small to be a champion"
 #define HEADER_SAYS " has a code size that differ from what its header says"
 
@@ -34,6 +36,11 @@ static bool	validate_code(int fd, t_uchar *buffer, unsigned int code_len,
 {
 	unsigned int bytes_read;
 
+	if (code_len > CHAMP_MAX_SIZE)
+	{
+		*err_mes = ft_strjoin_nfree(*err_mes, " has too large a code (X bytes > 682 bytes)", 0);
+		return (false);
+	}
 	bytes_read = (unsigned int)read(fd, buffer, code_len + 1);
 	if (bytes_read != code_len)
 	{
