@@ -20,12 +20,14 @@ static t_uchar	*read_code(int fd, char *filename, t_uint code_len)
 
 	if ((t_uint)read(fd, buf, code_len) != code_len) //	overfloat (code_len > MAX_INT)
 	{
-		ft_printf("Error: File %s has a code size that differ from what its header says\n", filename);
+		ft_printf("Error: File %s has a code size that differ \
+		from what its header says\n", filename);
 		return (NULL);
 	}
 	if (code_len > CHAMP_MAX_SIZE)
 	{
-		ft_printf("Error: File %s has too large a code (%u bytes > %d bytes)\n", filename, code_len, CHAMP_MAX_SIZE);
+		ft_printf("Error: File %s has too large a code \
+		(%u bytes > %d bytes)\n", filename, code_len, CHAMP_MAX_SIZE);
 		return (NULL);
 	}
 	code = (t_uchar*)ft_strdup((char*)buf);
@@ -88,7 +90,7 @@ bool			reading(t_champ **champs, int fd, char *filename)
 {
 	t_champ	*somechamp;
 	t_uint	code_len;
-	
+
 	RET_CHECK(validate_header(fd, filename), false);
 	//	adds somechamp to the champs list and sets all of the fileds to NULL
 	//	will be freed up in terminate_input() with whole list

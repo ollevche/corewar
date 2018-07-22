@@ -21,7 +21,7 @@ static bool	set_flag(char **args, int *i)
 	return (false);
 }
 
-bool	read_champ(t_champ **champs, char *filename)
+bool		read_champ(t_champ **champs, char *filename)
 {
 	int		fd;
 	bool	is_champ;

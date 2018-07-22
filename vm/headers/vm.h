@@ -47,11 +47,6 @@ typedef struct			s_session
 	t_uchar cycle_to_die;
 }						t_session;
 
-/*
-**	buff stores all of the champion file
-**	name/comment/code is just a pointers to buff's parts
-*/
-
 typedef struct			s_champ
 {
 	t_process		**carrys;
