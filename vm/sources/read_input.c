@@ -13,42 +13,33 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	set_flag(char **args, int *i)
+static bool	set_flag(char **args, int *i)
 {
 	(void)args;
 	(void)i;	
 	return (false);
 }
 
-void	add_champ(t_champ **champs, t_uchar *buffer)
+static void	terminate_input(t_champ *champs)
 {
-	(void)champs;
-	(void)buffer;
-	ft_printf("Hello, valid champ\n");
-	for (int i = 0; i < CHAMP_MAX_SIZE; i++)
-		ft_printf("%x\t%c\n", buffer[i], buffer[i]);
+	// free_champs(champs);
+	if (errno)
+		perror("Default error: ");
+	exit(EXIT_FAILURE);
 }
 
-t_champ	*read_input(int argc, char **args)
+t_champ		*read_input(int argc, char **args)
 {
 	t_champ	*champs;
-	t_uchar	*buffer;
 	int		i;
-	char	*err_mes;
 
 	champs = NULL;
 	i = 1;
 	while (i < argc)
 	{
-		if (validate_champ(args[i], &buffer, &err_mes))
-			add_champ(&champs, buffer);
-		else if (!set_flag(args, &i))
-		{
-			// free_champs(&champs);
-			EXIT_M(err_mes);
-		}
-		ft_bzero(buffer, CHAMP_MAX_SIZE);
-		// free(err_mes);
+		if (!set_flag(args, &i))
+			if (!read_champ(champs, args[i]))
+				terminate_input(champs);
 		i++;
 	}
 	return (champs);
