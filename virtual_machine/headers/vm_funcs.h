@@ -39,7 +39,7 @@ bool	reading(t_champ **champs, int fd, char *filename);
 **  preparation.c
 */
 
-bool	prepare_it(t_champ *champs, t_session **game);
+bool	prepare(t_champ *champs, t_session **game);
 
 /*
 **	play_the_game.c

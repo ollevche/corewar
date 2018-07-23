@@ -86,7 +86,7 @@ void			display_map(t_session *game)
 	}
 }
 
-bool			prepare_it(t_champ *champs, t_session **game)
+bool			prepare(t_champ *champs, t_session **game)
 {
 	t_uint	champs_n;
 

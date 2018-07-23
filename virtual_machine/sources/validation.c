@@ -19,7 +19,7 @@ static t_uchar	*read_code(int fd, char *filename, t_uint code_len)
 	t_uchar	*code;
 	int		read_ret;
 
-	read_ret = read(fd, buf, code_len);
+	read_ret = read(fd, buf, code_len + 1);
 	RET_CHECK(read_ret >= 0, NULL);
 	if ((t_uint)read_ret != code_len)
 	{
