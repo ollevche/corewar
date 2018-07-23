@@ -29,10 +29,12 @@ typedef unsigned int	t_uint;
 
 typedef struct			s_process
 {
-	t_uchar	regs[REG_SIZE];
-	t_uchar	pc;
-	bool	carry;
-	t_uchar	inactive; //	inactive for N cycles (if a command requires N cycles to be executed)
+	t_uchar				regs[REG_NUMBER];
+	t_uint				pc;
+	bool				carry;
+	t_uint				inactive; // inactive for N cycles required by op
+	t_uchar				op_code; // current operation code
+	struct s_process	*next;
 }						t_process;
 
 /*
@@ -42,9 +44,9 @@ typedef struct			s_process
 typedef struct			s_session
 {
 	t_uchar	map[MEM_SIZE];
-	t_uchar	cycle;
-	t_uchar lives;
-	t_uchar cycle_to_die;
+	t_uint	cycle;
+	t_uint	period_lives;
+	t_uint	cycle_to_die;
 }						t_session;
 
 typedef struct			s_champ
@@ -54,6 +56,7 @@ typedef struct			s_champ
 	t_uchar			*comment;
 	t_uchar			*code;
 	bool			alive;
+	t_uint			id;
 	struct s_champ	*next;
 }						t_champ;
 

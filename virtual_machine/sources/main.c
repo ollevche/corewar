@@ -16,7 +16,7 @@
 void	terminate(void)
 {
 	if (errno)
-		perror("Default error: ");
+		perror("Default error");
 	exit(EXIT_FAILURE);
 }
 

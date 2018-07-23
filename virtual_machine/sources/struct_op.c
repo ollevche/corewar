@@ -35,3 +35,26 @@ t_champ	*new_champ(t_champ **champs)
 	champ->next = NULL;
 	return (champ);
 }
+
+bool	new_carry(t_process **all_carrys, t_uint first_reg)
+{
+	t_process	*iter;
+	t_process	*carry;
+	t_uint		i;
+
+	carry = (t_process*)malloc(sizeof(t_process));
+	RET_CHECK(carry, false);
+	carry->regs[0] = first_reg;
+	i = 1;
+	while (i < REG_SIZE)
+		carry->regs[i++] = 0;
+	carry->pc = 0;
+	carry->carry = false;
+	carry->inactive = 0;
+	carry->next = NULL;
+	iter = *all_carrys;
+	while (iter->next)
+		iter = iter->next;
+	iter->next = carry;
+	return (true);
+}
