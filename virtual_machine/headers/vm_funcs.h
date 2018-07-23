@@ -20,6 +20,7 @@
 */
 
 void	terminate();
+void	display_usage(char *usage_txt);
 
 /*
 **	read_input.c
@@ -33,6 +34,12 @@ bool	read_champ(t_champ **champs, char *filename);
 */
 
 bool	reading(t_champ **champs, int fd, char *filename);
+
+/*
+**  preparation.c
+*/
+
+bool	prepare_it(t_champ *champs, t_session **game);
 
 /*
 **	play_the_game.c

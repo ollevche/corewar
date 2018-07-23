@@ -29,6 +29,7 @@ bool		read_champ(t_champ **champs, char *filename)
 	if ((fd = open(filename, O_RDONLY)) < 0)
 	{
 		ft_printf("Can't read source file %s\n", filename);
+		errno = 0;
 		return (false);
 	}
 	is_champ = reading(champs, fd, filename);

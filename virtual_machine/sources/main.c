@@ -20,14 +20,20 @@ void	terminate(void)
 	exit(EXIT_FAILURE);
 }
 
+void	display_usage(char *usage_txt)
+{
+	ft_printf("%s\n", usage_txt);
+	terminate();
+}
+
 int		main(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
 
 	champs = read_input(argc, args);
-	// if (!champs)
-	// 	display_usage(); //	terminating function
+	if (!champs)
+		display_usage(USAGE_STR);
 	winner = play_the_game(champs);
 	if (!winner)
 		terminate();

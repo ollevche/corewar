@@ -52,9 +52,14 @@ bool	new_carry(t_process **all_carrys, t_uint first_reg)
 	carry->carry = false;
 	carry->inactive = 0;
 	carry->next = NULL;
-	iter = *all_carrys;
-	while (iter->next)
-		iter = iter->next;
-	iter->next = carry;
+	if (*all_carrys)
+	{
+		iter = *all_carrys;
+		while (iter->next)
+			iter = iter->next;
+		iter->next = carry;
+	}
+	else
+		*all_carrys = carry;
 	return (true);
 }

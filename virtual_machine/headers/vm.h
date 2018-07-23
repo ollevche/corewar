@@ -19,10 +19,13 @@
 # include <fcntl.h>
 # include <errno.h>
 
+
 # define RET_CHECK(X, R) if (!(X)) return (R);
 
-# define HEADER_SIZE 4
-# define CODELEN_SIZE 4
+# define USAGE_STR		"we've not created usage text yet"
+
+# define HEADER_SIZE	4
+# define CODELEN_SIZE	4
 
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
@@ -47,13 +50,15 @@ typedef struct			s_session
 	t_uint	cycle;
 	t_uint	period_lives;
 	t_uint	cycle_to_die;
+	t_uint	total_champs;
 }						t_session;
 
 typedef struct			s_champ
 {
-	t_process		**carrys;
+	t_process		*carrys;
 	t_uchar			*name;
 	t_uchar			*comment;
+	t_uint			code_len;
 	t_uchar			*code;
 	bool			alive;
 	t_uint			id;
