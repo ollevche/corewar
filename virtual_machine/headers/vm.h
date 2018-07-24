@@ -41,6 +41,17 @@ typedef struct			s_process
 	struct s_process	*next;
 }						t_process;
 
+typedef struct			s_champ
+{
+	t_process		*carrys;
+	t_uchar			*name;
+	t_uchar			*comment;
+	t_uint			code_len;
+	t_uchar			*code;
+	t_uint			id;
+	struct s_champ	*next;
+}						t_champ;
+
 /*
 **	game state info
 */
@@ -52,18 +63,8 @@ typedef struct			s_session
 	t_uint	period_lives; // number of live calls in the last period
 	int		cycle_to_die;
 	t_uint	last_ctd; // last change of cycle_to_die
+	t_champ	*last_alive;
 	t_uint	total_champs;
 }						t_session;
-
-typedef struct			s_champ
-{
-	t_process		*carrys;
-	t_uchar			*name;
-	t_uchar			*comment;
-	t_uint			code_len;
-	t_uchar			*code;
-	t_uint			id;
-	struct s_champ	*next;
-}						t_champ;
 
 #endif

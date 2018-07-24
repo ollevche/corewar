@@ -84,7 +84,7 @@ t_champ		*play_the_game(t_champ *champs)
 		control_game_flow(game, champs);
 		ft_printf("%u\n", game->cycle);
 	}
-	free_game(game);
+	free_game(&game);
 	// picks an alive champ
 	return (pick_winner(champs));
 }
