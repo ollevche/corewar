@@ -52,12 +52,13 @@ t_champ	*play_the_game(t_champ *champs);
 */
 
 t_champ	*new_champ(t_champ **champs);
-bool	new_carry(t_process **all_carrys, uint first_reg);
+bool	new_carry(t_process **all_carrys, t_uint first_reg);
 
 /*
 **	free_op.c
 */
 
 void	free_champs();
+void	free_game(t_session **game);
 
 #endif

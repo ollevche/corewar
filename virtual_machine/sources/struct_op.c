@@ -18,6 +18,14 @@ t_champ	*new_champ(t_champ **champs)
 	t_champ *iter;
 
 	champ = (t_champ*)malloc(sizeof(t_champ));
+	RET_CHECK(champ, NULL);
+	champ->carrys = NULL;
+	champ->name = NULL;
+	champ->comment = NULL;
+	champ->code_len = 0;
+	champ->code = NULL;
+	champ->id = 0;
+	champ->next = NULL;
 	if (*champs)
 	{
 		iter = *champs;
@@ -27,30 +35,23 @@ t_champ	*new_champ(t_champ **champs)
 	}
 	else
 		*champs = champ;
-	champ->alive = true;
-	champ->carrys = NULL;
-	champ->code = NULL;
-	champ->comment = NULL;
-	champ->name = NULL;
-	champ->next = NULL;
 	return (champ);
 }
 
-bool	new_carry(t_process **all_carrys, uint first_reg)
+bool	new_carry(t_process **all_carrys, t_uint first_reg)
 {
 	t_process	*iter;
 	t_process	*carry;
-	uint		i;
 
 	carry = (t_process*)malloc(sizeof(t_process));
 	RET_CHECK(carry, false);
 	carry->regs[0] = first_reg;
-	i = 1;
-	while (i < REG_SIZE)
-		carry->regs[i++] = 0;
+	ft_memset(carry->regs + 1, 0, REG_NUMBER);
 	carry->pc = 0;
 	carry->carry = false;
 	carry->inactive = 0;
+	carry->op_code = 0;
+	carry->last_live = 0;
 	carry->next = NULL;
 	if (*all_carrys)
 	{

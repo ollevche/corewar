@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static t_uchar	*read_code(int fd, char *filename, uint code_len)
+static t_uchar	*read_code(int fd, char *filename, t_uint code_len)
 {
 	t_uchar	buf[CHAMP_MAX_SIZE + 1];
 	t_uchar	*code;
@@ -21,7 +21,7 @@ static t_uchar	*read_code(int fd, char *filename, uint code_len)
 
 	read_ret = read(fd, buf, code_len + 1);
 	RET_CHECK(read_ret >= 0, NULL);
-	if ((uint)read_ret != code_len)
+	if ((t_uint)read_ret != code_len)
 	{
 		ft_printf("Error: File %s has a code size that differ \
 from what its header says\n", filename);
@@ -39,7 +39,7 @@ from what its header says\n", filename);
 	return (code);
 }
 
-static bool		read_codelen(int fd, char *filename, uint *code_len)
+static bool		read_codelen(int fd, char *filename, t_uint *code_len)
 {
 	t_uchar	buf[CODELEN_SIZE];
 
@@ -52,7 +52,7 @@ static bool		read_codelen(int fd, char *filename, uint *code_len)
 	return (true);
 }
 
-static t_uchar	*read_string(int fd, char *filename, uint len)
+static t_uchar	*read_string(int fd, char *filename, t_uint len)
 {
 	t_uchar	buf[len + 1];
 	t_uchar	*string;
@@ -69,7 +69,7 @@ static t_uchar	*read_string(int fd, char *filename, uint len)
 
 static bool		validate_header(int fd, char *filename)
 {
-	uint	magic_bytes;
+	t_uint	magic_bytes;
 	t_uchar	buf[HEADER_SIZE];
 
 	if (read(fd, buf, HEADER_SIZE) != HEADER_SIZE)

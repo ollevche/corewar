@@ -46,9 +46,9 @@
 
 # define REG_NUMBER			16
 
-# define CYCLE_TO_DIE		1536
+# define CYCLE_TO_DIE		15//36
 # define CYCLE_DELTA		50
-# define NBR_LIVE			21
+# define NBR_LIVE			21 // NBR_LIVE is a sum of all live champs
 # define MAX_CHECKS			10
 
 /*

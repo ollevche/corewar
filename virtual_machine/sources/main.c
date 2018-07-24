@@ -13,6 +13,8 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+// TODO: check all malloc calls for null
+
 void	terminate(void)
 {
 	if (errno)
