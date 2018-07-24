@@ -36,11 +36,11 @@ t_champ	*new_champ(t_champ **champs)
 	return (champ);
 }
 
-bool	new_carry(t_process **all_carrys, t_uint first_reg)
+bool	new_carry(t_process **all_carrys, uint first_reg)
 {
 	t_process	*iter;
 	t_process	*carry;
-	t_uint		i;
+	uint		i;
 
 	carry = (t_process*)malloc(sizeof(t_process));
 	RET_CHECK(carry, false);
