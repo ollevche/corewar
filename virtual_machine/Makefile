@@ -29,10 +29,10 @@ LIB		=	libftprintf.a
 
 all: $(NAME)
 
-$(NAME): $(OBJDIR) $(OBJ) $(LIBDIR)$(LIB)
+$(NAME): $(OBJDIR) $(OBJ) $(LIBDIR)$(LIB) opsobjs
 	@echo "creating $(NAME) binary"
 	@cp $(LIBDIR)$(LIB) ./
-	@gcc -o $(NAME) $(OBJ) $(LIB) $(FLAGS)
+	@gcc -o $(NAME) $(OBJ) $(LIB) $(FLAGS) ./objects/0*.o # DEL
 
 $(OBJ): $(OBJDIR)%.o : $(SRCDIR)%.c
 	@echo "creating $(NAME) object files"
@@ -43,6 +43,10 @@ $(LIBDIR)$(LIB):
 
 $(OBJDIR):
 	@mkdir $(OBJDIR)
+
+opsobjs: # TODO: improve this
+	gcc -c ./sources/operations/*.c $(FLAGS)
+	mv *.o ./objects/
 
 clean:
 	@make -C $(LIBDIR) clean

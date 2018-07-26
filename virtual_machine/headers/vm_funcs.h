@@ -51,7 +51,7 @@ t_champ	*play_the_game(t_champ *champs);
 */
 
 void	execute_processes(t_session *game, t_champ *champs);
-void	update_position(t_process *carry, t_uint val);
+void	update_position(t_session *game, t_process *carry, t_uint val);
 
 /*
 **	struct_op.c
@@ -68,5 +68,11 @@ void	del_process(t_process **carrys, t_process *target);
 void	free_session(t_session **game);
 void	free_champs(t_champ **champs);
 void    free_processes(t_process *carrys);
+
+/*
+**  operations:
+*/
+
+bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head);
 
 #endif

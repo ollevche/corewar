@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <stdint.h>
-
+// TODO: op -> funcs
 # define RET_CHECK(X, R) if (!(X)) return (R);
 
 # define USAGE_STR		"we've not created usage text yet" // TODO: this
@@ -69,6 +69,6 @@ typedef struct			s_session
 }						t_session;
 
 //	bool op_func(t_session *game, t_champ *champs, t_process *executing_carry);
-typedef bool (*t_operation)(t_session *g, t_champ *c, t_process *cur_p);
+typedef bool (*t_operation)(t_session *g, t_champ *c, t_process *ca, t_champ *h);
 
 #endif

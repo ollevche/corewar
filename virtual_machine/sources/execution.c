@@ -16,7 +16,7 @@
 static void		init_operations(t_operation operations[OP_COUNT + 1])
 {
 	operations[0] = NULL;
-	// operations[1] = live;
+	operations[1] = live;
 	// operations[2] = load;
 	// operations[3] = store;
 	// operations[4] = addition;
@@ -34,35 +34,38 @@ static void		init_operations(t_operation operations[OP_COUNT + 1])
 	// operations[16] = aff;
 }
 
-void		update_position(t_process *carry, t_uint val)
+void		update_position(t_session *game, t_process *carry, t_uint val)
 {
 	carry->pc += val;
 	if (carry->pc > MEM_SIZE)
 		carry->pc %= MEM_SIZE;
+	carry->op_code = game->map[carry->pc];
 }
 
 void			execute_processes(t_session *game, t_champ *champs)
 {
 	t_process	*carry;
+	t_champ		*a_champ;
 	t_operation operations[OP_COUNT + 1];
 
 	init_operations(operations);
-	while (champs)
+	a_champ = champs;
+	while (a_champ)
 	{
-		carry = champs->carrys;
+		carry = a_champ->carrys;
 		while (carry)
 		{
 			if (carry->inactive == 0)
 			{
 				if (carry->op_code >= 1 && carry->op_code <= 16)
-					operations[carry->op_code](game, champs, carry);
+					operations[carry->op_code](game, a_champ, carry, champs);
 				else
-					update_position(carry);
+					update_position(game, carry, 1);
 			}
 			else
 				carry->inactive--;
 			carry = carry->next;
 		}
-		champs = champs->next;
+		a_champ = a_champ->next;
 	}
 }

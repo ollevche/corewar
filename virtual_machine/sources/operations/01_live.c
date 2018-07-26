@@ -11,6 +11,14 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "vm_funcs.h"
+
+t_champ	*get_champ_by_id(t_champ *head, t_uint id)
+{
+	while (head && head->id != id)
+		head = head->next;
+	return (head);
+}
 
 t_uint	byte_to_uint(t_uchar b1, t_uchar b2, t_uchar b3, t_uchar b4)
 {
@@ -39,6 +47,6 @@ bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head)
 		game->last_alive = arg_champ;
 		game->period_lives++;
 	}
-	update_position(carry, 5);
+	update_position(game, carry, 5);
 	return (true);
 }
