@@ -36,7 +36,7 @@ typedef struct			s_process
 {
 	t_uchar				regs[REG_NUMBER];
 	t_uint				pc; // current position on the map
-	bool				carry; // is last op was successful
+	bool				carry; // was last op successful
 	t_uint				inactive; // inactive for N cycles required by op
 	t_uchar				op_code; // current operation code
 	t_uint				last_live; // cycle, when last live was called

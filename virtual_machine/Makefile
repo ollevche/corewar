@@ -57,4 +57,3 @@ fclean:
 	@rm -rf $(NAME) $(LIB)
 
 re: fclean $(NAME)
-	
