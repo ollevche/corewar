@@ -27,8 +27,8 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 			carry_iter = champs->carrys;
 			while (carry_iter)
 			{
-				// if (carry_iter->last_live < game->cycle - game->cycle_to_die)
-				// 	del_process(&(champs->carrys), carry_iter); // TODO: this
+				if (carry_iter->last_live < game->cycle - game->cycle_to_die)
+					del_process(&(champs->carrys), carry_iter);
 				carry_iter = carry_iter->next;
 			}
 			champs = champs->next;
@@ -39,23 +39,23 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	}
 }
 
-void		display_map(t_session *game) // DEL or optimize
-{
-	t_uint	iter;
-	t_uchar	*map;
+// static void	display_map(t_session *game) // DEL or optimize
+// {
+// 	t_uint	iter;
+// 	t_uchar	*map;
 
-	iter = 0;
-	map = game->map;
-	while (iter < MEM_SIZE)
-	{
-		if (iter % 64 == 0)
-			ft_printf("0x%04x : ", iter);
-		ft_printf("%02x ", map[iter]);
-		iter++;
-		if (iter % 64 == 0)
-			ft_printf("\n");
-	}
-}
+// 	iter = 0;
+// 	map = game->map;
+// 	while (iter < MEM_SIZE)
+// 	{
+// 		if (iter % 64 == 0)
+// 			ft_printf("0x%04x : ", iter);
+// 		ft_printf("%02x ", map[iter]);
+// 		iter++;
+// 		if (iter % 64 == 0)
+// 			ft_printf("\n");
+// 	}
+// }
 
 t_champ		*play_the_game(t_champ *champs)
 {
@@ -66,19 +66,13 @@ t_champ		*play_the_game(t_champ *champs)
 	//	game->period_lives should be equal to total_champs initially
 	while (game->period_lives && game->cycle_to_die >= 0)
 	{
-		void (*ptr[1]) (t_session*);
-		
-		ptr[0] = display_map;
-		// display_map(game); // DEL
-		ptr[0](game);
 		// executes commands of processes
 		execute_processes(game, champs);
 		game->cycle++;
 		// updates [ lives / cycle_to_die / other game states ]
 		control_game_flow(game, champs);
-		ft_printf("%u\n", game->cycle); // DEL
 	}  
-	free_game(&game);
+	free_session(&game);
 	winner = game->last_alive;
 	return (winner);
 }

@@ -27,7 +27,6 @@ void	display_usage(char *usage_txt);
 */
 
 t_champ	*read_input(int argc, char **args);
-bool	read_champ(t_champ **champs, char *filename);
 
 /*
 **	validation.c
@@ -52,6 +51,7 @@ t_champ	*play_the_game(t_champ *champs);
 */
 
 void	execute_processes(t_session *game, t_champ *champs);
+void	update_position(t_process *carry, t_uint val);
 
 /*
 **	struct_op.c
@@ -59,12 +59,14 @@ void	execute_processes(t_session *game, t_champ *champs);
 
 t_champ	*new_champ(t_champ **champs);
 bool	new_carry(t_process **all_carrys, t_uint first_reg);
+void	del_process(t_process **carrys, t_process *target);
 
 /*
 **	free_op.c
 */
 
-void	free_champs();
-void	free_game(t_session **game);
+void	free_session(t_session **game);
+void	free_champs(t_champ **champs);
+void    free_processes(t_process *carrys);
 
 #endif

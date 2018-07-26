@@ -21,7 +21,7 @@ OBJDIR	=	./objects/
 LIBDIR	=	../libft/
 
 SRC		=	main.c play_the_game.c read_input.c validation.c preparation.c \
-			struct_op.c free_op.c
+			execution.c struct_op.c free_op.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

@@ -26,11 +26,10 @@
 
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
+# define OP_COUNT		16
 
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
-
-//	bool op_func(t_session *game, t_champ *champs, t_process *executing_carry);
 
 typedef struct			s_process
 {
@@ -68,5 +67,8 @@ typedef struct			s_session
 	t_champ	*last_alive;
 	t_uint	total_champs;
 }						t_session;
+
+//	bool op_func(t_session *game, t_champ *champs, t_process *executing_carry);
+typedef bool (*t_operation)(t_session *g, t_champ *c, t_process *cur_p);
 
 #endif

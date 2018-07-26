@@ -12,14 +12,20 @@
 
 #include "vm.h"
 
+void	free_session(t_session **game)
+{
+	(void)game;
+	//	TODO: this
+}
+
 void	free_champs(t_champ **champs)
 {
 	(void)champs;
 	//	TODO: this
 }
 
-void	free_game(t_session **game)
+void    free_processes(t_process *carrys)
 {
-	(void)game;
-	// TODO: this
+	(void)carrys;
+	//	TODO: this
 }

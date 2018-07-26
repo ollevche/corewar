@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "vm_funcs.h"
 
 t_champ	*new_champ(t_champ **champs)
 {
@@ -63,4 +64,23 @@ bool	new_carry(t_process **all_carrys, t_uint first_reg)
 	else
 		*all_carrys = carry;
 	return (true);
+}
+
+void	del_process(t_process **carrys, t_process *target) // test it
+{
+	t_process	*iter;
+
+	iter = *carrys;
+	if (!iter)
+		return ;
+	if (iter == target)
+		*carrys = iter->next;
+	else
+	{
+		while (iter->next != target)
+			iter = iter->next;
+		iter->next = target->next;
+	}
+	target->next = NULL;
+	free_processes(target);
 }

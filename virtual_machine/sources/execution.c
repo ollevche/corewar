@@ -13,27 +13,55 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-void		execute_processes(t_session *game, t_champ *champs)
+static void		init_operations(t_operation operations[OP_COUNT + 1])
 {
-	t_process	*carry_iter;
+	operations[0] = NULL;
+	// operations[1] = live;
+	// operations[2] = load;
+	// operations[3] = store;
+	// operations[4] = addition;
+	// operations[5] = soustraction;
+	// operations[6] = and;
+	// operations[7] = or;
+	// operations[8] = xor;
+	// operations[9] = zero_jump;
+	// operations[10] = load_index;
+	// operations[11] = store_index;
+	// operations[12] = fork;
+	// operations[13] = long_load;
+	// operations[14] = long_load_index;
+	// operations[15] = long_fork;
+	// operations[16] = aff;
+}
 
+void		update_position(t_process *carry, t_uint val)
+{
+	carry->pc += val;
+	if (carry->pc > MEM_SIZE)
+		carry->pc %= MEM_SIZE;
+}
+
+void			execute_processes(t_session *game, t_champ *champs)
+{
+	t_process	*carry;
+	t_operation operations[OP_COUNT + 1];
+
+	init_operations(operations);
 	while (champs)
 	{
-		carry_iter = champs->carrys;
-		while (carry_iter)
+		carry = champs->carrys;
+		while (carry)
 		{
-			if (carry_iter->inactive == 0)
+			if (carry->inactive == 0)
 			{
-				if (carry_iter->op_code >= 1 && carry_iter->op_code <= 16)
-				{
-					// array function call // func_arr[carry_iter->op_code](args);
-				}
+				if (carry->op_code >= 1 && carry->op_code <= 16)
+					operations[carry->op_code](game, champs, carry);
 				else
-					update_position(carry_iter);
+					update_position(carry);
 			}
 			else
-				carry_iter->inactive--;
-			carry_iter = carry_iter->next;
+				carry->inactive--;
+			carry = carry->next;
 		}
 		champs = champs->next;
 	}
