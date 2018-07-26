@@ -48,6 +48,12 @@ bool	prepare(t_champ *champs, t_session **game);
 t_champ	*play_the_game(t_champ *champs);
 
 /*
+**  execution.c
+*/
+
+void	execute_processes(t_session *game, t_champ *champs);
+
+/*
 **	struct_op.c
 */
 

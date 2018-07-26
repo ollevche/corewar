@@ -30,6 +30,8 @@
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
 
+//	bool op_func(t_session *game, t_champ *champs, t_process *executing_carry);
+
 typedef struct			s_process
 {
 	t_uchar				regs[REG_NUMBER];
