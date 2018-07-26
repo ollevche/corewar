@@ -42,7 +42,7 @@ typedef struct		s_op
 	int		id;
 	int		cycles;
 	char	description[50];
-	int		acb;
+	int		codage;
 	int		label_size;
 }					t_op;
 */

@@ -96,12 +96,14 @@ bool			reading(t_champ **champs, int fd, char *filename)
 	t_champ	*somechamp;
 
 	RET_CHECK(validate_header(fd, filename), false);
-	//	adds somechamp to the champs list and sets all of the fileds to NULL
-	//	will be freed up in terminate_input() with whole list
+	//	adds somechamp to the champs list and sets all of the fields to default value
+	//	will be freed up in terminate_input() with the whole list
 	somechamp = new_champ(champs);
 	RET_CHECK(somechamp, false);
 	somechamp->name = read_string(fd, filename, PROG_NAME_LENGTH + 4);
 	RET_CHECK(somechamp->name, false);
+	//	code_len is unsigned and can be 0, so there is no error ret value
+	//	returns true / false and write code_len by pointer
 	RET_CHECK(read_codelen(fd, filename, &(somechamp->code_len)), false);
 	somechamp->comment = read_string(fd, filename, COMMENT_LENGTH + 4);
 	RET_CHECK(somechamp->comment, false);
