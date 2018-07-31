@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static void		init_operations(t_operation operations[OP_COUNT + 1])
+static void	init_operations(t_operation operations[OP_COUNT + 1])
 {
 	operations[0] = NULL;
 	operations[1] = live;
@@ -42,7 +42,7 @@ void		update_position(t_session *game, t_process *carry, t_uint val)
 	carry->op_code = game->map[carry->pc];
 }
 
-void			execute_processes(t_session *game, t_champ *champs)
+void		execute_processes(t_session *game, t_champ *champs)
 {
 	t_process	*carry;
 	t_champ		*a_champ;

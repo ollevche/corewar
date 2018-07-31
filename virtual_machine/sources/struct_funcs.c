@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct_op.c                                        :+:      :+:    :+:   */
+/*   struct_funcs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -66,7 +66,7 @@ bool	new_carry(t_process **all_carrys, t_uint first_reg)
 	return (true);
 }
 
-void	del_process(t_process **carrys, t_process *target) // test it
+void	del_process(t_process **carrys, t_process *target) // TODO: test it
 {
 	t_process	*iter;
 
@@ -83,4 +83,11 @@ void	del_process(t_process **carrys, t_process *target) // test it
 	}
 	target->next = NULL;
 	free_processes(target);
+}
+
+t_champ	*get_champ_by_id(t_champ *head, t_uint id)
+{
+	while (head && head->id != id)
+		head = head->next;
+	return (head);
 }

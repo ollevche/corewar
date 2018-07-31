@@ -39,7 +39,7 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	}
 }
 
-static void	display_map(t_session *game) // DEL or optimize
+static void	display_map(t_session *game) // DEL or rewrite
 {
 	t_uint	iter;
 	t_uchar	*map;

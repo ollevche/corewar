@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   01_live.c                                          :+:      :+:    :+:   */
+/*   live_01.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,21 +12,6 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
-
-t_champ	*get_champ_by_id(t_champ *head, t_uint id)
-{
-	while (head && head->id != id)
-		head = head->next;
-	return (head);
-}
-
-t_uint	byte_to_uint(t_uchar b1, t_uchar b2, t_uchar b3, t_uchar b4)
-{
-	t_uint	ret;
-
-	ret = b1 << 24 | b2 << 16 | b3 << 8 | b4;
-	return (ret);
-}
 
 bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head)
 {
@@ -40,7 +25,7 @@ bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head)
 	game->period_lives++;
 	map = game->map;
 	pc = carry->pc;
-	id = byte_to_uint(map[pc + 1], map[pc + 2], map[pc + 3], map[pc + 4]);
+	id = ft_byte_to_uint(map[pc + 1], map[pc + 2], map[pc + 3], map[pc + 4]);
 	arg_champ = get_champ_by_id(head, id);
 	if (arg_champ)
 	{

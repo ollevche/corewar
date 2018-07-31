@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <stdint.h>
-// TODO: op -> funcs
+
 # define RET_CHECK(X, R) if (!(X)) return (R);
 
 # define USAGE_STR		"we've not created usage text yet" // TODO: this

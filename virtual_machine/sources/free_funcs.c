@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_op.c                                          :+:      :+:    :+:   */
+/*   free_funcs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -24,7 +24,7 @@ void	free_champs(t_champ **champs)
 	//	TODO: this
 }
 
-void    free_processes(t_process *carrys)
+void	free_processes(t_process *carrys)
 {
 	(void)carrys;
 	//	TODO: this

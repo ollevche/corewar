@@ -14,14 +14,19 @@ NAME	=	corewar
 
 FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers -g
 
-SRCDIR	=	./sources/
+SRCDIR	=	sources/
 
-OBJDIR	=	./objects/
+OBJDIR	=	objects/
 
 LIBDIR	=	../libft/
 
+OPDIR	=	operations/
+
 SRC		=	main.c play_the_game.c read_input.c validation.c preparation.c \
-			execution.c struct_op.c free_op.c
+			execution.c struct_funcs.c free_funcs.c \
+			$(addprefix $(OPDIR), $(OP))
+
+OP		=	live_01.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
@@ -29,10 +34,10 @@ LIB		=	libftprintf.a
 
 all: $(NAME)
 
-$(NAME): $(OBJDIR) $(OBJ) $(LIBDIR)$(LIB) opsobjs
+$(NAME): $(OBJDIR) $(OBJ) $(LIBDIR)$(LIB)
 	@echo "creating $(NAME) binary"
 	@cp $(LIBDIR)$(LIB) ./
-	@gcc -o $(NAME) $(OBJ) $(LIB) $(FLAGS) ./objects/0*.o # DEL
+	@gcc -o $(NAME) $(OBJ) $(LIB) $(FLAGS)
 
 $(OBJ): $(OBJDIR)%.o : $(SRCDIR)%.c
 	@echo "creating $(NAME) object files"
@@ -43,10 +48,7 @@ $(LIBDIR)$(LIB):
 
 $(OBJDIR):
 	@mkdir $(OBJDIR)
-
-opsobjs: # TODO: improve this
-	gcc -c ./sources/operations/*.c $(FLAGS)
-	mv *.o ./objects/
+	@mkdir $(OBJDIR)$(OPDIR)
 
 clean:
 	@make -C $(LIBDIR) clean
