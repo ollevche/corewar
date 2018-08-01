@@ -62,11 +62,12 @@ int		main(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
+	int		dump;
 
-	champs = read_input(argc, args);
+	champs = read_input(argc, args, &dump);
 	if (!champs)
 		display_usage(USAGE_STR);
-	winner = play_the_game(champs);
+	winner = play_the_game(champs, dump);
 	if (!winner)
 		terminate();
 	// print_result(winner);

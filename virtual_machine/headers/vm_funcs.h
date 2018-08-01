@@ -26,7 +26,7 @@ void	display_usage(char *usage_txt);
 **	read_input.c
 */
 
-t_champ	*read_input(int argc, char **args);
+t_champ	*read_input(int argc, char **args, int *dump);
 
 /*
 **	validation.c
@@ -44,7 +44,7 @@ bool	prepare(t_champ *champs, t_session **game);
 **	play_the_game.c
 */
 
-t_champ	*play_the_game(t_champ *champs);
+t_champ	*play_the_game(t_champ *champs, int dump);
 
 /*
 **  execution.c

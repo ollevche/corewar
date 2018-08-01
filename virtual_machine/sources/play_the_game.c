@@ -92,17 +92,38 @@ static void	log(t_session *game, t_champ *champs)
 		ft_printf("last alive champ: %d\n", game->last_alive->id);
 }
 
+static bool	is_dump(t_session *game, int dump)
+{
+	int		iter;
+	t_uchar	*map;
+
+	if (game->cycle <= dump)
+		return (false);
+	iter = 0;
+	map = game->map;
+	while (iter < MEM_SIZE)
+	{
+		if (iter % 64 == 0)
+			ft_printf("\n0x%04x : ", iter);
+		ft_printf("%02x ", map[iter]);
+		iter++;
+	}
+	ft_printf("\n");
+	return (true);
+}
+
 /*
 **	main game loop: 1 cycle = 1 iteration
 */
 
-t_champ		*play_the_game(t_champ *champs)
+t_champ		*play_the_game(t_champ *champs, int dump)
 {
 	t_session	*game;
 	t_champ		*winner;
 
 	RET_CHECK(prepare(champs, &game), NULL)
-	while (game->process_num > 0 && game->cycle_to_die >= 0)
+	while (game->process_num > 0 && game->cycle_to_die >= 0
+			&& !is_dump(game, dump))
 	{
 		log(game, champs); // DEL
 		execute_processes(game, champs);

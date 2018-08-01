@@ -13,11 +13,20 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static bool	set_flag(char **args, int *i)
+static bool	set_flag(char **args, int *i, int *dump) // TODO: rewrite
 {
-	(void)args;
-	(void)i;
-	//	TODO: this [-n NumId; -dump NumCycles]
+	if (!ft_strcmp("-dump", args[*i]))
+	{
+		(*i)++;
+		*dump = ft_atoi(args[*i]);
+		return (true);
+	}
+	else if (!ft_strcmp("-n", args[*i]))
+	{
+		(*i)++;
+		//TODO: -n flag
+		return (true);
+	}
 	return (false);
 }
 
@@ -37,16 +46,17 @@ static bool	read_champ(t_champ **champs, char *filename)
 	return (is_champ);
 }
 
-t_champ		*read_input(int argc, char **args)
+t_champ		*read_input(int argc, char **args, int *dump)
 {
 	t_champ	*champs;
 	int		i;
 
 	champs = NULL;
+	*dump = -1;
 	i = 1;
 	while (i < argc)
 	{
-		if (!set_flag(args, &i))
+		if (!set_flag(args, &i, dump))
 			if (!read_champ(&champs, args[i]))
 			{
 				free_champs(&champs);
