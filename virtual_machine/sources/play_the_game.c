@@ -13,62 +13,73 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+static int	kill_processes(t_champ *champs, int period_start)
+{
+	t_process	*icarry;
+	int			killed;
+
+	killed = 0;
+	while (champs)
+	{
+		icarry = champs->carrys;
+		while (icarry)
+		{
+			if (icarry->last_live < period_start)
+			{
+				del_process(&(champs->carrys), icarry);
+				killed++;
+			}
+			icarry = icarry->next;
+		}
+		champs = champs->next;
+	}
+	return (killed);
+}
+
 static void	control_game_flow(t_session *game, t_champ *champs)
 {
-	t_uint		last_periods;
-	t_process	*carry_iter;
+	int	periods; // since last cycle_to_die change
+	int	cycles; // in current period
+	int	killed;
 
-	last_periods = (game->cycle - game->last_ctd) / game->cycle_to_die;
-	// if it's a new period: 1536 / 3072 / etc
-	if ((game->cycle - game->last_ctd) % game->cycle_to_die == 0)
+	periods = (game->cycle - game->last_ctd) / game->cycle_to_die;
+	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
+	if (cycles == 0) // it's start of the period
 	{
-		while (champs)
-		{
-			carry_iter = champs->carrys;
-			while (carry_iter)
-			{
-				if (carry_iter->last_live < game->cycle - game->cycle_to_die)
-				{
-					ft_printf("del carry at %d, last_live = %d\n", carry_iter->pc, carry_iter->last_live); // DEL
-					del_process(game, &(champs->carrys), carry_iter);
-				}
-				carry_iter = carry_iter->next;
-			}
-			champs = champs->next;
-		}
-		if (game->period_lives >= NBR_LIVE || last_periods >= MAX_CHECKS) // TODO: vm with 3 live_only stops at 80802; corewar stops at 79516
+		killed = kill_processes(champs, game->cycle - game->cycle_to_die);
+		game->process_num -= killed;
+		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
 			game->cycle_to_die -= CYCLE_DELTA;
 			game->last_ctd = game->cycle;
 		}
 		game->period_lives = 0;
 	}
-	ft_printf("periods since last decrease = %d\n", last_periods); // DEL
 }
 
-static void	display_map(t_session *game) // DEL or rewrite
+static void	log(t_session *game, t_champ *champs)
 {
-	t_uint	iter;
-	t_uchar	*map;
+	t_champ		*ichamp;
+	t_process	*icarry;
 
-	iter = 0;
-	map = game->map;
-	// while (iter < MEM_SIZE)
-	// {
-	// 	if (iter % 64 == 0)
-	// 		ft_printf("0x%04x : ", iter);
-	// 	ft_printf("%02x ", map[iter]);
-	// 	iter++;
-	// 	if (iter % 64 == 0)
-	// 		ft_printf("\n");
-	// }
-	ft_printf("cycle = %d\n", game->cycle);
-	ft_printf("period lives = %d\n", game->period_lives);
-	ft_printf("cycle to die = %d\n", game->cycle_to_die);
-	if (game->last_alive)
+	ft_printf("--- --- --- --- --- --- --- --- ---\n");	
+	ft_printf("cycle: %d\n", game->cycle);
+	ft_printf("period lives: %d\n", game->period_lives);
+	ft_printf("cycle to die: %d\n", game->cycle_to_die);
+	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
+	ft_printf("carrys positions:\n");
+	ichamp = champs;
+	while (ichamp)
 	{
-		ft_printf("potential winner = %d\n", game->last_alive->id);
-		ft_printf("potential winner's carry = %d\n", game->last_alive->carrys->pc);
+		ft_printf("\tchamp %d:", ichamp->id);
+		icarry = ichamp->carrys;
+		while (icarry)
+		{
+			ft_printf(" %d", icarry->pc);
+			icarry = icarry->next;
+		}
+		ft_printf("\n");
+		ichamp = ichamp->next;
 	}
 }
 
@@ -81,8 +92,8 @@ t_champ		*play_the_game(t_champ *champs)
 	//	game->period_lives should be equal to total_champs initially
 	while (game->process_num > 0 && game->cycle_to_die >= 0)
 	{
+		log(game, champs); // DEL
 		game->cycle++;
-		display_map(game); // DEL
 		// executes commands of processes
 		execute_processes(game, champs);
 		// updates [ lives / cycle_to_die / other game states ]

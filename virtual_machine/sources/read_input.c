@@ -17,7 +17,7 @@ static bool	set_flag(char **args, int *i)
 {
 	(void)args;
 	(void)i;
-	//	TODO: this
+	//	TODO: this [-n NumId; -dump NumCycles]
 	return (false);
 }
 

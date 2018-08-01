@@ -66,7 +66,7 @@ bool	new_carry(t_process **all_carrys, int first_reg)
 	return (true);
 }
 
-void	del_process(t_session *game, t_process **carrys, t_process *target) // TODO: test it
+void	del_process(t_process **carrys, t_process *target) // TODO: test it
 {
 	t_process	*iter;
 
@@ -83,7 +83,6 @@ void	del_process(t_session *game, t_process **carrys, t_process *target) // TODO
 	}
 	target->next = NULL;
 	free_processes(target);
-	game->process_num--;
 }
 
 t_champ	*get_champ_by_id(t_champ *head, int id)

@@ -59,7 +59,7 @@ void	update_position(t_session *game, t_process *carry, int val);
 
 t_champ	*new_champ(t_champ **champs);
 bool	new_carry(t_process **all_carrys, int first_reg);
-void	del_process(t_session *game, t_process **carrys, t_process *target);
+void	del_process(t_process **carrys, t_process *target);
 t_champ	*get_champ_by_id(t_champ *head, int id);
 
 /*
