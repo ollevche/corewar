@@ -34,11 +34,11 @@ typedef unsigned int	t_uint;
 typedef struct			s_process
 {
 	t_uchar				regs[REG_NUMBER];
-	t_uint				pc; // current position on the map
+	int					pc; // current position on the map
 	bool				carry; // was last op successful
-	t_uint				inactive; // inactive for N cycles required by op
+	int					inactive; // inactive for N cycles required by op
 	t_uchar				op_code; // current operation code
-	t_uint				last_live; // cycle, when last live was called
+	int					last_live; // cycle, when last live was called
 	struct s_process	*next;
 }						t_process;
 
@@ -49,7 +49,7 @@ typedef struct			s_champ
 	t_uchar			*comment;
 	t_uint			code_len;
 	t_uchar			*code;
-	t_uint			id;
+	int				id; // TODO: should be negative (test: live %-1)
 	struct s_champ	*next;
 }						t_champ;
 
@@ -60,12 +60,13 @@ typedef struct			s_champ
 typedef struct			s_session
 {
 	t_uchar	map[MEM_SIZE];
-	t_uint	cycle;
-	t_uint	period_lives; // number of live calls in the last period
+	int		cycle;
+	int		period_lives; // number of live calls in the last period
 	int		cycle_to_die;
-	t_uint	last_ctd; // last change of cycle_to_die
+	int		last_ctd; // last change of cycle_to_die
 	t_champ	*last_alive;
-	t_uint	total_champs;
+	int		process_num;
+	int		total_champs;
 }						t_session;
 
 //	bool op_func(t_session *game, t_champ *champs, t_process *executing_carry);

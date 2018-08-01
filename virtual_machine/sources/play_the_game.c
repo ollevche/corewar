@@ -19,7 +19,7 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	t_process	*carry_iter;
 
 	last_periods = (game->cycle - game->last_ctd) / game->cycle_to_die;
-	// if it's a new period // first cycle (0) is a new period too
+	// if it's a new period: 1536 / 3072 / etc
 	if ((game->cycle - game->last_ctd) % game->cycle_to_die == 0)
 	{
 		while (champs)
@@ -28,7 +28,10 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 			while (carry_iter)
 			{
 				if (carry_iter->last_live < game->cycle - game->cycle_to_die)
-					del_process(&(champs->carrys), carry_iter);
+				{
+					ft_printf("del carry at %d, last_live = %d\n", carry_iter->pc, carry_iter->last_live); // DEL
+					del_process(game, &(champs->carrys), carry_iter);
+				}
 				carry_iter = carry_iter->next;
 			}
 			champs = champs->next;
@@ -46,21 +49,21 @@ static void	display_map(t_session *game) // DEL or rewrite
 
 	iter = 0;
 	map = game->map;
-	while (iter < MEM_SIZE)
-	{
-		if (iter % 64 == 0)
-			ft_printf("0x%04x : ", iter);
-		ft_printf("%02x ", map[iter]);
-		iter++;
-		if (iter % 64 == 0)
-			ft_printf("\n");
-	}
-	ft_printf("cycle = %u\n", game->cycle);
-	ft_printf("period lives = %u\n", game->period_lives);
+	// while (iter < MEM_SIZE)
+	// {
+	// 	if (iter % 64 == 0)
+	// 		ft_printf("0x%04x : ", iter);
+	// 	ft_printf("%02x ", map[iter]);
+	// 	iter++;
+	// 	if (iter % 64 == 0)
+	// 		ft_printf("\n");
+	// }
+	ft_printf("cycle = %d\n", game->cycle);
+	ft_printf("period lives = %d\n", game->period_lives);
 	if (game->last_alive)
 	{
-		ft_printf("potential winner = %u\n", game->last_alive->id);
-		ft_printf("potential winner's carry = %u\n", game->last_alive->carrys->pc);
+		ft_printf("potential winner = %d\n", game->last_alive->id);
+		ft_printf("potential winner's carry = %d\n", game->last_alive->carrys->pc);
 	}
 }
 
@@ -71,7 +74,7 @@ t_champ		*play_the_game(t_champ *champs)
 
 	RET_CHECK(prepare(champs, &game), NULL)
 	//	game->period_lives should be equal to total_champs initially
-	while (game->period_lives && game->cycle_to_die >= 0)
+	while (game->process_num > 0)
 	{
 		game->cycle++;
 		display_map(game); // DEL

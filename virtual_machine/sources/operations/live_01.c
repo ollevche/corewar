@@ -12,13 +12,13 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
-
+// TODO: define lines like game->last_alive / carry->last_live / etc
 bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head)
 {
 	t_uint	id;
 	t_champ	*arg_champ;
 	t_uchar *map;
-	t_uint	pc;
+	int		pc;
 
 	carry->last_live = game->cycle;
 	game->last_alive = champ;

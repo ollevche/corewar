@@ -34,11 +34,13 @@ static void	init_operations(t_operation operations[OP_COUNT + 1])
 	// operations[16] = aff;
 }
 
-void		update_position(t_session *game, t_process *carry, t_uint val)
+void		update_position(t_session *game, t_process *carry, int val)
 {
 	carry->pc += val;
-	if (carry->pc > MEM_SIZE)
+	if (carry->pc >= MEM_SIZE)
 		carry->pc %= MEM_SIZE;
+	else if (carry->pc < 0)
+		carry->pc = MEM_SIZE + carry->pc; // carry->pc is neg so it has to be +
 	carry->op_code = game->map[carry->pc];
 }
 

@@ -39,20 +39,20 @@ t_champ	*new_champ(t_champ **champs)
 	return (champ);
 }
 
-bool	new_carry(t_process **all_carrys, t_uint first_reg)
+bool	new_carry(t_process **all_carrys, int first_reg)
 {
 	t_process	*iter;
 	t_process	*carry;
 
 	carry = (t_process*)malloc(sizeof(t_process));
 	RET_CHECK(carry, false);
-	carry->regs[0] = first_reg;
+	carry->regs[0] = first_reg; // t_uint = int
 	ft_memset(carry->regs + 1, 0, REG_NUMBER);
 	carry->pc = 0;
 	carry->carry = false;
 	carry->inactive = 0;
 	carry->op_code = 0;
-	carry->last_live = 0;
+	carry->last_live = -1;
 	carry->next = NULL;
 	if (*all_carrys)
 	{
@@ -66,7 +66,7 @@ bool	new_carry(t_process **all_carrys, t_uint first_reg)
 	return (true);
 }
 
-void	del_process(t_process **carrys, t_process *target) // TODO: test it
+void	del_process(t_session *game, t_process **carrys, t_process *target) // TODO: test it
 {
 	t_process	*iter;
 
@@ -83,9 +83,10 @@ void	del_process(t_process **carrys, t_process *target) // TODO: test it
 	}
 	target->next = NULL;
 	free_processes(target);
+	game->process_num--;
 }
 
-t_champ	*get_champ_by_id(t_champ *head, t_uint id)
+t_champ	*get_champ_by_id(t_champ *head, int id)
 {
 	while (head && head->id != id)
 		head = head->next;

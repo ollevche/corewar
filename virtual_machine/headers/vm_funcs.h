@@ -51,16 +51,16 @@ t_champ	*play_the_game(t_champ *champs);
 */
 
 void	execute_processes(t_session *game, t_champ *champs);
-void	update_position(t_session *game, t_process *carry, t_uint val);
+void	update_position(t_session *game, t_process *carry, int val);
 
 /*
 **	struct_funcs.c
 */
 
 t_champ	*new_champ(t_champ **champs);
-bool	new_carry(t_process **all_carrys, t_uint first_reg);
-void	del_process(t_process **carrys, t_process *target);
-t_champ	*get_champ_by_id(t_champ *head, t_uint id);
+bool	new_carry(t_process **all_carrys, int first_reg);
+void	del_process(t_session *game, t_process **carrys, t_process *target);
+t_champ	*get_champ_by_id(t_champ *head, int id);
 
 /*
 **	free_funcs.c
