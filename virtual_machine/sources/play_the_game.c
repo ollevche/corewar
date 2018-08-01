@@ -73,10 +73,10 @@ t_champ		*play_the_game(t_champ *champs)
 	//	game->period_lives should be equal to total_champs initially
 	while (game->period_lives && game->cycle_to_die >= 0)
 	{
+		game->cycle++;
 		display_map(game); // DEL
 		// executes commands of processes
 		execute_processes(game, champs);
-		game->cycle++;
 		// updates [ lives / cycle_to_die / other game states ]
 		control_game_flow(game, champs);
 	}  

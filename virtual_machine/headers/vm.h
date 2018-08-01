@@ -26,7 +26,7 @@
 
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
-# define OP_COUNT		16
+# define OP_COUNT		1 // original 16
 
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;

@@ -57,7 +57,7 @@ void		execute_processes(t_session *game, t_champ *champs)
 		{
 			if (carry->inactive == 0)
 			{
-				if (carry->op_code >= 1 && carry->op_code <= 16)
+				if (carry->op_code >= 1 && carry->op_code <= OP_COUNT)
 					operations[carry->op_code](game, a_champ, carry, champs);
 				else
 					update_position(game, carry, 1);
