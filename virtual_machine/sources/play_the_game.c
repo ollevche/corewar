@@ -85,7 +85,7 @@ static void	log(t_session *game, t_champ *champs)
 		ft_printf("last alive champ: %d\n", game->last_alive->id);
 }
 
-t_champ		*play_the_game(t_champ *champs)
+t_champ		*play_the_game(t_champ *champs) // TODO: vm with 3 live_only stops at 80802; corewar stops at 79516
 {
 	t_session	*game;
 	t_champ		*winner;
@@ -95,9 +95,9 @@ t_champ		*play_the_game(t_champ *champs)
 	while (game->process_num > 0 && game->cycle_to_die >= 0)
 	{
 		log(game, champs); // DEL
-		game->cycle++;
 		// executes commands of processes
 		execute_processes(game, champs);
+		game->cycle++;
 		// updates [ lives / cycle_to_die / other game states ]
 		control_game_flow(game, champs);
 	}  

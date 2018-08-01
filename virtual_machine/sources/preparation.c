@@ -64,12 +64,14 @@ static void		place_code(t_champ *champs, t_session *game)
 
 	gap = MEM_SIZE / game->total_champs;
 	champ_mark = 0;
+	ft_printf("Code points are at:\n"); // DEL
 	while (champs)
 	{
 		ft_memcpy(game->map + champ_mark, champs->code, champs->code_len);
 		champs->carrys->pc = champ_mark;
 		// champs->carrys->op_code = game->map[champ_mark];
 		update_position(game, champs->carrys, 0);
+		ft_printf("\t%d\n", champ_mark); // DEL
 		champ_mark += gap;
 		champs = champs->next;
 	}

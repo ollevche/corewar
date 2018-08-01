@@ -43,7 +43,7 @@ void		update_position(t_session *game, t_process *carry, int val)
 		carry->pc = MEM_SIZE + carry->pc; // carry->pc is neg so it has to be +
 	carry->op_code = game->map[carry->pc];
 	if (carry->op_code == 1) // DEL
-		carry->inactive += 10; // TODO: struct from op.c with op-s info
+		carry->inactive += 9; // TODO: struct from op.c with op-s info
 }
 
 void		execute_processes(t_session *game, t_champ *champs)
