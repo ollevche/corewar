@@ -24,6 +24,8 @@
 
 # define USAGE_STR		"we've not created usage text yet" // TODO: this
 
+//TODO: "Yes, the last born (youngest) champion plays first." from 'VIII.3 Champion’s execution'
+
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
 # define OP_COUNT		1 // original 16

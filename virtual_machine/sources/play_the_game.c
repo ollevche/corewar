@@ -81,6 +81,8 @@ static void	log(t_session *game, t_champ *champs)
 		ft_printf("\n");
 		ichamp = ichamp->next;
 	}
+	if (game->last_alive)
+		ft_printf("last alive champ: %d\n", game->last_alive->id);
 }
 
 t_champ		*play_the_game(t_champ *champs)
