@@ -36,6 +36,13 @@ static int	kill_processes(t_champ *champs, int period_start)
 	return (killed);
 }
 
+/*
+**	controls execution of the game by periods
+**	(1) new period ->
+**	(2) checking some params (NBR_LIVE, MAX_CHECKS, dead processes) ->
+**	(3) setting params to correct values -> end
+*/
+
 static void	control_game_flow(t_session *game, t_champ *champs)
 {
 	int	periods; // since last cycle_to_die change
@@ -85,20 +92,21 @@ static void	log(t_session *game, t_champ *champs)
 		ft_printf("last alive champ: %d\n", game->last_alive->id);
 }
 
+/*
+**	main game loop: 1 cycle = 1 iteration
+*/
+
 t_champ		*play_the_game(t_champ *champs)
 {
 	t_session	*game;
 	t_champ		*winner;
 
 	RET_CHECK(prepare(champs, &game), NULL)
-	//	game->period_lives should be equal to total_champs initially
 	while (game->process_num > 0 && game->cycle_to_die >= 0)
 	{
 		log(game, champs); // DEL
-		// executes commands of processes
 		execute_processes(game, champs);
 		game->cycle++;
-		// updates [ lives / cycle_to_die / other game states ]
 		control_game_flow(game, champs);
 	}  
 	free_session(&game);

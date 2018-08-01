@@ -35,8 +35,7 @@ static int	prepare_champs(t_champ *champs)
 
 /*
 **	allocates mem for t_session and sets def values
-**	filles t_session->map with 0 and sets champs code
-**	sets t_process->pc to valid place in map // TODO: del deprecated comments
+**	sets default values
 */
 
 static bool		prepare_session(t_session **gameptr, int n)
@@ -56,6 +55,12 @@ static bool		prepare_session(t_session **gameptr, int n)
 	game->process_num = n;
 	return (true);
 }
+
+/*
+**	puts the code of champs on the map
+**	chooses code positions based on champ number
+**	sets processes pc to start positions (first byte of champ code)
+*/
 
 static void		place_code(t_champ *champs, t_session *game)
 {

@@ -66,7 +66,7 @@ bool	new_carry(t_process **all_carrys, int first_reg)
 	return (true);
 }
 
-void	del_process(t_process **carrys, t_process *target) // TODO: test it
+void	del_process(t_process **carrys, t_process *target)
 {
 	t_process	*iter;
 
