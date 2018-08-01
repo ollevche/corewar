@@ -68,7 +68,8 @@ static void		place_code(t_champ *champs, t_session *game)
 	{
 		ft_memcpy(game->map + champ_mark, champs->code, champs->code_len);
 		champs->carrys->pc = champ_mark;
-		champs->carrys->op_code = game->map[champ_mark];
+		// champs->carrys->op_code = game->map[champ_mark];
+		update_position(game, champs->carrys, 0);
 		champ_mark += gap;
 		champs = champs->next;
 	}

@@ -36,10 +36,14 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 			}
 			champs = champs->next;
 		}
-		if (game->period_lives >= NBR_LIVE || last_periods == MAX_CHECKS)
+		if (game->period_lives >= NBR_LIVE || last_periods >= MAX_CHECKS) // TODO: vm with 3 live_only stops at 80802; corewar stops at 79516
+		{
 			game->cycle_to_die -= CYCLE_DELTA;
+			game->last_ctd = game->cycle;
+		}
 		game->period_lives = 0;
 	}
+	ft_printf("periods since last decrease = %d\n", last_periods); // DEL
 }
 
 static void	display_map(t_session *game) // DEL or rewrite
@@ -60,6 +64,7 @@ static void	display_map(t_session *game) // DEL or rewrite
 	// }
 	ft_printf("cycle = %d\n", game->cycle);
 	ft_printf("period lives = %d\n", game->period_lives);
+	ft_printf("cycle to die = %d\n", game->cycle_to_die);
 	if (game->last_alive)
 	{
 		ft_printf("potential winner = %d\n", game->last_alive->id);
@@ -74,7 +79,7 @@ t_champ		*play_the_game(t_champ *champs)
 
 	RET_CHECK(prepare(champs, &game), NULL)
 	//	game->period_lives should be equal to total_champs initially
-	while (game->process_num > 0)
+	while (game->process_num > 0 && game->cycle_to_die >= 0)
 	{
 		game->cycle++;
 		display_map(game); // DEL
