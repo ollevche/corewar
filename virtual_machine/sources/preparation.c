@@ -38,7 +38,7 @@ static int	prepare_champs(t_champ *champs)
 **	sets default values
 */
 
-static bool		prepare_session(t_session **gameptr, int n)
+static bool	prepare_session(t_session **gameptr, int n)
 {
 	t_session	*game;
 
@@ -62,7 +62,7 @@ static bool		prepare_session(t_session **gameptr, int n)
 **	sets processes pc to start positions (first byte of champ code)
 */
 
-static void		place_code(t_champ *champs, t_session *game)
+static void	place_code(t_champ *champs, t_session *game)
 {
 	int	gap;
 	int	champ_mark;
@@ -82,7 +82,7 @@ static void		place_code(t_champ *champs, t_session *game)
 	}
 }
 
-bool			prepare(t_champ *champs, t_session **game)
+bool		prepare(t_champ *champs, t_session **game)
 {
 	int	champs_n;
 

@@ -48,7 +48,7 @@ static bool		read_codelen(int fd, char *filename, t_uint *code_len)
 		ft_printf("Error: File %s is too small to be a champion\n", filename);
 		return (false);
 	}
-	*code_len = ft_byte_to_uint(buf[0], buf[1], buf[2],buf[3]);
+	*code_len = ft_byte_to_uint(buf[0], buf[1], buf[2], buf[3]);
 	return (true);
 }
 
@@ -77,7 +77,7 @@ static bool		validate_header(int fd, char *filename)
 		ft_printf("Error: File %s is too small to be a champion\n", filename);
 		return (false);
 	}
-	magic_bytes = ft_byte_to_uint(buf[0], buf[1], buf[2],buf[3]);
+	magic_bytes = ft_byte_to_uint(buf[0], buf[1], buf[2], buf[3]);
 	if (magic_bytes != COREWAR_EXEC_MAGIC)
 	{
 		ft_printf("Error: File %s has an invalid header\n", filename);

@@ -29,7 +29,6 @@
 # define CODELEN_SIZE	4
 # define OP_COUNT		1 // original 16
 
-
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
 
@@ -72,7 +71,8 @@ typedef struct			s_session
 }						t_session;
 
 //	bool op_func(t_session *game, t_champ *champs, t_process *executing_carry);
-typedef bool (*t_operation)(t_session *g, t_champ *c, t_process *ca, t_champ *h);
+typedef bool	(*t_operation)(t_session *g, t_champ *c, t_process *ca,
+								t_champ *h);
 
 typedef struct			s_op
 {
