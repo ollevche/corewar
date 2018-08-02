@@ -20,7 +20,7 @@ OBJDIR	=	objects/
 
 LIBDIR	=	../libft/
 
-SRC		=	main.c
+SRC		=	main.c compile.c struct_funcs.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
