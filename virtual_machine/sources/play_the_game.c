@@ -97,7 +97,7 @@ static bool	is_dump(t_session *game, int dump)
 	int		iter;
 	t_uchar	*map;
 
-	if (game->cycle <= dump)
+	if (game->cycle <= dump || dump < 0)
 		return (false);
 	iter = 0;
 	map = game->map;

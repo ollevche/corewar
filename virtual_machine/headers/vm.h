@@ -18,7 +18,6 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
-# include <stdint.h>
 
 # define RET_CHECK(X, R) if (!(X)) return (R);
 
