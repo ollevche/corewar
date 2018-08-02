@@ -24,7 +24,7 @@ static bool	set_flag(char **args, int *i, int *dump) // TODO: rewrite
 	else if (!ft_strcmp("-n", args[*i]))
 	{
 		(*i)++;
-		//TODO: -n flag
+		//TODO: -n flag [champs ids should be set here]
 		return (true);
 	}
 	return (false);
