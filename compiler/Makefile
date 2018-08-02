@@ -10,7 +10,7 @@
 #                                                                              #
 #******************************************************************************#
 
-NAME	=	corewar
+NAME	=	asm
 
 FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers
 
@@ -20,13 +20,7 @@ OBJDIR	=	objects/
 
 LIBDIR	=	../libft/
 
-OPDIR	=	operations/
-
-SRC		=	main.c play_the_game.c read_input.c validation.c preparation.c \
-			execution.c struct_funcs.c free_funcs.c \
-			$(addprefix $(OPDIR), $(OP))
-
-OP		=	live_01.c
+SRC		=	main.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
@@ -48,7 +42,6 @@ $(LIBDIR)$(LIB):
 
 $(OBJDIR):
 	@mkdir $(OBJDIR)
-	@mkdir $(OBJDIR)$(OPDIR)
 
 clean:
 	@make -C $(LIBDIR) clean
@@ -63,3 +56,4 @@ fclean:
 	@rm -rf $(NAME) $(LIB)
 
 re: fclean $(NAME)
+	

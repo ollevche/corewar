@@ -1,6 +1,7 @@
 .vscode
+.DS_Store
+defaults/*
 objects
 libftprintf.a
 corewar
-.DS_Store
-defaults/*
+asm
