@@ -12,7 +12,7 @@
 
 #include "asm.h"
 
-t_item	*new_item(char *line)
+t_item	*new_item(char *line, int line_num)
 {
 	t_item	*item;
 
@@ -21,17 +21,18 @@ t_item	*new_item(char *line)
 		return (NULL);
 	item->type = -1;
 	item->line = line;
+	item->line_num = line_num;
 	item->bytecode = NULL;
 	item->next = NULL;
 	return (item);
 }
 
-t_item	*add_item(t_item **head, char *line)
+t_item	*add_item(t_item **head, char *line, int line_num)
 {
 	t_item	*item;
 	t_item	*iter;
 
-	item = new_item(line);
+	item = new_item(line, line_num);
 	if (!item)
 		return (NULL);
 	if (*head)

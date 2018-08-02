@@ -28,6 +28,7 @@ typedef struct			s_item
 {
 	int				type;
 	char			*line;
+	int				line_num;
 	t_uchar			*bytecode;
 	struct s_item	*next;
 }						t_item;
@@ -39,17 +40,11 @@ typedef struct			s_item
 bool					compile(char *filename);
 
 /*
-**	is_valid.c
-*/
-
-bool					is_valid(t_item *head);
-
-/*
 **	struct_funcs.c
 */
 
-t_item					*new_item(char *line);
-t_item					*add_item(t_item **head, char *line);
+t_item					*new_item(char *line, int line_num);
+t_item					*add_item(t_item **head, char *line, int line_num);
 void					free_items(t_item **head);
 
 #endif
