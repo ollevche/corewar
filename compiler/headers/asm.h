@@ -19,6 +19,9 @@
 # include <fcntl.h>
 # include <errno.h>
 
+# define ENDLINE_ERR "Syntax error - unexpected end of input"
+# define ENDLINE_HINT "(Perhaps you forgot to end with a newline ?)"
+
 typedef unsigned char	t_uchar;
 
 typedef struct			s_item
@@ -34,6 +37,12 @@ typedef struct			s_item
 */
 
 bool					compile(char *filename);
+
+/*
+**	is_valid.c
+*/
+
+bool					is_valid(t_item *head);
 
 /*
 **	struct_funcs.c

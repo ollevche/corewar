@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct_funcs.c                                      :+:      :+:    :+:   */
+/*   struct_funcs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -28,8 +28,8 @@ t_item	*new_item(char *line)
 
 t_item	*add_item(t_item **head, char *line)
 {
-	t_item  *item;
-	t_item  *iter;
+	t_item	*item;
+	t_item	*iter;
 
 	item = new_item(line);
 	if (!item)

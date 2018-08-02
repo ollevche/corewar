@@ -14,31 +14,26 @@
 
 #define SAFE_RET(I, R) { free_items(I); return (R); }
 
-static t_item*	read_sfile(char *filename)
+static t_item	*read_sfile(char *filename)
 {
 	int		fd;
 	char	*line;
 	t_item	*head;
 	t_item	*last;
 
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
+	head = NULL;
+	last = NULL;
+	if ((fd = open(filename, O_RDONLY)) < 0)
 	{
 		ft_printf("Can't read source file %s\n", filename);
 		return (NULL);
 	}
-	head = NULL;
-	last = NULL;
 	while ((line = safe_gnl(fd)))
-	{
-		last = add_item(&head, line);
-		if (!last)
+		if (!(last = add_item(&head, line)))
 			SAFE_RET(&head, NULL);
-	}
 	if (last->line[0] != 0) // if it's not an empty line
 	{
-		ft_printf("Syntax error - unexpected end of input \
-(Perhaps you forgot to end with a newline ?)");
+		ft_printf("%s %s\n", ENDLINE_ERR, ENDLINE_HINT);
 		SAFE_RET(&head, NULL);
 	}
 	return (head);
