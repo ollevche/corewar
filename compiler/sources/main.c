@@ -38,7 +38,7 @@ int		main(int argc, char **args)
 	while (i < argc)
 	{
 		if (!compile(args[i]))
-			ft_printf("File not compiled: %s\n", args[i]);
+			ft_printf("%s %s\n", NOT_COMPILED_ERR, args[i]);
 		i++;
 	}
 	return (0);
