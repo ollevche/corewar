@@ -12,7 +12,7 @@
 
 NAME	=	asm
 
-FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers
+FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers -g # DEL
 
 SRCDIR	=	sources/
 
@@ -20,7 +20,8 @@ OBJDIR	=	objects/
 
 LIBDIR	=	../libft/
 
-SRC		=	main.c compile.c read_sfile.c struct_funcs.c
+SRC		=	main.c compile.c read_sfile.c syntactically_valid.c \
+			struct_funcs.c util.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

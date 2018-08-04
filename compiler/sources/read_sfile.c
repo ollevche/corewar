@@ -12,7 +12,7 @@
 
 #include "asm.h"
 
-static bool	check_endnl(int fd)
+static bool		check_endnl(int fd)
 {
 	char	c;
 
@@ -24,41 +24,44 @@ static bool	check_endnl(int fd)
 	return (false);
 }
 
-static bool	read_header(int fd, t_file **head, int line_num)
+static int		check_open(char *filename)
 {
-	char	*line;
-	char	*token;
-	int		type;
-	t_item	*item;
+	int fd;
 
-	skip_wspaces(fd);
-	token = read_token(fd, line_num + 1);
-	IF_RET(!token, false);
-	type = (token[0] == '.') ? 0 : -1;
-	type = (!ft_strcmp(NAME_CMD_STRING, token)) ? NAME_T : type;
-	type = (!ft_strcmp(COMMENT_CMD_STRING, token)) ? COMMENT_T : type;
-	if (type == 0)
-		ft_printf();
-	free(token);
-	skip_wspaces(fd);
-	line = read_quotes(fd, line_num + 1);
-	IF_RET(!line, false);
-	add_item(head, line, line_num + 1)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		ft_printf("%s %s\n", READ_ERR, filename);
+	return (fd);
 }
 
-t_item		*read_sfile(char *filename)
+static t_item	*extract_content(int fd)
+{
+    char    *line;
+    int     line_num;
+    int     type;
+    t_item  *head;
+
+    line_num = 1;
+	head = NULL;
+    while ((line = safe_gnl(fd)))
+	{
+        type = syntactically_valid(line, line_num);
+		if (type == ERR_TYPE || !add_item(&head, line, line_num, type))
+            SAFE_RET(&head, NULL);
+        line_num++;
+	}
+    return (head);
+}
+
+t_item			*read_sfile(char *filename)
 {
 	int		fd;
 	t_item	*head;
 
-	head = NULL;
-	if ((fd = open(filename, O_RDONLY)) < 0)
-	{
-		ft_printf("%s %s\n", READ_ERR, filename);
-		return (NULL);
-	}
-	IF_RET(!read_header(fd, &head, 0), NULL);
-	// IF_RET(!read_content(fd, head), NULL);
+	fd = check_open(filename);
+	IF_RET(fd < 0, NULL);
+	head = extract_content(fd);
+	IF_RET(!head, NULL);
 	IF_RET(!check_endnl(fd), NULL);
 	close(fd);
 	return (head);

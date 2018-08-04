@@ -28,6 +28,8 @@ bool			compile(char *filename)
 	items = read_sfile(filename);
 	if (!items)
 		SAFE_RET(&items, false);
+	// if (!semantically_valid(items))
+	// 	SAFE_RET(&items, false);
 	print_file(items); // DEL
 	// if (!to_bytecode(items))
 	// 	SAFE_RET(&items, false);
