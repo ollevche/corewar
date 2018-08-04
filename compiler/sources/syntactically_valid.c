@@ -17,19 +17,25 @@ static int	err_leftover(char *line, int line_num, int pos)
 	(void)line;
 	(void)line_num;
 	(void)pos;
-	ft_printf("// TODO: print an error (LEX / SYN)");
+	ft_printf("// TODO: print an error (LEX / SYN)\n");
 	return (ERR_TYPE);
 }
 
 static int	check_opened_str(char *line, int line_num, int pos)
 {
+	int type;
+
+	type = STR_ML_T;
 	while (line[pos] && line[pos] != '"')
 		pos++;
 	if (line[pos] == '"')
+	{
+		type = STR_T;
 		pos++;
+	}
 	pos += skip_wspaces(line + pos); // check
 	if (line[pos] == '\0')
-		return (STR_T);
+		return (type);
 	return (err_leftover(line, line_num, pos));
 }
 
@@ -84,16 +90,18 @@ int     	syntactically_valid(char *line, int line_num) // TODO: comments
 	static bool	expecting_str = 0;
 
 	type = ERR_TYPE;
-	if (expecting_str)
-		return (check_opened_str(line, line_num, 0));
-	pos = skip_wspaces(line); // doesn't work
+	pos = skip_wspaces(line);
 	if (line[pos] == '\0')
 		return (EMP_T);
-	if (line[pos] == '.')
+	if (expecting_str)
+		type = check_opened_str(line, line_num, 0);
+	else if (line[pos] == '.')
 		type = check_header(line, line_num, pos);
 	// else
 	// 	type = check_code(line, line_num, pos); // write
 	if (is_multiline(type)) // write
 		expecting_str = 1;
+	else
+		expecting_str = 0;
 	return (type);
 }

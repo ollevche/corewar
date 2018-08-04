@@ -44,7 +44,7 @@
 # define NAME_ML_T	21 // multiline name command
 # define STR_T		22 // line with already opened quote, contains closing quote
 # define STR_ML_T	23 // line with already opened quote, doesn't contain any quotes
-# define EMP_T		24
+# define EMP_T		24 // line with wspaces only (empty)
 
 typedef unsigned char	t_uchar;
 
