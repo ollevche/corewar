@@ -12,7 +12,19 @@
 
 #include "asm.h"
 
-int	skip_wspaces(char *line)
+char	*cut_word(char *line)
+{
+	int		len;
+	char	*word;
+
+	word = NULL;
+	len = count_nwspaces(line);
+	if (len > 0)
+		word = ft_strndup(line, len); // strndup leak on len == 0
+	return (word);
+}
+
+int		skip_wspaces(char *line)
 {
 	int i;
 
@@ -22,7 +34,7 @@ int	skip_wspaces(char *line)
 	return (i);
 }
 
-int	count_nwspaces(char *line)
+int		count_nwspaces(char *line)
 {
 	int i;
 

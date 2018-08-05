@@ -29,6 +29,8 @@
 # define READ_ERR "Can't read source file"
 # define ENDLINE_ERR "Syntax error - unexpected end of input"
 # define ENDLINE_HINT "(Perhaps you forgot to end with a newline ?)"
+# define NOHDR_ERR "Expected header item (name or comment) at line"
+# define QUOTE_ERR "Expected quote at"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);
@@ -65,9 +67,17 @@ bool					compile(char *filename);
 t_item					*read_sfile(char *filename);
 
 /*
+**	extract_header.c
+*/
+
+t_item					*extract_header(int fd);
+bool					has_item(int target_type, t_file *head, int limit);
+
+/*
 **	util.c
 */
 
+char					*cut_word(char *line);
 int						skip_wspaces(char *line);
 int						count_nwspaces(char *line);
 
