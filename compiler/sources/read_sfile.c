@@ -34,21 +34,51 @@ static int		check_open(char *filename)
 	return (fd);
 }
 
+bool	extract_header(int fd, t_item **head)
+{
+	// int		total_types;
+	// char	*line;
+	// char	*str;
+	// int		type;
+
+	// total_types = 0;
+	// while ((line = safe_gnl(fd)) && total_types < (NAME_T + COMM_T))
+	// {
+	// 	type = extract_header_item(line, fd, &str); // validates all the line ("          .command        '\n       some str   \n '      ")
+	// 	if (type != NAME_T && type != COMM_T)
+	// 		return (false);
+	// 	if (!add_item(head, str, -1, type))
+	// 		return (false);
+	// 	total_types += type;
+	// }
+	// if (total_types != NAME_T + COMM_T)
+	// 	return (false);
+	// return (true);
+}
+
 static t_item	*extract_content(int fd)
 {
-    char    *line;
-    int     line_num;
-    int     type;
+	char	*line;
+	int		last_read;
+	int		line_num;
     t_item  *head;
 
-    line_num = 1;
 	head = NULL;
-    while ((line = safe_gnl(fd)))
+	line_num = 0;
+	while ((line = safe_gnl(fd)))
 	{
-        type = syntactically_valid(line, line_num);
-		if (type == ERR_TYPE || !add_item(&head, line, line_num, type))
-            SAFE_RET(&head, NULL);
-        line_num++;
+		if (is_empty(line))
+			continue ;
+		last_read = DEF_T;
+		if (has_name(head) && has_comment(head))
+			last_read = extract_instruction(head, line, line_num);
+		if (last_read == DEF_T && !has_name(head))
+			last_read = extract_name(head, line, fd, &line_num);
+		if (last_read == DEF_T && !has_comment(head))
+			last_read = extract_comment(head, line, fd, &line_num);
+		if (last_read == ERR_T || last_read == DEF_T)
+			SAFE_RET(&head, NULL);
+		line_num++;
 	}
     return (head);
 }
