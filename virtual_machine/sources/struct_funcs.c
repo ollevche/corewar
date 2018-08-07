@@ -20,7 +20,6 @@ t_champ	*new_champ(t_champ **champs)
 
 	champ = (t_champ*)malloc(sizeof(t_champ));
 	RET_CHECK(champ, NULL);
-	champ->carrys = NULL;
 	champ->name = NULL;
 	champ->comment = NULL;
 	champ->code_len = 0;
@@ -39,30 +38,21 @@ t_champ	*new_champ(t_champ **champs)
 	return (champ);
 }
 
-bool	new_carry(t_process **all_carrys, int first_reg)
+bool	new_carry(t_process **all_carrys, int first_reg) // TODO: addFirst. sasha_pidor = true;
 {
-	t_process	*iter;
 	t_process	*carry;
 
 	carry = (t_process*)malloc(sizeof(t_process));
 	RET_CHECK(carry, false);
 	carry->regs[0] = first_reg; // t_uint = int
-	ft_memset(carry->regs + 1, 0, REG_NUMBER);
+	ft_memset(carry->regs + 1, 0, REG_NUMBER - 1);
 	carry->pc = 0;
 	carry->carry = false;
 	carry->inactive = 0;
 	carry->op_code = 0;
 	carry->last_live = -1;
-	carry->next = NULL;
-	if (*all_carrys)
-	{
-		iter = *all_carrys;
-		while (iter->next)
-			iter = iter->next;
-		iter->next = carry;
-	}
-	else
-		*all_carrys = carry;
+	carry->next = *all_carrys;
+	*all_carrys = carry;
 	return (true);
 }
 
@@ -85,7 +75,7 @@ void	del_process(t_process **carrys, t_process *target)
 	free_processes(target);
 }
 
-t_champ	*get_champ_by_id(t_champ *head, int id)
+t_champ		*get_champ_by_id(t_champ *head, int id)
 {
 	while (head && head->id != id)
 		head = head->next;

@@ -14,8 +14,8 @@
 #include "vm_funcs.h"
 
 /*
-**	creates processes for each champ
-**	sets first reg to champ_id
+**	sets champs ids // TODO: -n
+**	returns total number of champs
 */
 
 static int	prepare_champs(t_champ *champs)
@@ -27,7 +27,6 @@ static int	prepare_champs(t_champ *champs)
 	{
 		champ_id--;
 		champs->id = champ_id;
-		RET_CHECK(new_carry(&(champs->carrys), champ_id), 0);
 		champs = champs->next;
 	}
 	return (-champ_id);
@@ -35,7 +34,6 @@ static int	prepare_champs(t_champ *champs)
 
 /*
 **	allocates mem for t_session and sets def values
-**	sets default values
 */
 
 static bool	prepare_session(t_session **gameptr, int n)
@@ -51,6 +49,7 @@ static bool	prepare_session(t_session **gameptr, int n)
 	game->cycle_to_die = CYCLE_TO_DIE;
 	game->last_ctd = 0;
 	game->last_alive = NULL;
+	game->carrys = NULL;
 	game->total_champs = n;
 	game->process_num = n;
 	return (true);
@@ -62,24 +61,23 @@ static bool	prepare_session(t_session **gameptr, int n)
 **	sets processes pc to start positions (first byte of champ code)
 */
 
-static void	place_code(t_champ *champs, t_session *game)
+static bool	place_code(t_champ *champs, t_session *game) // test it
 {
-	int	gap;
-	int	champ_mark;
+	int			gap;
+	int			champ_mark;
 
 	gap = MEM_SIZE / game->total_champs;
 	champ_mark = 0;
-	ft_printf("Code points are at:\n"); // DEL
 	while (champs)
 	{
 		ft_memcpy(game->map + champ_mark, champs->code, champs->code_len);
-		champs->carrys->pc = champ_mark;
-		// champs->carrys->op_code = game->map[champ_mark];
-		update_position(game, champs->carrys, 0);
-		ft_printf("\t%d\n", champ_mark); // DEL
+		RET_CHECK(new_carry(&(game->carrys), champs->id), false);
+		game->carrys->pc = champ_mark;
+		update_position(game, game->carrys, 0);
 		champ_mark += gap;
 		champs = champs->next;
 	}
+	return (true);
 }
 
 bool		prepare(t_champ *champs, t_session **game)
@@ -94,7 +92,6 @@ bool		prepare(t_champ *champs, t_session **game)
 		return (false);
 	}
 	RET_CHECK(prepare_session(game, champs_n), NULL);
-	//	places champs code at the game->map
 	place_code(champs, *game);
 	return (true);
 }

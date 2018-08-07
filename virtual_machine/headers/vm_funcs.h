@@ -74,6 +74,6 @@ void    free_processes(t_process *carrys);
 **  operations:
 */
 
-bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head);
+bool	live(t_session *game, t_process *carry, t_champ *head);
 
 #endif

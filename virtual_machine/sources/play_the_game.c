@@ -13,25 +13,23 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static int	kill_processes(t_champ *champs, int period_start)
+static int	kill_processes(t_process *carrys, int period_start)
 {
 	t_process	*icarry;
+	t_process	*tmp;
 	int			killed;
 
+	icarry = carrys;
 	killed = 0;
-	while (champs)
+	while (icarry)
 	{
-		icarry = champs->carrys;
-		while (icarry)
+		tmp = icarry->next;
+		if (icarry->last_live < period_start)
 		{
-			if (icarry->last_live < period_start)
-			{
-				del_process(&(champs->carrys), icarry);
-				killed++;
-			}
-			icarry = icarry->next;
+			del_process(&carrys, icarry);
+			killed++;
 		}
-		champs = champs->next;
+		icarry = tmp;
 	}
 	return (killed);
 }
@@ -43,7 +41,7 @@ static int	kill_processes(t_champ *champs, int period_start)
 **	(3) setting params to correct values -> end
 */
 
-static void	control_game_flow(t_session *game, t_champ *champs)
+static void	control_game_flow(t_session *game)
 {
 	int	periods; // since last cycle_to_die change
 	int	cycles; // in current period
@@ -53,7 +51,7 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
 	if (cycles == 0) // it's start of the period
 	{
-		killed = kill_processes(champs, game->cycle - game->cycle_to_die);
+		killed = kill_processes(game->carrys, game->cycle - game->cycle_to_die);
 		game->process_num -= killed;
 		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
@@ -64,29 +62,21 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	}
 }
 
-static void	log(t_session *game, t_champ *champs)
+static void	log(t_session *game)
 {
-	t_champ		*ichamp;
 	t_process	*icarry;
 
-	ft_printf("--- --- --- --- --- --- --- --- ---\n");	
+	ft_printf("--- --- --- --- --- --- --- --- ---\n");
 	ft_printf("cycle: %d\n", game->cycle);
 	ft_printf("period lives: %d\n", game->period_lives);
 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
-	ft_printf("carrys positions:\n");
-	ichamp = champs;
-	while (ichamp)
+	ft_printf("carrys positions (champ - pos - last_live):\n");
+	icarry = game->carrys;
+	while (icarry)
 	{
-		ft_printf("\tchamp %d:", ichamp->id);
-		icarry = ichamp->carrys;
-		while (icarry)
-		{
-			ft_printf(" %d", icarry->pc);
-			icarry = icarry->next;
-		}
-		ft_printf("\n");
-		ichamp = ichamp->next;
+		ft_printf("%d\t%d\t%d\n", icarry->regs[0], icarry->pc, icarry->last_live);
+		icarry = icarry->next;
 	}
 	if (game->last_alive)
 		ft_printf("last alive champ: %d\n", game->last_alive->id);
@@ -125,11 +115,11 @@ t_champ		*play_the_game(t_champ *champs, int dump)
 	while (game->process_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, dump))
 	{
-		log(game, champs); // DEL
+		log(game); // DEL
 		execute_processes(game, champs);
 		game->cycle++;
-		control_game_flow(game, champs);
-	}  
+		control_game_flow(game);
+	}
 	free_session(&game);
 	winner = game->last_alive;
 	return (winner);

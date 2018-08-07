@@ -14,7 +14,7 @@
 #include "vm_funcs.h"
 // TODO: define lines like game->last_alive / carry->last_live / etc
 // TODO: print "A process shows that player X (champion_name) is alive"
-bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head)
+bool	live(t_session *game, t_process *carry, t_champ *head)
 {
 	t_uint	id;
 	t_champ	*arg_champ;
@@ -22,7 +22,7 @@ bool	live(t_session *game, t_champ *champ, t_process *carry, t_champ *head)
 	int		pc;
 
 	carry->last_live = game->cycle;
-	game->last_alive = champ;
+	game->last_alive = get_champ_by_id(head, carry->regs[0]);
 	game->period_lives++;
 	map = game->map;
 	pc = carry->pc;

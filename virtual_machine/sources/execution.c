@@ -65,27 +65,21 @@ void		update_position(t_session *game, t_process *carry, int val)
 void		execute_processes(t_session *game, t_champ *champs)
 {
 	t_process	*icarry;
-	t_champ		*ichamp;
 	t_operation operations[OP_COUNT + 2]; // static?
 
 	init_operations(operations);
-	ichamp = champs;
-	while (ichamp)
+	icarry = game->carrys;
+	while (icarry)
 	{
-		icarry = ichamp->carrys;
-		while (icarry)
+		if (icarry->inactive == 0)
 		{
-			if (icarry->inactive == 0)
-			{
-				if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT)
-					operations[icarry->op_code](game, ichamp, icarry, champs);
-				else
-					update_position(game, icarry, 1);
-			}
+			if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT)
+				operations[icarry->op_code](game, icarry, champs);
 			else
-				icarry->inactive--;
-			icarry = icarry->next;
+				update_position(game, icarry, 1);
 		}
-		ichamp = ichamp->next;
+		else
+			icarry->inactive--;
+		icarry = icarry->next;
 	}
 }
