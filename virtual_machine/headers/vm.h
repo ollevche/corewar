@@ -23,8 +23,6 @@
 
 # define USAGE_STR		"we've not created usage text yet" // TODO: this
 
-//TODO: "Yes, the last born (youngest) champion plays first." from 'VIII.3 Champion’s execution'
-
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
 # define OP_COUNT		1 // original 16
@@ -32,7 +30,7 @@
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
 
-typedef struct			s_process
+typedef struct			s_carry
 {
 	t_uint				regs[REG_NUMBER];
 	int					pc; // current position on the map
@@ -40,8 +38,8 @@ typedef struct			s_process
 	int					inactive; // inactive for N cycles required by op
 	t_uchar				op_code; // current operation code
 	int					last_live; // cycle, when last live was called
-	struct s_process	*next;
-}						t_process;
+	struct s_carry	*next;
+}						t_carry;
 
 typedef struct			s_champ
 {
@@ -65,13 +63,13 @@ typedef struct			s_session
 	int			cycle_to_die;
 	int			last_ctd; // last change of cycle_to_die
 	t_champ		*last_alive;
-	t_process	*carrys; // all of the processes
-	int			process_num; // number of processes in a session
+	t_carry	*carrys; // all of the carryes
+	int			carry_num; // number of carryes in a session
 	int			total_champs;
 }						t_session;
 
-// operation receives game (session), carrys (processes), head of champs (champ)
-typedef bool	(*t_operation)(t_session *g, t_process *ca, t_champ *h);
+// operation receives game (session), carrys (carryes), head of champs (champ)
+typedef bool	(*t_operation)(t_session *g, t_carry *ca, t_champ *h);
 
 typedef struct			s_op
 {

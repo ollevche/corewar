@@ -13,8 +13,8 @@
 #include "vm.h"
 #include "vm_funcs.h"
 // TODO: define lines like game->last_alive / carry->last_live / etc
-// TODO: print "A process shows that player X (champion_name) is alive"
-bool	live(t_session *game, t_process *carry, t_champ *head)
+// TODO: print "A carry shows that player X (champion_name) is alive"
+bool	live(t_session *game, t_carry *carry, t_champ *head)
 {
 	t_uint	id;
 	t_champ	*arg_champ;

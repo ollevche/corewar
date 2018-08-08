@@ -13,10 +13,10 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static int	kill_processes(t_process *carrys, int period_start)
+static int	kill_carryes(t_carry *carrys, int period_start)
 {
-	t_process	*icarry;
-	t_process	*tmp;
+	t_carry	*icarry;
+	t_carry	*tmp;
 	int			killed;
 
 	icarry = carrys;
@@ -26,7 +26,7 @@ static int	kill_processes(t_process *carrys, int period_start)
 		tmp = icarry->next;
 		if (icarry->last_live < period_start)
 		{
-			del_process(&carrys, icarry);
+			del_carry(&carrys, icarry);
 			killed++;
 		}
 		icarry = tmp;
@@ -37,7 +37,7 @@ static int	kill_processes(t_process *carrys, int period_start)
 /*
 **	controls execution of the game by periods
 **	(1) new period ->
-**	(2) checking some params (NBR_LIVE, MAX_CHECKS, dead processes) ->
+**	(2) checking some params (NBR_LIVE, MAX_CHECKS, dead carryes) ->
 **	(3) setting params to correct values -> end
 */
 
@@ -51,8 +51,8 @@ static void	control_game_flow(t_session *game)
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
 	if (cycles == 0) // it's start of the period
 	{
-		killed = kill_processes(game->carrys, game->cycle - game->cycle_to_die);
-		game->process_num -= killed;
+		killed = kill_carryes(game->carrys, game->cycle - game->cycle_to_die);
+		game->carry_num -= killed;
 		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
 			game->cycle_to_die -= CYCLE_DELTA;
@@ -64,7 +64,7 @@ static void	control_game_flow(t_session *game)
 
 static void	log(t_session *game)
 {
-	t_process	*icarry;
+	t_carry	*icarry;
 
 	ft_printf("--- --- --- --- --- --- --- --- ---\n");
 	ft_printf("cycle: %d\n", game->cycle);
@@ -112,11 +112,11 @@ t_champ		*play_the_game(t_champ *champs, int dump)
 	t_champ		*winner;
 
 	RET_CHECK(prepare(champs, &game), NULL)
-	while (game->process_num > 0 && game->cycle_to_die >= 0
+	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, dump))
 	{
 		log(game); // DEL
-		execute_processes(game, champs);
+		execute_carryes(game, champs);
 		game->cycle++;
 		control_game_flow(game);
 	}

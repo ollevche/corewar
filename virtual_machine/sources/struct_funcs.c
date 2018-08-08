@@ -38,11 +38,11 @@ t_champ	*new_champ(t_champ **champs)
 	return (champ);
 }
 
-bool	new_carry(t_process **all_carrys, int first_reg) // TODO: addFirst. sasha_pidor = true;
+bool	new_carry(t_carry **all_carrys, int first_reg)
 {
-	t_process	*carry;
+	t_carry	*carry;
 
-	carry = (t_process*)malloc(sizeof(t_process));
+	carry = (t_carry*)malloc(sizeof(t_carry));
 	RET_CHECK(carry, false);
 	carry->regs[0] = first_reg; // t_uint = int
 	ft_memset(carry->regs + 1, 0, REG_NUMBER - 1);
@@ -56,9 +56,9 @@ bool	new_carry(t_process **all_carrys, int first_reg) // TODO: addFirst. sasha_p
 	return (true);
 }
 
-void	del_process(t_process **carrys, t_process *target)
+void	del_carry(t_carry **carrys, t_carry *target)
 {
-	t_process	*iter;
+	t_carry	*iter;
 
 	iter = *carrys;
 	if (!iter)
@@ -72,7 +72,7 @@ void	del_process(t_process **carrys, t_process *target)
 		iter->next = target->next;
 	}
 	target->next = NULL;
-	free_processes(target);
+	free_carryes(target);
 }
 
 t_champ		*get_champ_by_id(t_champ *head, int id)

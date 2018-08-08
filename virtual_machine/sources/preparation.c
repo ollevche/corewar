@@ -51,14 +51,14 @@ static bool	prepare_session(t_session **gameptr, int n)
 	game->last_alive = NULL;
 	game->carrys = NULL;
 	game->total_champs = n;
-	game->process_num = n;
+	game->carry_num = n;
 	return (true);
 }
 
 /*
 **	puts the code of champs on the map
 **	chooses code positions based on champ number
-**	sets processes pc to start positions (first byte of champ code)
+**	sets carryes pc to start positions (first byte of champ code)
 */
 
 static bool	place_code(t_champ *champs, t_session *game) // test it

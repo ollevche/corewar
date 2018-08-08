@@ -40,12 +40,12 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 }
 
 /*
-**	moves a pc of the process to specified position (to right/left from the pc by val bytes)
+**	moves a pc of the carry to specified position (to right/left from the pc by val bytes)
 **	sets op_code to pc internal value (op_code of the new position)
 **	sets inactive counter to operation execution time (in cycles)
 */
 
-void		update_position(t_session *game, t_process *carry, int val)
+void		update_position(t_session *game, t_carry *carry, int val)
 {
 	carry->pc += val;
 	if (carry->pc >= MEM_SIZE)
@@ -58,13 +58,13 @@ void		update_position(t_session *game, t_process *carry, int val)
 }
 
 /*
-**	executes all of the processes, which is active
+**	executes all of the carryes, which is active
 **	or decrease inactive counter (if inactive)
 */
 
-void		execute_processes(t_session *game, t_champ *champs)
+void		execute_carryes(t_session *game, t_champ *champs)
 {
-	t_process	*icarry;
+	t_carry	*icarry;
 	t_operation operations[OP_COUNT + 2]; // static?
 
 	init_operations(operations);

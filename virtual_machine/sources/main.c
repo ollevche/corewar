@@ -14,7 +14,7 @@
 #include "vm_funcs.h"
 
 /*
-**	info block about operations
+**	standard info block about operations
 */
 
 const t_op	g_optab[18] =
