@@ -12,7 +12,7 @@
 
 NAME	=	corewar
 
-FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers
+FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers -g # DEL
 
 SRCDIR	=	sources/
 
@@ -22,7 +22,7 @@ LIBDIR	=	../libft/
 
 OPDIR	=	operations/
 
-SRC		=	main.c play_the_game.c read_input.c validation.c preparation.c \
+SRC		=	main.c play_the_game.c read_input.c read_champ.c prepare.c \
 			execution.c struct_funcs.c free_funcs.c \
 			$(addprefix $(OPDIR), $(OP))
 

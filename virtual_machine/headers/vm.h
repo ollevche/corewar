@@ -32,12 +32,12 @@ typedef unsigned int	t_uint;
 
 typedef struct			s_carry
 {
-	t_uint				regs[REG_NUMBER];
-	int					pc; // current position on the map
-	bool				carry; // was last op successful
-	int					inactive; // inactive for N cycles required by op
-	t_uchar				op_code; // current operation code
-	int					last_live; // cycle, when last live was called
+	t_uint			regs[REG_NUMBER];
+	int				pc; // current position on the map
+	bool			carry; // was last op successful
+	int				inactive; // inactive for N cycles required by op
+	t_uchar			op_code; // current operation code
+	int				last_live; // cycle, when last live was called
 	struct s_carry	*next;
 }						t_carry;
 
@@ -68,7 +68,10 @@ typedef struct			s_session
 	int			total_champs;
 }						t_session;
 
-// operation receives game (session), carrys (carryes), head of champs (champ)
+/*
+**	operation receives game (session), carrys (carryes), head of champs (champ)
+*/
+
 typedef bool	(*t_operation)(t_session *g, t_carry *ca, t_champ *h);
 
 typedef struct			s_op
@@ -84,5 +87,12 @@ typedef struct			s_op
 }						t_op;
 
 extern const t_op		g_optab[18];
+
+typedef struct			s_arg
+{
+	bool	is_visual;
+	int		dump;
+	int		champ_id;
+}						t_arg;
 
 #endif

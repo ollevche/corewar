@@ -58,16 +58,25 @@ void	display_usage(char *usage_txt)
 	terminate();
 }
 
+static void	init_arg(t_arg *arg)
+{
+	arg->is_visual = false;
+	arg->dump = -1;
+	arg->champ_id = 0;
+}
+
 int		main(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
-	int		dump;
+	t_arg	arg;
 
-	champs = read_input(argc, args, &dump);
+	init_arg(&arg); // TODO: check usage without pointer
+	champs = read_input(argc, args, arg);
 	if (!champs)
 		display_usage(USAGE_STR);
-	winner = play_the_game(champs, dump);
+	winner = play_the_game(champs, arg);
+	// free_champs(&champs); // should be freed before terminate()
 	if (!winner)
 		terminate();
 	// print_result(winner);

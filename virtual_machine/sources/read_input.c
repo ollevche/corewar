@@ -13,27 +13,18 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static bool	set_flag(char **args, int *i, int *dump) // TODO: rewrite
+static bool		set_flag(char **args, int *i, t_arg arg)
 {
-	if (!ft_strcmp("-dump", args[*i]))
-	{
-		(*i)++;
-		*dump = ft_atoi(args[*i]);
-		return (true);
-	}
-	else if (!ft_strcmp("-n", args[*i]))
-	{
-		(*i)++;
-		//TODO: -n flag [champs ids should be set here]
-		return (true);
-	}
+	(void)args;
+	(void)i;
+	(void)arg;
 	return (false);
 }
 
-static bool	read_champ(t_champ **champs, char *filename)
+static t_champ	*read_file(t_champ **champs, char *filename)
 {
 	int		fd;
-	bool	is_champ;
+	t_champ	*champ;
 
 	if ((fd = open(filename, O_RDONLY)) < 0)
 	{
@@ -41,27 +32,29 @@ static bool	read_champ(t_champ **champs, char *filename)
 		errno = 0;
 		return (false);
 	}
-	is_champ = reading(champs, fd, filename);
+	champ = read_champ(champs, fd, filename);
 	close(fd);
-	return (is_champ);
+	return (champ);
 }
 
-t_champ		*read_input(int argc, char **args, int *dump)
+t_champ			*read_input(int argc, char **args, t_arg arg)
 {
 	t_champ	*champs;
+	t_champ	*ichamp;
 	int		i;
 
 	champs = NULL;
-	*dump = -1;
 	i = 1;
 	while (i < argc)
 	{
-		if (!set_flag(args, &i, dump))
-			if (!read_champ(&champs, args[i]))
-			{
-				free_champs(&champs);
-				terminate();
-			}
+		if (!set_flag(args, &i, arg))
+			if ((ichamp = read_file(&champs, args[i])))
+				ichamp->id = --arg.champ_id;
+		if (!ichamp)
+		{
+			free_champs(&champs);
+			terminate();
+		}
 		i++;
 	}
 	return (champs);
