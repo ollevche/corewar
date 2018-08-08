@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static bool		set_flag(char **args, int *i, t_arg arg)
+static bool		set_flag(char **args, int *i, t_arg *arg)
 {
 	(void)args;
 	(void)i;
@@ -37,7 +37,7 @@ static t_champ	*read_file(t_champ **champs, char *filename)
 	return (champ);
 }
 
-t_champ			*read_input(int argc, char **args, t_arg arg)
+t_champ			*read_input(int argc, char **args, t_arg *arg)
 {
 	t_champ	*champs;
 	t_champ	*ichamp;
@@ -49,7 +49,7 @@ t_champ			*read_input(int argc, char **args, t_arg arg)
 	{
 		if (!set_flag(args, &i, arg))
 			if ((ichamp = read_file(&champs, args[i])))
-				ichamp->id = --arg.champ_id;
+				ichamp->id = --(arg->champ_id);
 		if (!ichamp)
 		{
 			free_champs(&champs);

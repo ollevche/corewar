@@ -72,10 +72,10 @@ int		main(int argc, char **args)
 	t_arg	arg;
 
 	init_arg(&arg); // TODO: check usage without pointer
-	champs = read_input(argc, args, arg);
+	champs = read_input(argc, args, &arg);
 	if (!champs)
 		display_usage(USAGE_STR);
-	winner = play_the_game(champs, arg);
+	winner = play_the_game(champs, &arg);
 	// free_champs(&champs); // should be freed before terminate()
 	if (!winner)
 		terminate();
