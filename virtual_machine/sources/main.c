@@ -45,40 +45,50 @@ const t_op	g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0}
 };
 
-void	terminate(void)
+void	terminate(t_champ **champs)
 {
+	free_champs(champs);
 	if (errno)
 		perror("Default error");
 	exit(EXIT_FAILURE);
 }
 
-void	display_usage(char *usage_txt)
+void		display_usage(char *usage_txt)
 {
 	ft_printf("%s\n", usage_txt);
-	terminate();
+	terminate(NULL);
 }
 
-static void	init_arg(t_arg *arg)
+static t_arg	*new_arg()
 {
+	t_arg *arg;
+
+	arg = (t_arg*)malloc(sizeof(t_arg));
+	RET_CHECK(arg, NULL);
 	arg->is_visual = false;
 	arg->dump = -1;
 	arg->champ_id = 0;
+	return (arg);
 }
 
-int		main(int argc, char **args)
+int			main(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
-	t_arg	arg;
+	t_arg	*arg;
 
-	init_arg(&arg); // TODO: check usage without pointer
-	champs = read_input(argc, args, &arg);
+	arg = new_arg();
+	RET_CHECK(arg, 0);
+	champs = read_input(argc, args, arg);
 	if (!champs)
+	{
+		free(arg);
 		display_usage(USAGE_STR);
-	winner = play_the_game(champs, &arg);
-	// free_champs(&champs); // should be freed before terminate()
+	}
+	winner = play_the_game(champs, arg);
+	free(arg);
 	if (!winner)
-		terminate();
+		terminate(&champs);
 	// print_result(winner);
 	free_champs(&champs);
 	return (0);
