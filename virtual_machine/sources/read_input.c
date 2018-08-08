@@ -26,7 +26,7 @@ static int		ft_isnumber(char *str) // TODO: to lib
 	return (*str == '\0');
 }
 
-static int		set_flag(char **args, int *i, t_arg *arg)
+static int		set_flag(char **args, int *i, t_arg *arg, t_champ *head)
 {
 	if (!ft_strcmp(args[*i], "-dump"))
 	{
@@ -39,8 +39,8 @@ static int		set_flag(char **args, int *i, t_arg *arg)
 	}
 	else if (!ft_strcmp(args[*i], "-n"))
 	{
-		arg->champ_id = ft_atoi(args[++(*i)]) + 1;
-		if (!ft_isnumber(args[*i])) // TODO: check for duplicate ids
+		arg->champ_id = ft_atoi(args[++(*i)]);
+		if (!ft_isnumber(args[*i]) || get_champ_by_id(head, arg->champ_id))
 		{
 			ft_printf("Flag -n has invalid number\n");
 			return (INVALID_FLAG);
@@ -80,13 +80,13 @@ t_champ			*read_input(int argc, char **args, t_arg *arg)
 	i = 1;
 	while (i < argc)
 	{
-		flag_res = set_flag(args, &i, arg);
+		flag_res = set_flag(args, &i, arg, champs);
 		if (flag_res == NOT_FLAG)
 			ichamp = read_file(&champs, args[i]);
 		if (flag_res == INVALID_FLAG || (flag_res == NOT_FLAG && !ichamp))
 			terminate(&champs);
 		if (flag_res == NOT_FLAG)
-			ichamp->id = --(arg->champ_id);
+			ichamp->id = (arg->champ_id)--;
 		i++;
 	}
 	return (champs);

@@ -59,34 +59,24 @@ void		display_usage(char *usage_txt)
 	terminate(NULL);
 }
 
-static t_arg	*new_arg()
+static void	init_arg(t_arg *arg)
 {
-	t_arg *arg;
-
-	arg = (t_arg*)malloc(sizeof(t_arg));
-	RET_CHECK(arg, NULL);
 	arg->is_visual = false;
 	arg->dump = -1;
-	arg->champ_id = 0;
-	return (arg);
+	arg->champ_id = -1;
 }
 
 int			main(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
-	t_arg	*arg;
+	t_arg	arg;
 
-	arg = new_arg();
-	RET_CHECK(arg, 0);
-	champs = read_input(argc, args, arg);
+	init_arg(&arg);
+	champs = read_input(argc, args, &arg);
 	if (!champs)
-	{
-		free(arg);
 		display_usage(USAGE_STR);
-	}
-	winner = play_the_game(champs, arg);
-	free(arg);
+	winner = play_the_game(champs, &arg);
 	if (!winner)
 		terminate(&champs);
 	// print_result(winner);
