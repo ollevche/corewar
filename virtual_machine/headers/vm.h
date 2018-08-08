@@ -19,13 +19,32 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define RET_CHECK(X, R) if (!(X)) return (R);
 
 # define USAGE_STR		"we've not created usage text yet" // TODO: this
 
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
 # define OP_COUNT		1 // original 16
+
+/*
+** FUNCTIONAL DEFINES ▽
+*/
+
+# define RET_CHECK(X, R) if (!(X)) return (R);
+# define IS_REG(r) (r > 0 && r < REG_NUMBER)
+
+/*
+** DEFINES FOR READABILITY ▽
+*/
+
+# define LAST_LIVE		carry->last_live
+# define LAST_ALIVE		game->last_alive
+# define PERIOD_LIVES	game->period_lives
+# define MAP 			game->map
+# define PC				carry->pc
+# define CYCLE			game->cycle
+# define REGS			carry->regs
+# define CARRY			carry->carry
 
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
