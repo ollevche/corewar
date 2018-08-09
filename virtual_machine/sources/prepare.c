@@ -56,7 +56,7 @@ static bool	prepare_session(t_session **gameptr, int n)
 /*
 **	puts the code of champs on the map
 **	chooses code positions based on champ number
-**	sets carryes pc to start positions (first byte of champ code)
+**	sets carries pc to start positions (first byte of champ code)
 */
 
 static bool	place_code(t_champ *champs, t_session *game) // test it
