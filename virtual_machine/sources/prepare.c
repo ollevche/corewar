@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   preparation.c                                      :+:      :+:    :+:   */
+/*   prepare.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,22 +14,20 @@
 #include "vm_funcs.h"
 
 /*
-**	sets champs ids // TODO: -n
 **	returns total number of champs
 */
 
-static int	prepare_champs(t_champ *champs)
+static int	count_champs(t_champ *champs)
 {
-	int champ_id;
+	int champs_count;
 
-	champ_id = 0;
+	champs_count = 0;
 	while (champs)
 	{
-		champ_id--;
-		champs->id = champ_id;
+		champs_count++;
 		champs = champs->next;
 	}
-	return (-champ_id);
+	return (champs_count);
 }
 
 /*
@@ -84,8 +82,7 @@ bool		prepare(t_champ *champs, t_session **game)
 {
 	int	champs_n;
 
-	champs_n = prepare_champs(champs);
-	RET_CHECK(champs_n, false);
+	champs_n = count_champs(champs);
 	if (champs_n > MAX_PLAYERS)
 	{
 		ft_printf("Too many champions\n");

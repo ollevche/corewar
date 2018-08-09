@@ -45,31 +45,40 @@ const t_op	g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0}
 };
 
-void	terminate(void)
+void	terminate(t_champ **champs)
 {
+	free_champs(champs);
 	if (errno)
 		perror("Default error");
 	exit(EXIT_FAILURE);
 }
 
-void	display_usage(char *usage_txt)
+void		display_usage(char *usage_txt)
 {
 	ft_printf("%s\n", usage_txt);
-	terminate();
+	terminate(NULL);
 }
 
-int		main(int argc, char **args)
+static void	init_arg(t_arg *arg)
+{
+	arg->is_visual = false;
+	arg->dump = -1;
+	arg->champ_id = -1;
+}
+
+int			main(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
-	int		dump;
+	t_arg	arg;
 
-	champs = read_input(argc, args, &dump);
+	init_arg(&arg);
+	champs = read_input(argc, args, &arg);
 	if (!champs)
 		display_usage(USAGE_STR);
-	winner = play_the_game(champs, dump);
+	winner = play_the_game(champs, &arg);
 	if (!winner)
-		terminate();
+		terminate(&champs);
 	// print_result(winner);
 	free_champs(&champs);
 	return (0);
