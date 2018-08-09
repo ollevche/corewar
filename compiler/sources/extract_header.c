@@ -93,7 +93,7 @@ t_item		*extract_header(int fd)
 	while ((line = safe_gnl(fd)))
 	{
 		// if (is_empty(line))
-		// 	continue ;
+		// { line_num++; continue; }
 		last_read = DEF_T;
 		if (!has_item(NAME_T, head, 2))
 			last_read = extract_name(fd, &head, line, &line_num); // adds item // returns DEF_T if it's not a name // prints error
