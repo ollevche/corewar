@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static int	kill_carryes(t_carry *carrys, int period_start)
+static int	kill_carries(t_carry *carrys, int period_start)
 {
 	t_carry	*icarry;
 	t_carry	*tmp;
@@ -37,7 +37,7 @@ static int	kill_carryes(t_carry *carrys, int period_start)
 /*
 **	controls execution of the game by periods
 **	(1) new period ->
-**	(2) checking some params (NBR_LIVE, MAX_CHECKS, dead carryes) ->
+**	(2) checking some params (NBR_LIVE, MAX_CHECKS, dead carries) ->
 **	(3) setting params to correct values -> end
 */
 
@@ -51,7 +51,7 @@ static void	control_game_flow(t_session *game)
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
 	if (cycles == 0) // it's start of the period
 	{
-		killed = kill_carryes(game->carrys, game->cycle - game->cycle_to_die);
+		killed = kill_carries(game->carrys, game->cycle - game->cycle_to_die);
 		game->carry_num -= killed;
 		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
@@ -116,7 +116,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 			&& !is_dump(game, arg->dump))
 	{
 		log(game); // DEL
-		execute_carryes(game, champs);
+		execute_carries(game, champs);
 		game->cycle++;
 		control_game_flow(game);
 	}

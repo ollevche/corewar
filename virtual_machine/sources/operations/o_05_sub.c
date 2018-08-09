@@ -13,17 +13,17 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool    add(t_session *game, t_carry *carry, t_champ *head)
+bool	sub(t_session *game, t_carry *carry, t_champ *head)
 {
     int r1;
 	int r2;
 	int r3;
 
 	(void)head;
-	r1 = (int)ft_byte_to_uint(0, MAP[PC + 2], 0, 0);
-	r2 = (int)ft_byte_to_uint(0, 0, MAP[PC + 3], 0);
+	r1 = (int)ft_byte_to_uint(0, 0, 0, MAP[PC + 2]);
+	r2 = (int)ft_byte_to_uint(0, 0, 0, MAP[PC + 3]);
 	r3 = (int)ft_byte_to_uint(0, 0, 0, MAP[PC + 4]);
-	if (!IS_REG(r1) || !IS_REG(r2) || !IS_REG(r3) || !IS_REG(r1 - r2)) // should we check if r1 - r2 is a registry
+	if (!IS_REG(r1) || !IS_REG(r2) || !IS_REG(r3))
 	{
 		update_position(game, carry, 5);
 		return (false);

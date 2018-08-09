@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_09_zjmp.c                                        :+:      :+:    :+:   */
+/*   o_02_ld.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/09 14:20:33 by dpozinen          #+#    #+#             */
-/*   Updated: 2018/08/09 14:20:33 by dpozinen         ###   ########.fr       */
+/*   Created: 2018/08/09 15:15:22 by dpozinen          #+#    #+#             */
+/*   Updated: 2018/08/09 15:15:23 by dpozinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool    zjmp(t_session *game, t_carry *carry, t_champ *head)
+void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3)
 {
-	t_uint dir;
+	
+}
 
-	if (CARRY == 0)
-	{
-		update_position(game, carry, 3);
-		return (false);
-	}
-	dir = ft_byte_to_uint(MAP[PC + 1], MAP[PC + 2], 0, 0);
-	update_position(game, carry, dir % IDX_MOD);
-	return (true);
+bool	ld(t_session *game, t_carry *carry, t_champ *head)
+{
+	t_uint	coding_byte;
+
+	(void) head;
+	coding_byte = ft_byte_to_uint(0, 0, 0, PC[MAP + 1]);
+	char *binary = ft_uitobase(coding_byte, 2);
+	printf("%u | %s |\n", coding_byte, binary);
+		return true;
 }

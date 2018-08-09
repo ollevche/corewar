@@ -5,3 +5,4 @@ libftprintf.a
 corewar
 asm
 *.o
+*.cor
