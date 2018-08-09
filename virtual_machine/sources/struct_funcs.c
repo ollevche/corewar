@@ -72,7 +72,7 @@ void	del_carry(t_carry **carrys, t_carry *target)
 		iter->next = target->next;
 	}
 	target->next = NULL;
-	free_carryes(target);
+	free_carries(target);
 }
 
 t_champ		*get_champ_by_id(t_champ *head, int id)

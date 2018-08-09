@@ -24,7 +24,7 @@
 
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
-# define OP_COUNT		1 // original 16
+# define OP_COUNT		2 // original 16
 
 /*
 ** FUNCTIONAL DEFINES ▽
@@ -82,13 +82,13 @@ typedef struct			s_session
 	int			cycle_to_die;
 	int			last_ctd; // last change of cycle_to_die
 	t_champ		*last_alive;
-	t_carry	*carrys; // all of the carryes
-	int			carry_num; // number of carryes in a session
+	t_carry	*carrys; // all of the carries
+	int			carry_num; // number of carries in a session
 	int			total_champs;
 }						t_session;
 
 /*
-**	operation receives game (session), carrys (carryes), head of champs (champ)
+**	operation receives game (session), carrys (carries), head of champs (champ)
 */
 
 typedef bool	(*t_operation)(t_session *g, t_carry *ca, t_champ *h);

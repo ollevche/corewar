@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_04_add.c                                         :+:      :+:    :+:   */
+/*   o_05_sub.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/08 13:41:31 by dpozinen          #+#    #+#             */
-/*   Updated: 2018/08/08 13:41:32 by dpozinen         ###   ########.fr       */
+/*   Created: 2018/08/09 14:49:48 by dpozinen          #+#    #+#             */
+/*   Updated: 2018/08/09 14:49:48 by dpozinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	add(t_session *game, t_carry *carry, t_champ *head)
+bool	sub(t_session *game, t_carry *carry, t_champ *head)
 {
-	int r1;
+    int r1;
 	int r2;
 	int r3;
 
@@ -28,7 +28,7 @@ bool	add(t_session *game, t_carry *carry, t_champ *head)
 		update_position(game, carry, 5);
 		return (false);
 	}
-	REGS[r3] = REGS[r1] + REGS[r2];
+	REGS[r3] = REGS[r1] - REGS[r2];
 	carry->carry = (REGS[r3] == 0 ? true : false);
 	update_position(game, carry, 5);
 	return (true);

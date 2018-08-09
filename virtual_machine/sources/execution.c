@@ -21,7 +21,7 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 {
 	operations[0] = NULL;
 	operations[1] = live;
-	// operations[2] = load;
+	operations[2] = ld;
 	// operations[3] = store;
 	// operations[4] = addition;
 	// operations[5] = soustraction;
@@ -58,11 +58,11 @@ void		update_position(t_session *game, t_carry *carry, int val)
 }
 
 /*
-**	executes all of the carryes, which is active
+**	executes all of the carries, which is active
 **	or decrease inactive counter (if inactive)
 */
 
-void		execute_carryes(t_session *game, t_champ *champs)
+void		execute_carries(t_session *game, t_champ *champs)
 {
 	t_carry	*icarry;
 	t_operation operations[OP_COUNT + 2]; // static?

@@ -51,7 +51,7 @@ t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 **  execution.c
 */
 
-void	execute_carryes(t_session *game, t_champ *champs);
+void	execute_carries(t_session *game, t_champ *champs);
 void	update_position(t_session *game, t_carry *carry, int val);
 
 /*
@@ -69,12 +69,13 @@ t_champ	*get_champ_by_id(t_champ *head, int id);
 
 void	free_session(t_session **game);
 void	free_champs(t_champ **champs);
-void    free_carryes(t_carry *carrys);
+void    free_carries(t_carry *carrys);
 
 /*
 **  operations:
 */
 
 bool	live(t_session *game, t_carry *carry, t_champ *head);
+bool	ld(t_session *game, t_carry *carry, t_champ *head);
 
 #endif
