@@ -26,7 +26,7 @@ SRC		=	main.c play_the_game.c read_input.c read_champ.c prepare.c \
 			execution.c struct_funcs.c free_funcs.c \
 			$(addprefix $(OPDIR), $(OP))
 
-OP		=	o_01_live.c o_04_add.c o_05_sub.c o_02_ld.c
+OP		=	o_01_live.c o_04_add.c o_05_sub.c o_02_ld.c op_tools.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

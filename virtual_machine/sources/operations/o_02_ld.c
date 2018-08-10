@@ -16,10 +16,14 @@
 bool	ld(t_session *game, t_carry *carry, t_champ *head)
 {
 	t_uint	coding_byte;
+	int arg1;
+	int arg2;
 
 	(void) head;
 	coding_byte = ft_byte_to_uint(0, 0, 0, PC[MAP + 1]);
-	char *binary = ft_uitobase(coding_byte, 2);
-	printf("%u | %s |\n", coding_byte, binary);
+	// char *binary = ft_uitobase(coding_byte, 2);
+	get_arg_types(coding_byte, &arg1, &arg2, NULL);
+	// ft_printf("\t\t\t%u\n| %s |\n %b %b\n", coding_byte, binary, arg1, arg2);
+	
 	return (true);
 }

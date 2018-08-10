@@ -72,10 +72,17 @@ void	free_champs(t_champ **champs);
 void    free_carries(t_carry *carrys);
 
 /*
-**  operations:
+**  operations ▽
 */
 
 bool	live(t_session *game, t_carry *carry, t_champ *head);
 bool	ld(t_session *game, t_carry *carry, t_champ *head);
+
+/*
+**	op_tools.c ▽
+*/
+
+void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3);
+int		get_value_by_arg(t_carry *carry, t_session *game, int arg);
 
 #endif
