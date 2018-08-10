@@ -13,6 +13,7 @@
 #include "asm.h"
 
 /*
+**
 **	notes:
 **		permits non .s files
 **		displays usage if no files provided
@@ -28,6 +29,7 @@
 **
 **	bonus:
 **		multiple files in one time
+**
 */
 
 static void	print_file(t_item *item)
