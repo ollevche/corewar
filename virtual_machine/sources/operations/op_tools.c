@@ -15,10 +15,17 @@
 
 void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3)
 {
-	// put arg type from coding byte into args
+	*arg1 = coding_byte >> 6;
+	*arg2 = ((coding_byte | 192) ^ 192) >> 4;
+	if (arg3 != NULL)
+		*arg3 = ((coding_byte | 240) ^ 240) >> 2;
 }
 
 int		get_value_by_arg(t_carry *carry, t_session *game, int arg)
 {
-	// test
+	(void)carry;
+	(void)game;
+	(void)arg;
+	if (arg == )
+	return (0);
 }
