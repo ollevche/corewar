@@ -80,7 +80,7 @@ bool	live(t_session *game, t_carry *carry, t_champ *head);
 bool	ld(t_session *game, t_carry *carry, t_champ *head);
 bool	add(t_session *game, t_carry *carry, t_champ *head);
 bool	sub(t_session *game, t_carry *carry, t_champ *head);
-
+bool	st(t_session *game, t_carry *carry, t_champ *head);
 
 /*
 **	op_tools.c ▽
