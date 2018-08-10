@@ -39,6 +39,11 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 	operations[17] = NULL;
 }
 
+int			move_pc(t_session *game, int pc, int val)
+{
+	return (0);
+}
+
 /*
 **	moves a pc of the carry to specified position (to right/left from the pc by val bytes)
 **	sets op_code to pc internal value (op_code of the new position)

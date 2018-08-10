@@ -53,6 +53,7 @@ t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 
 void	execute_carries(t_session *game, t_champ *champs);
 void	update_position(t_session *game, t_carry *carry, int val);
+int		move_pc(t_session *game, int pc, int val);
 
 /*
 **	struct_funcs.c
@@ -77,12 +78,15 @@ void    free_carries(t_carry *carrys);
 
 bool	live(t_session *game, t_carry *carry, t_champ *head);
 bool	ld(t_session *game, t_carry *carry, t_champ *head);
+bool	add(t_session *game, t_carry *carry, t_champ *head);
+bool	sub(t_session *game, t_carry *carry, t_champ *head);
+
 
 /*
 **	op_tools.c ▽
 */
 
 void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3);
-int		get_value_by_arg(t_carry *carry, t_session *game, int arg);
+t_uint	get_value_by_arg(t_carry *carry, t_session *game, int arg, int lpc);
 
 #endif
