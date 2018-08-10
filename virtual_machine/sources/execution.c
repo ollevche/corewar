@@ -41,7 +41,12 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 
 int			move_pc(t_session *game, int pc, int val)
 {
-	return (0);
+	pc += val;
+	if (pc >= MEM_SIZE)
+		pc %= MEM_SIZE;
+	else if (pc < 0)
+		pc = MEM_SIZE + pc; // pc is neg so it has to be +
+	return (pc);
 }
 
 /*
@@ -52,11 +57,7 @@ int			move_pc(t_session *game, int pc, int val)
 
 void		update_position(t_session *game, t_carry *carry, int val)
 {
-	carry->pc += val;
-	if (carry->pc >= MEM_SIZE)
-		carry->pc %= MEM_SIZE;
-	else if (carry->pc < 0)
-		carry->pc = MEM_SIZE + carry->pc; // carry->pc is neg so it has to be +
+	carry->pc += move_pc(game, PC, val);
 	carry->op_code = game->map[carry->pc];
 	if (carry->op_code >= 1 && carry->op_code <= OP_COUNT)
 		carry->inactive = g_optab[carry->op_code].cycles - 1;
