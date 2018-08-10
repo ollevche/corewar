@@ -26,6 +26,6 @@ int		get_value_by_arg(t_carry *carry, t_session *game, int arg)
 	(void)carry;
 	(void)game;
 	(void)arg;
-	if (arg == )
+	if (arg == 0)
 	return (0);
 }
