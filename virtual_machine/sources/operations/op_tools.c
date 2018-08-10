@@ -23,9 +23,9 @@ void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3)
 		*arg3 = ((coding_byte | 240) ^ 240) >> 2;
 }
 
-t_uint	get_value_by_arg(t_carry *carry, t_session *game, int arg, int lpc)
+int		get_value_by_arg(t_carry *carry, t_session *game, int arg, int lpc)
 {
-	t_uint ind_value;
+	int ind_value;
 
 	if (arg == T_REG)
 		return (ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]));

@@ -15,9 +15,9 @@
 
 bool	ld(t_session *game, t_carry *carry, t_champ *head)
 {
-	t_uint	coding_byte;
-	t_uint		reg;
-	t_uint 	value;
+	int		coding_byte;
+	int		reg;
+	int 	value;
 	int 	args[2];
 	int		lpc;
 
