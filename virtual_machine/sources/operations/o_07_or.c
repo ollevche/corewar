@@ -22,6 +22,7 @@ bool	or(t_session *game, t_carry *carry, t_champ *head)
 
 	lpc = PC;
 	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]);
+	lpc = move_pc(game, lpc, 1);
 	get_arg_types(coding_byte, arg_types[0], arg_types[1], arg_types[2]);
 	arg_values[0] = get_value_by_arg(game, arg_types[0], lpc, false);
 	lpc = move_pc(game, lpc, get_pc_move(arg_values[0]));
