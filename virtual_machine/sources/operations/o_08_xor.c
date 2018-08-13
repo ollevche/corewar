@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_06_and.c                                         :+:      :+:    :+:   */
+/*   o_06_xor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -31,7 +31,7 @@ bool	and(t_session *game, t_carry *carry, t_champ *head)
 	lpc = move_pc(game, lpc, get_pc_move(arg_values[2]));
 	if (IS_REG(arg_values[2]))
 	{
-		REGS[arg_values[2] - 1] = arg_values[0] & arg_values[1];
+		REGS[arg_values[2] - 1] = arg_values[0] ^ arg_values[1];
 		CARRY = (REGS[arg_values[2] - 1] == 0 ? true : false);
 	}
 	update_position(game, carry, lpc + 1);
