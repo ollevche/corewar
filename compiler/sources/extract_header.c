@@ -17,7 +17,7 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 	int		len;
 	char	*str;
 
-	if (*line[ind] != '"')
+	if ((*line)[ind] != '"')
 	{
 		ft_printf("%s [%d:%d]\n", QUOTE_ERR, *line_num, ind + 1);
 		return (NULL);
@@ -25,16 +25,16 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 	ind++; // at quote
 	if (!(str = ft_strnew(0)))
 		return (NULL);
-	while (*line[ind] != '"') // all quotes are read
+	while ((*line)[ind] != '"') // all quotes are read
 	{
 		len = 0;
-		while (*line[ind + len] && *line[ind + len] != '"') // end of line or quote
+		while ((*line)[ind + len] && (*line)[ind + len] != '"') // end of line or quote
 			len++;
 		str = ft_strjoinfree(str, ft_strndup(*line + ind, len)); // check it
 		if (!str)
 			return (NULL);
 		ind += len;
-		if (*line[ind] == '"') // quote - break; end of line - read next line
+		if ((*line)[ind] == '"') // quote - break; end of line - read next line
 			break ;
 		free(*line);
 		*line = safe_gnl(fd);
@@ -52,7 +52,7 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 	}
 	ind++; // at the next char after the quote
 	ind += skip_wspaces(*line + ind);
-	if (*line[ind]) // check for an empty leftover of the line
+	if ((*line)[ind]) // check for an empty leftover of the line
 	{
 		ft_printf("%s [%d:%d]\n", UNDEF_ERR, *line_num, ind + 1);
 		free(str);
