@@ -52,3 +52,16 @@ void	free_items(t_item **head)
 	(void)head;
 	// TODO: this
 }
+
+bool		has_item(int target_type, t_item *head)
+{
+	if (head == NULL)
+		return (false);
+	while (head)
+	{
+		if (head->type == target_type)
+			return (true);
+		head = head->next;
+	}
+	return (false);
+}

@@ -12,73 +12,107 @@
 
 #include "asm.h"
 
-bool		has_item(int target_type, t_file *head, int search_limit)
+static char	*extract_str(int fd, char **line, int *line_num, int ind)
 {
-	int counter;
-
-	if (head == NULL)
-		return (false);
-	counter = 0;
-	while (head->next && counter < search_limit)
-	{
-		if (head->type == target_type)
-			return (true);
-		head = head->next;
-		counter++;
-	}
-	return (false);
-}
-
-#define FREE_RET(F, R) { free(F); return (R); }
-
-static char	*extract_str(int fd, char *line, int line_num, int ind)
-{
-	int		i;
-	char	str;
-
-	if (line[ind] != '"')
-	{
-		ft_printf("%s [%d, %d]\n", QUOTE_ERR, line_num, ind);
-		return (NULL);
-	}
-	str = ft_strnew(0);
-	i = ind + 1;
-	while (line[i] != '"')
-	{
-		if (!line[i])
-		{
-			if (!(str = ft_strjoinfree(str, line + ind)))
-				return (NULL);
-			free(line);
-			if (!(line = safe_gnl(fd)))
-				break ;
-			i = -1;
-			ind = 0;
-		}
-		i++;
-	}
-	if ()
-}
-
-static int	extract_name(int fd, t_item **head, char *line, int line_num)
-{
-	int 	ind;
-	char	command;
+	int		len;
 	char	*str;
 
-	ind = skip_wspaces(line);
-	command = cut_word(line);
-	if (ft_strcmp(command, COMMENT_CMD_STRING))
+	if (*line[ind] != '"')
+	{
+		ft_printf("%s [%d:%d]\n", QUOTE_ERR, *line_num, ind + 1);
+		return (NULL);
+	}
+	ind++; // at quote
+	if (!(str = ft_strnew(0)))
+		return (NULL);
+	while (*line[ind] != '"') // all quotes are read
+	{
+		len = 0;
+		while (*line[ind + len] && *line[ind + len] != '"') // end of line or quote
+			len++;
+		str = ft_strjoinfree(str, ft_strndup(*line + ind, len)); // check it
+		if (!str)
+			return (NULL);
+		ind += len;
+		if (*line[ind] == '"') // quote - break; end of line - read next line
+			break ;
+		free(*line);
+		*line = safe_gnl(fd);
+		if (!*line)
+		{
+			ft_printf("TODO: is quote closed?\n");
+			free(str);
+			return (NULL);
+		}
+		(*line_num)++;
+		ind = 0;
+		str = ft_strjoin_nfree(str, "\n", 0);
+		if (!str)
+			return (NULL);
+	}
+	ind++; // at the next char after the quote
+	ind += skip_wspaces(*line + ind);
+	if (*line[ind]) // check for an empty leftover of the line
+	{
+		ft_printf("%s [%d:%d]\n", UNDEF_ERR, *line_num, ind + 1);
+		free(str);
+		return (NULL);
+	}
+	return (str);
+}
+
+static int	extract_command(int fd, t_item **head, char **line, int *line_num)
+{
+	int 	ind;
+	int		type;
+	char	*command;
+	char	*str;
+
+	ind = skip_wspaces(*line);
+	command = cut_word(*line + ind);
+	if (!ft_strcmp(command, NAME_CMD_STRING))
+		type = NAME_T;
+	else if (!ft_strcmp(command, COMMENT_CMD_STRING))
+		type = COMM_T;
+	else
 		return (DEF_T);
 	ind += ft_strlen(command);
 	free(command);
-	ind += skip_wspaces(line + ind);
+	ind += skip_wspaces(*line + ind);
 	str = extract_str(fd, line, line_num, ind); // prints errors
 	if (!str)
 		return (ERR_T);
-	if (!add_item(head, str, line_num, NAME_T))
+	if (!add_item(head, str, *line_num, type))
 		return (ERR_T);
-	return (NAME_T);
+	return (type);
+}
+
+static bool	has_doublings(t_item *head)
+{
+	int names;
+	int comments;
+
+	names = 0;
+	comments = 0;
+	while (head && names < 2 && comments < 2)
+	{
+		if (head->type == NAME_T)
+			names++;
+		if (head->type == COMM_T)
+			comments++;
+		head = head->next;
+	}
+	if (names > 1 || comments > 1)
+		ft_printf("%s\n", HDR_DOUBL);
+	return (names < 2 && comments < 2);
+}
+
+static bool	is_empty(char *line)
+{
+	int i;
+
+	i = skip_wspaces(line);
+	return (line[i] == 0);
 }
 
 t_item		*extract_header(int fd)
@@ -90,22 +124,22 @@ t_item		*extract_header(int fd)
 
 	head = NULL;
 	line_num = 0;
+	last_read = DEF_T;
 	while ((line = safe_gnl(fd)))
 	{
-		// if (is_empty(line))
-		// { line_num++; continue; }
-		last_read = DEF_T;
-		if (!has_item(NAME_T, head, 2))
-			last_read = extract_name(fd, &head, line, &line_num); // adds item // returns DEF_T if it's not a name // prints error
-		if (last_read == DEF_T && !has_item(COMM_T, head, 2))
-			last_read = extract_comment(fd, &head, line, &line_num); // adds item // returns DEF_T if it's not a comment // prints error
-		if (last_read == DEF_T || last_read == ERR_T)
-			break ;
-		if (has_item(NAME_T, head, 2) && has_item(COMM_T, head, 2))
-			return (head);
 		line_num++;
+		if (!is_empty(line))
+		{
+			last_read = extract_command(fd, &head, &line, &line_num);
+			if (last_read == DEF_T || last_read == ERR_T || !has_doublings(head))
+				break ;
+		}
+		free(line);
+		if (has_item(NAME_T, head) && has_item(COMM_T, head))
+			return (head);
 	}
 	if (last_read == DEF_T)
-		ft_printf("%S %d\n", NOHDR_ERR, line_num);
-	SAFE_RET(&head, NULL);
+		ft_printf("%s %d\n", NOHDR_ERR, line_num);
+	free(line);
+	SAFE_RET(&head, NULL); // it's error (no name or comment)
 }

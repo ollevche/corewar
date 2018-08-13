@@ -30,7 +30,9 @@
 # define ENDLINE_ERR "Syntax error - unexpected end of input"
 # define ENDLINE_HINT "(Perhaps you forgot to end with a newline ?)"
 # define NOHDR_ERR "Expected header item (name or comment) at line"
+# define HDR_DOUBL "Repeatable header commands are not acceptable"
 # define QUOTE_ERR "Expected quote at"
+# define UNDEF_ERR "Undefined token at"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);
@@ -71,7 +73,6 @@ t_item					*read_sfile(char *filename);
 */
 
 t_item					*extract_header(int fd);
-bool					has_item(int target_type, t_file *head, int limit);
 
 /*
 **	util.c
@@ -88,5 +89,6 @@ int						count_nwspaces(char *line);
 t_item					*new_item(char *line, int line_num, int type);
 t_item					*add_item(t_item **head, char *ln, int nm, int tp);
 void					free_items(t_item **head);
+bool					has_item(int target_type, t_item *head);
 
 #endif
