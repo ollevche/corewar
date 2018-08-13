@@ -20,7 +20,7 @@ static bool		check_endnl(int fd)
 	read(fd, &c, 1);
 	if (c == '\n')
 		return (true);
-	ft_printf("%s %s\n", ENDLINE_ERR, ENDLINE_HINT);
+	ft_printf("%s %s %s\n",ERROR_M, ENDLINE_ERR, ENDLINE_HINT);
 	return (false);
 }
 
@@ -30,7 +30,7 @@ static int		check_open(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		ft_printf("%s %s\n", READ_ERR, filename);
+		ft_printf("%s %s %s\n", ERROR_M, READ_ERR, filename);
 	return (fd);
 }
 
