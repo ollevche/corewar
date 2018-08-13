@@ -13,6 +13,15 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+int		get_pc_move(int arg)
+{
+	if (arg == T_DIR)
+		return (4);
+	if (arg == T_IND)
+		return (2);
+	return (1);
+}
+
 void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3)
 {
 	if (arg1 != NULL)
@@ -23,7 +32,7 @@ void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3)
 		*arg3 = ((coding_byte | 240) ^ 240) >> 2;
 }
 
-int		get_value_by_arg(t_carry *carry, t_session *game, int arg, int lpc)
+int		get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod)
 {
 	int ind_value;
 
@@ -34,7 +43,8 @@ int		get_value_by_arg(t_carry *carry, t_session *game, int arg, int lpc)
 	if (arg == T_IND) // read value where to jump; jump to that value; read value after jump and return it
 	{
 		ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
-		ind_value %= IDX_MOD;
+		if (idx_mod)
+			ind_value %= IDX_MOD;
 		lpc = move_pc(game, lpc, ind_value);
 		return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
 	}

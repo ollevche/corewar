@@ -28,8 +28,8 @@ bool	add(t_session *game, t_carry *carry, t_champ *head)
 		update_position(game, carry, 5);
 		return (false);
 	}
-	REGS[r3] = REGS[r1] + REGS[r2];
-	carry->carry = (REGS[r3] == 0 ? true : false);
+	REGS[r3 - 1] = REGS[r1] + REGS[r2];
+	CARRY = (REGS[r3 - 1] == 0 ? true : false);
 	update_position(game, carry, 5);
 	return (true);
 }

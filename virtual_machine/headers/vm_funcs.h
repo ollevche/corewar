@@ -87,6 +87,7 @@ bool	st(t_session *game, t_carry *carry, t_champ *head);
 */
 
 void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3);
-int 	get_value_by_arg(t_carry *carry, t_session *game, int arg, int lpc);
+int 	get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod);
+int     get_pc_move(int arg);
 
 #endif
