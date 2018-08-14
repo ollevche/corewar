@@ -15,23 +15,20 @@
 
 bool	lld(t_session *game, t_carry *carry, t_champ *head)
 {
-	int		coding_byte;
-	int		reg;
-	int 	value;
-	int 	args[2];
+	int 	*arg_values;
+	int 	*arg_types;
 	int		lpc;
 
-	(void) head;
 	lpc = PC;
-	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]);
-	lpc = move_pc(game, lpc, 1);
-	get_arg_types(coding_byte, &args[0], &args[1], NULL);
-	value = get_value_by_arg(game, args[1], lpc, false);
-	lpc = move_pc(game, lpc, get_pc_move(args[0]));
-	reg = get_value_by_arg(game, args[1], lpc, false);
-	lpc = move_pc(game, lpc, 1);
-	if (IS_REG(reg))
-		REGS[reg - 1] = value;
+	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (2 + 1)), false);
+	arg_types[2] = -1;
+	if (!(arg_values = get_arg_values(arg_types, &lpc, game, false)))
+	{
+		update_position(game, carry, lpc + 1);
+		return (false);
+	}
+	if (IS_REG(AVAL2))
+		REGS[AVAL2 - 1] = AVAL1;
 	update_position(game, carry, lpc + 1);
-	return (IS_REG(reg));
+	return (IS_REG(AVAL2));
 }

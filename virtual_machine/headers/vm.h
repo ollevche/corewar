@@ -32,6 +32,8 @@
 
 # define RET_CHECK(X, R) if (!(X)) return (R);
 # define IS_REG(r) (r > 0 && r < REG_NUMBER)
+# define RET_CHECK_MOVE(x) if (!x) { update_position(game, carry, lpc + 1); return (false); }
+# define IS_TYPE_REG(T, V) (T == T_REG && IS_REG(V))
 
 /*
 ** DEFINES FOR READABILITY ▽

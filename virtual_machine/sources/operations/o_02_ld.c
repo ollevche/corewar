@@ -15,25 +15,22 @@
 
 bool	ld(t_session *game, t_carry *carry, t_champ *head)
 {
-	int		coding_byte;
-	int		reg;
-	int 	value;
-	int 	args[2];
+	int 	*arg_values;
+	int 	*arg_types;
 	int		lpc;
 
-	(void) head;
 	lpc = PC;
-	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]);
-	lpc = move_pc(game, lpc, 1);
-	get_arg_types(coding_byte, &args[0], &args[1], NULL);
-	value = get_value_by_arg(carry, game, args[0], lpc);
-	lpc = (args[0] == T_DIR ? move_pc(game, lpc, 4) : move_pc(game, lpc, 2));
-	reg = get_value_by_arg(game, args[1], lpc, true);
-	lpc = move_pc(game, lpc, 1);
-	if (IS_REG(reg))
-		REGS[reg - 1] = value;
+	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (2 + 1)), false);
+	arg_types[2] = -1;
+	// Если первый аргумент T_IND, то сначала T_IND перезаписывается на T_IND % IDX_MOD,
+	// а потом идём на ячейку, от текущей позиции + это значение, с той позиции считываем 4 байта -> idx_mod = true
+	if (!(arg_values = get_arg_values(arg_types, &lpc, game, true)))
+	{
+		update_position(game, carry, lpc + 1);
+		return (false);
+	}
+	if (IS_REG(AVAL2))
+		REGS[AVAL2 - 1] = AVAL1; // записываем в T_REG
 	update_position(game, carry, lpc + 1);
-	return (IS_REG(reg));
-	// char *binary = ft_uitobase(coding_byte, 2);
-	// ft_printf("\t\t\t%u\n| %s |\n %b %b\n", coding_byte, binary, arg1, arg2);
+	return (IS_REG(AVAL2));
 }

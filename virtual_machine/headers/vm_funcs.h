@@ -16,6 +16,17 @@
 # include "vm.h"
 
 /*
+** DEFINES FOR READABILITY ▽
+*/
+
+# define ATYP1 arg_types[0]
+# define ATYP2 arg_types[1]
+# define ATYP3 arg_types[2]
+# define AVAL1 arg_values[0]
+# define AVAL2 arg_values[1]
+# define AVAL3 arg_values[2]
+
+/*
 **	main.c
 */
 
@@ -89,5 +100,7 @@ bool	st(t_session *game, t_carry *carry, t_champ *head);
 void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3);
 int 	get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod);
 int     get_pc_move(int arg);
+int		*get_arg_values(int *arg_types, int *lpc, t_session *game, bool idx_m);
+bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);
 
 #endif

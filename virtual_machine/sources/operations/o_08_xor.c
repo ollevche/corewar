@@ -15,26 +15,27 @@
 
 bool	and(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	arg_types[3];
-	int 	arg_values[3];
-	int		coding_byte;
+	int 	*arg_values;
+	int 	*arg_types;
 	int		lpc;
 
 	lpc = PC;
-	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]);
-	lpc = move_pc(game, lpc, 1);
-	get_arg_types(coding_byte, arg_types[0], arg_types[1], arg_types[2]);
-	arg_values[0] = get_value_by_arg(game, arg_types[0], lpc, false);
-	lpc = move_pc(game, lpc, get_pc_move(arg_values[0]));
-	arg_values[1] = get_value_by_arg(game, arg_types[1], lpc, false);
-	lpc = move_pc(game, lpc, get_pc_move(arg_values[1]));
-	arg_values[2] = get_value_by_arg(game, arg_types[2], lpc, false);
-	lpc = move_pc(game, lpc, get_pc_move(arg_values[2]));
-	if (IS_REG(arg_values[2]))
+	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (3 + 1)), false);
+	arg_types[3] = -1;
+	if (!(arg_values = get_arg_values(arg_types, &lpc, game, false)))
 	{
-		REGS[arg_values[2] - 1] = arg_values[0] ^ arg_values[1];
-		CARRY = (REGS[arg_values[2] - 1] == 0 ? true : false);
+		update_position(game, carry, lpc + 1);
+		return (false);
+	}
+	if (IS_REG(AVAL3))
+	{
+		if (ATYP1 == T_REG && !check_reg(&AVAL1, game, carry, lpc))
+			return (false);
+		if (ATYP2 == T_REG && !check_reg(&AVAL2, game, carry, lpc))
+			return (false);
+		REGS[AVAL3 - 1] = AVAL1 ^ AVAL2;
+		CARRY = (REGS[AVAL3 - 1] == 0 ? true : false);
 	}
 	update_position(game, carry, lpc + 1);
-	return (IS_REG(arg_values[2]));
+	return (IS_REG(AVAL3));
 }

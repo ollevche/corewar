@@ -15,21 +15,25 @@
 
 bool	add(t_session *game, t_carry *carry, t_champ *head)
 {
-	int r1;
-	int r2;
-	int r3;
+	int 	*arg_values;
+	int 	*arg_types;
+	int		lpc;
 
-	(void)head;
-	r1 = (int)ft_byte_to_uint(0, 0, 0, MAP[PC + 2]);
-	r2 = (int)ft_byte_to_uint(0, 0, 0, MAP[PC + 3]);
-	r3 = (int)ft_byte_to_uint(0, 0, 0, MAP[PC + 4]);
-	if (!IS_REG(r1) || !IS_REG(r2) || !IS_REG(r3))
+	lpc = PC;
+	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (2 + 1)), false);
+	arg_types[2] = -1;
+	if (!(arg_values = get_arg_values(arg_types, &lpc, game, false)))
 	{
-		update_position(game, carry, 5);
+		update_position(game, carry, lpc + 1);
 		return (false);
 	}
-	REGS[r3 - 1] = REGS[r1] + REGS[r2];
-	CARRY = (REGS[r3 - 1] == 0 ? true : false);
-	update_position(game, carry, 5);
+	if (!IS_REG(AVAL1) || !IS_REG(AVAL2) || !IS_REG(AVAL3))
+	{
+		update_position(game, carry, lpc + 1);
+		return (false);
+	}
+	REGS[AVAL3 - 1] = REGS[AVAL1 - 1] + REGS[AVAL2 - 1];
+	CARRY = (REGS[AVAL3 - 1] == 0 ? true : false);
+	update_position(game, carry, lpc + 1);
 	return (true);
 }
