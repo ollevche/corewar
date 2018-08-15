@@ -20,6 +20,7 @@ int		*get_arg_values(int *arg_types, int *lpc, t_session *game, bool idx_mod)
 	int		i;
 	int		n_of_args;
 
+	n_of_args = 0;
 	while (arg_types[n_of_args] != -1) // get size of arg_types == number of arguments
 		n_of_args++;
 

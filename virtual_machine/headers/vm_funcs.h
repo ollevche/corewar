@@ -19,12 +19,12 @@
 ** DEFINES FOR READABILITY ▽
 */
 
-# define ATYP1 arg_types[0]
-# define ATYP2 arg_types[1]
-# define ATYP3 arg_types[2]
-# define AVAL1 arg_values[0]
-# define AVAL2 arg_values[1]
-# define AVAL3 arg_values[2]
+# define TYP1 args[0][0]
+# define TYP2 args[0][1]
+# define TYP3 args[0][2]
+# define VAL1 args[1][0]
+# define VAL2 args[1][1]
+# define VAL3 args[1][2]
 
 /*
 **	main.c

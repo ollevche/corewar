@@ -32,7 +32,6 @@
 
 # define RET_CHECK(X, R) if (!(X)) return (R);
 # define IS_REG(r) (r > 0 && r < REG_NUMBER)
-# define FREE_RET(x) if (!x) return (free_ret(arg_types, arg_values, false));
 
 /*
 ** DEFINES FOR READABILITY ▽

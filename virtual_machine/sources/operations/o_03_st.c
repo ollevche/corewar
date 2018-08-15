@@ -27,13 +27,13 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 		update_position(game, carry, lpc + 1);
 		return (false);
 	}
-	if (IS_REG(AVAL1))
+	if (IS_REG(VAL1))
 	{
 		// Значение T_REG (первый аргумент) записывается:
-		if (ATYP2 == T_IND) // Если второй аргумент T_IND
-			MAP[PC + (AVAL2 % IDX_MOD)] = REGS[AVAL1 - 1]; // то в ячейку, по адресу (текущая позиция PC плюс (T_IND % IDX_MOD))
-		else if (IS_REG(AVAL2))
-			REGS[AVAL2 = 1] = REGS[AVAL1 - 1]; // Если второй аргумент T_REG - то в регистр, по этому номеру
+		if (TYP2 == T_IND) // Если второй аргумент T_IND
+			MAP[PC + (VAL2 % IDX_MOD)] = REGS[VAL1 - 1]; // то в ячейку, по адресу (текущая позиция PC плюс (T_IND % IDX_MOD))
+		else if (IS_REG(VAL2))
+			REGS[VAL2 = 1] = REGS[VAL1 - 1]; // Если второй аргумент T_REG - то в регистр, по этому номеру
 	}
 	update_position(game, carry, lpc + 1);
 	return (true);

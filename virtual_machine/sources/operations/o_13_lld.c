@@ -27,8 +27,8 @@ bool	lld(t_session *game, t_carry *carry, t_champ *head)
 		update_position(game, carry, lpc + 1);
 		return (false);
 	}
-	if (IS_REG(AVAL2))
-		REGS[AVAL2 - 1] = AVAL1;
+	if (IS_REG(VAL2))
+		REGS[VAL2 - 1] = VAL1;
 	update_position(game, carry, lpc + 1);
-	return (IS_REG(AVAL2));
+	return (IS_REG(VAL2));
 }

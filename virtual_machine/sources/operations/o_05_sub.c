@@ -27,13 +27,13 @@ bool	sub(t_session *game, t_carry *carry, t_champ *head)
 		update_position(game, carry, lpc + 1);
 		return (false);
 	}
-	if (!IS_REG(AVAL1) || !IS_REG(AVAL2) || !IS_REG(AVAL3))
+	if (!IS_REG(VAL1) || !IS_REG(VAL2) || !IS_REG(VAL3))
 	{
 		update_position(game, carry, lpc + 1);
 		return (false);
 	}
-	REGS[AVAL3 - 1] = REGS[AVAL1 - 1] - REGS[AVAL2 - 1];
-	CARRY = (REGS[AVAL3 - 1] == 0 ? true : false);
+	REGS[VAL3 - 1] = REGS[VAL1 - 1] - REGS[VAL2 - 1];
+	CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
 	update_position(game, carry, lpc + 1);
 	return (true);
 }

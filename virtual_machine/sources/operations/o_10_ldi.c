@@ -33,17 +33,15 @@ bool	ldi(t_session *game, t_carry *carry, t_champ *head)
 	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (3 + 1)), false);
 	arg_types[3] = -1;
 	if (!(arg_values = get_arg_values(arg_types, &lpc, game, true)))
-	{
-		update_position(game, carry, lpc + 1);
 		return (free_ret(arg_types, NULL, false));
-	}
-	if (IS_REG(AVAL3))
+	if (IS_REG(VAL3))
 	{
-		FREE_RET(!(ATYP1 == T_REG && !check_reg(&AVAL1, game, carry, lpc)));
-		FREE_RET(!(ATYP2 == T_REG && !check_reg(&AVAL2, game, carry, lpc)));
-		p = ((AVAL1 + AVAL2) % IDX_MOD) + PC;
-		REGS[AVAL3] = ft_byte_to_uint(MAP[p + 1], MAP[p + 2], MAP[p + 3], MAP[p + 4]);
-		CARRY = (REGS[AVAL3 - 1] == 0 ? true : false);
+		RET_CHECK(TYP1 == T_REG && check_reg(&VAL1, game, carry, lpc), false);
+		RET_CHECK(TYP2 == T_REG && check_reg(&VAL2, game, carry, lpc), false);
+		p = ((VAL1 + VAL2) % IDX_MOD) + PC;
+		REGS[VAL3] =
+			ft_byte_to_uint(MAP[p + 1], MAP[p + 2], MAP[p + 3], MAP[p + 4]);
+		CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
 	}
 	update_position(game, carry, lpc + 1);
 	return (free_ret(arg_types, arg_values, true));
