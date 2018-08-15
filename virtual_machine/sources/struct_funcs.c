@@ -38,12 +38,12 @@ t_champ	*new_champ(t_champ **champs)
 	return (champ);
 }
 
-bool	new_carry(t_carry **all_carrys, int first_reg)
+t_carry	*new_carry(t_carry **all_carrys, int first_reg)
 {
 	t_carry	*carry;
 
 	carry = (t_carry*)malloc(sizeof(t_carry));
-	RET_CHECK(carry, false);
+	RET_CHECK(carry, NULL);
 	carry->regs[0] = first_reg; // t_uint = int
 	ft_memset(carry->regs + 1, 0, REG_NUMBER - 1);
 	carry->pc = 0;
@@ -53,7 +53,7 @@ bool	new_carry(t_carry **all_carrys, int first_reg)
 	carry->last_live = -1;
 	carry->next = *all_carrys;
 	*all_carrys = carry;
-	return (true);
+	return (carry);
 }
 
 void	del_carry(t_carry **carrys, t_carry *target)
