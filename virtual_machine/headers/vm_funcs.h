@@ -64,7 +64,7 @@ t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 
 void	execute_carries(t_session *game, t_champ *champs);
 void	update_position(t_session *game, t_carry *carry, int val);
-int		move_pc(t_session *game, int pc, int val);
+int		move_pc(int pc, int val);
 
 /*
 **	struct_funcs.c
@@ -92,6 +92,8 @@ bool	ld(t_session *game, t_carry *carry, t_champ *head);
 bool	add(t_session *game, t_carry *carry, t_champ *head);
 bool	sub(t_session *game, t_carry *carry, t_champ *head);
 bool	st(t_session *game, t_carry *carry, t_champ *head);
+bool	op_fork(t_session *game, t_carry *carry, t_champ *head);
+bool	op_lfork(t_session *game, t_carry *carry, t_champ *head);
 
 /*
 **	op_tools.c ▽
