@@ -58,11 +58,8 @@ void	set_arg_types(int coding_byte, int *args, int size) // gets bits
 int		get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod)
 {
 	int ind_value;
+	int	value;
 
-	if (arg == T_REG)
-		return (ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]));
-	if (arg == T_DIR)
-		return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
 	if (arg == T_IND) // read value where to jump; jump to that value; read value after jump and return it
 	{
 		ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
@@ -71,7 +68,14 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod)
 		lpc = move_pc(game, lpc, ind_value);
 		return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
 	}
-	return (0);
+	value = 0;
+	if (arg == T_REG)
+		value = ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]);
+	else if (arg == T_DIR)
+		value = ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]);
+	if (idx_mod)
+		value %= IDX_MOD;
+	return (value);
 }
 
 bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc)
