@@ -21,7 +21,7 @@ bool	or(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero(args, 8 * sizeof(int));
 	args[0][3] = -1;
-	get_arg_values(args, &lpc, game, false);
+	set_arg_values(args, &lpc, game, false);
 	if (IS_REG(VAL3))
 	{
 		RET_CHECK(TYP1 == T_REG && check_reg(&VAL1, game, carry, lpc), false);

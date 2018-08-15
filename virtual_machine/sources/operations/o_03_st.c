@@ -21,7 +21,7 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero(args, 6 * sizeof(int));
 	args[0][3] = -1;
-	get_arg_values(args, &lpc, game, false);
+	set_arg_values(args, &lpc, game, false);
 	if (IS_REG(VAL1))
 	{
 		// Значение T_REG (первый аргумент) записывается:

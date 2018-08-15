@@ -24,14 +24,14 @@ void	set_arg_values(int **args, int *lpc, t_session *game, bool idx_mod)
 		n_of_args++;
 
 	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[*lpc + 1]);
-	*lpc = move_pc(game, *lpc, 1);
+	*lpc = move_pc(*lpc, 1);
 
 	set_arg_types(coding_byte, args[0], n_of_args);
 	i = 0;
 	while (i < n_of_args) // get value for every arg_type and move pc each time
 	{
 		args[1][i] = get_value_by_arg(game, args[i], *lpc, idx_mod);
-		*lpc = move_pc(game, *lpc, get_pc_move(args[0][i]));
+		*lpc = move_pc(*lpc, get_pc_move(args[0][i]));
 		i++;
 	}
 }
@@ -55,7 +55,7 @@ void	set_arg_types(int coding_byte, int *args, int size) // gets bits
 		args[2] = ((coding_byte | 240) ^ 240) >> 2;
 }
 
-int		get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod)
+int		get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod) // remove %idx for reg and dir
 {
 	int ind_value;
 	int	value;
