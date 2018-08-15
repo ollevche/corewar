@@ -31,15 +31,15 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 	// operations[9] = zero_jump;
 	// operations[10] = load_index;
 	// operations[11] = store_index;
-	// operations[12] = fork;
+	operations[12] = op_fork;
 	// operations[13] = long_load;
 	// operations[14] = long_load_index;
-	// operations[15] = long_fork;
+	operations[15] = op_lfork;
 	// operations[16] = aff;
 	operations[17] = NULL;
 }
 
-int			move_pc(t_session *game, int pc, int val)
+int			move_pc(int pc, int val)
 {
 	pc += val;
 	if (pc >= MEM_SIZE)
@@ -57,7 +57,7 @@ int			move_pc(t_session *game, int pc, int val)
 
 void		update_position(t_session *game, t_carry *carry, int val)
 {
-	carry->pc += move_pc(game, PC, val);
+	carry->pc += move_pc(carry->pc, val);
 	carry->op_code = game->map[carry->pc];
 	if (carry->op_code >= 1 && carry->op_code <= OP_COUNT)
 		carry->inactive = g_optab[carry->op_code].cycles - 1;
