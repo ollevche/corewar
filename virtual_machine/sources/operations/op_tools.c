@@ -13,30 +13,27 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-int		*get_arg_values(int *arg_types, int *lpc, t_session *game, bool idx_mod)
+void	set_arg_values(int **args, int *lpc, t_session *game, bool idx_mod)
 {
 	int		coding_byte;
-	int		*arg_values;
 	int		i;
 	int		n_of_args;
 
 	n_of_args = 0;
-	while (arg_types[n_of_args] != -1) // get size of arg_types == number of arguments
+	while (args[0][n_of_args] != -1) // get size of arg_types == number of arguments
 		n_of_args++;
 
 	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[*lpc + 1]);
 	*lpc = move_pc(game, *lpc, 1);
 
-	get_arg_types(coding_byte, arg_types[0], arg_types[1], arg_types[2]);
-	RET_CHECK(arg_values = (int*)ft_memalloc(sizeof(int) * n_of_args), NULL)
+	set_arg_types(coding_byte, args[0], n_of_args);
 	i = 0;
 	while (i < n_of_args) // get value for every arg_type and move pc each time
 	{
-		arg_values[i] = get_value_by_arg(game, arg_types[i], *lpc, idx_mod);
-		*lpc = move_pc(game, *lpc, get_pc_move(arg_values[i]));
+		args[1][i] = get_value_by_arg(game, args[i], *lpc, idx_mod);
+		*lpc = move_pc(game, *lpc, get_pc_move(args[0][i]));
 		i++;
 	}
-	return (arg_values);
 }
 
 int		get_pc_move(int arg)
@@ -48,14 +45,14 @@ int		get_pc_move(int arg)
 	return (1);
 }
 
-void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3)
+void	set_arg_types(int coding_byte, int *args, int size) // gets bits
 {
-	if (arg1 != NULL)
-		*arg1 = coding_byte >> 6;
-	if (arg2 != NULL)
-		*arg2 = ((coding_byte | 192) ^ 192) >> 4;
-	if (arg3 != NULL)
-		*arg3 = ((coding_byte | 240) ^ 240) >> 2;
+	if (size >= 1)
+		args[0] = coding_byte >> 6;
+	if (size >= 2)
+		args[1] = ((coding_byte | 192) ^ 192) >> 4;
+	if (size >= 3)
+		args[2] = ((coding_byte | 240) ^ 240) >> 2;
 }
 
 int		get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod)

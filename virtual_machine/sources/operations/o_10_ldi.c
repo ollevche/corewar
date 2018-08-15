@@ -13,27 +13,16 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	free_ret(int *arg_types, int *arg_values, bool ret)
-{
-	if (arg_types)
-		free(arg_types);
-	if (arg_values)
-		free(arg_values);
-	return (ret);
-}
-
 bool	ldi(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	*arg_values;
-	int 	*arg_types;
+	int 	args[2][3 + 1];
 	int		lpc;
 	int		p;
 
 	lpc = PC;
-	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (3 + 1)), false);
-	arg_types[3] = -1;
-	if (!(arg_values = get_arg_values(arg_types, &lpc, game, true)))
-		return (free_ret(arg_types, NULL, false));
+	ft_bzero(args, 8 * sizeof(int));
+	args[0][3] = -1;
+	get_arg_values(args, &lpc, game, false);
 	if (IS_REG(VAL3))
 	{
 		RET_CHECK(TYP1 == T_REG && check_reg(&VAL1, game, carry, lpc), false);
@@ -44,5 +33,5 @@ bool	ldi(t_session *game, t_carry *carry, t_champ *head)
 		CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
 	}
 	update_position(game, carry, lpc + 1);
-	return (free_ret(arg_types, arg_values, true));
+	return (IS_REG(VAL3));
 }

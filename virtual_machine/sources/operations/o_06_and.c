@@ -15,7 +15,7 @@
 
 bool	and(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][4];
+	int 	args[2][3 + 1];
 	int		lpc;
 
 	lpc = PC;
@@ -24,10 +24,8 @@ bool	and(t_session *game, t_carry *carry, t_champ *head)
 	get_arg_values(args, &lpc, game, false);
 	if (IS_REG(VAL3))
 	{
-		if (TYP1 == T_REG && !check_reg(&VAL1, game, carry, lpc))
-			return (false);
-		if (TYP2 == T_REG && !check_reg(&VAL2, game, carry, lpc))
-			return (false);
+		RET_CHECK(TYP1 == T_REG && check_reg(&VAL1, game, carry, lpc), false);
+		RET_CHECK(TYP1 == T_REG && check_reg(&VAL1, game, carry, lpc), false);
 		REGS[VAL3 - 1] = VAL1 & VAL2;
 		CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
 	}

@@ -15,20 +15,15 @@
 
 bool	ld(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	*arg_values;
-	int 	*arg_types;
+	int 	args[2][2 + 1];
 	int		lpc;
 
 	lpc = PC;
-	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (2 + 1)), false);
-	arg_types[2] = -1;
+	ft_bzero(args, 6 * sizeof(int));
+	args[0][3] = -1;
 	// Если первый аргумент T_IND, то сначала T_IND перезаписывается на T_IND % IDX_MOD,
 	// а потом идём на ячейку, от текущей позиции + это значение, с той позиции считываем 4 байта -> idx_mod = true
-	if (!(arg_values = get_arg_values(arg_types, &lpc, game, true)))
-	{
-		update_position(game, carry, lpc + 1);
-		return (false);
-	}
+	get_arg_values(args, &lpc, game, true);
 	if (IS_REG(VAL2))
 		REGS[VAL2 - 1] = VAL1; // записываем в T_REG
 	update_position(game, carry, lpc + 1);

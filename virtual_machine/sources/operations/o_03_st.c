@@ -15,18 +15,13 @@
 
 bool	st(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	*arg_values;
-	int 	*arg_types;
+	int 	args[2][2 + 1];
 	int		lpc;
 
 	lpc = PC;
-	RET_CHECK(arg_types = (int*)ft_memalloc(sizeof(int) * (2 + 1)), false);
-	arg_types[2] = -1;
-	if (!(arg_values = get_arg_values(arg_types, &lpc, game, false)))
-	{
-		update_position(game, carry, lpc + 1);
-		return (false);
-	}
+	ft_bzero(args, 6 * sizeof(int));
+	args[0][3] = -1;
+	get_arg_values(args, &lpc, game, false);
 	if (IS_REG(VAL1))
 	{
 		// Значение T_REG (первый аргумент) записывается:
