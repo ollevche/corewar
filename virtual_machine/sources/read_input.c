@@ -17,15 +17,6 @@
 #define INVALID_FLAG -1
 #define VALID_FLAG 1
 
-static int		ft_isnumber(char *str) // TODO: to lib
-{
-	if (*str == '-')
-		str++;
-	while (*str && ft_isdigit(*str))
-		str++;
-	return (*str == '\0');
-}
-
 static int		set_flag(char **args, int *i, t_arg *arg, t_champ *head)
 {
 	if (!ft_strcmp(args[*i], "-dump"))
