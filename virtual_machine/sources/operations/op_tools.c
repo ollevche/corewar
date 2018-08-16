@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-void	set_arg_values(int **args, int *lpc, t_session *game, int op_code)
+void	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 {
 	int		coding_byte;
 	int		i;
