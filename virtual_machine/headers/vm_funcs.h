@@ -96,13 +96,19 @@ bool	op_fork(t_session *game, t_carry *carry, t_champ *head);
 bool	op_lfork(t_session *game, t_carry *carry, t_champ *head);
 
 /*
+**  base_ops.c ▽
+*/
+
+bool    base_fork(t_session *game, t_carry *carry, bool idx);
+
+/*
 **	op_tools.c ▽
 */
 
-void	get_arg_types(int coding_byte, int *arg1, int *arg2, int *arg3);
-int 	get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod);
+void	set_arg_values(int **args, int *lpc, t_session *game, bool idx_mod);
 int     get_pc_move(int arg);
-int		*set_arg_values(int **args, int *lpc, t_session *game, bool idx_m);
+void	set_arg_types(int coding_byte, int *args, int size);
+int 	get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod);
 bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);
 
 #endif

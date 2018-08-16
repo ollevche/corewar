@@ -30,7 +30,7 @@ void	set_arg_values(int **args, int *lpc, t_session *game, bool idx_mod)
 	i = 0;
 	while (i < n_of_args) // get value for every arg_type and move pc each time
 	{
-		args[1][i] = get_value_by_arg(game, args[i], *lpc, idx_mod);
+		args[1][i] = get_value_by_arg(game, args[0][i], *lpc, idx_mod); // TODO: check (args[i] -> args[0][i])
 		*lpc = move_pc(*lpc, get_pc_move(args[0][i]));
 		i++;
 	}
@@ -65,7 +65,7 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod) // remove
 		ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
 		if (idx_mod)
 			ind_value %= IDX_MOD;
-		lpc = move_pc(game, lpc, ind_value);
+		lpc = move_pc(lpc, ind_value);
 		return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
 	}
 	value = 0;

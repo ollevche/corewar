@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_12-13_forks.c                                    :+:      :+:    :+:   */
+/*   base_ops.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/15 15:11:42 by ollevche          #+#    #+#             */
-/*   Updated: 2018/08/15 15:11:42 by ollevche         ###   ########.fr       */
+/*   Created: 2018/08/16 13:05:29 by ollevche          #+#    #+#             */
+/*   Updated: 2018/08/16 13:05:29 by ollevche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	copy_carry(t_carry *to, t_carry *from)
 	to->last_live = from->last_live;
 }
 
-static bool	base_fork(t_session *game, t_carry *carry, t_champ *head, bool idx)
+bool		base_fork(t_session *game, t_carry *carry, bool idx)
 {
 	int     pos;
 	t_carry *fork;
@@ -37,14 +37,4 @@ static bool	base_fork(t_session *game, t_carry *carry, t_champ *head, bool idx)
 	update_position(game, fork, pos);
 	// fork->inactive++; // TODO: check if the fork runs in current cycle
 	return (true);
-}
-
-bool		op_fork(t_session *game, t_carry *carry, t_champ *head)
-{
-	return (base_fork(game, carry, head, true));
-}
-
-bool		op_lfork(t_session *game, t_carry *carry, t_champ *head)
-{
-	return (base_fork(game, carry, head, false));
 }

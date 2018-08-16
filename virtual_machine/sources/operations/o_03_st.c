@@ -15,13 +15,14 @@
 
 bool	st(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][2 + 1];
+	int 	args[2][2 + 1]; // TODO: check (is it wrong size or last elem?)
 	int		lpc;
 
+	(void)head;
 	lpc = PC;
-	ft_bzero(args, 6 * sizeof(int));
-	args[0][3] = -1;
-	set_arg_values(args, &lpc, game, false);
+	ft_bzero((int**)args, 6 * sizeof(int));
+	args[0][2] = -1;
+	set_arg_values((int**)args, &lpc, game, false);
 	if (IS_REG(VAL1))
 	{
 		// Значение T_REG (первый аргумент) записывается:
