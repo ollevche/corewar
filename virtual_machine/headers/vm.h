@@ -24,7 +24,7 @@
 
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
-# define OP_COUNT		2 // original 16
+# define OP_COUNT		8 // original 16
 
 /*
 ** FUNCTIONAL DEFINES ▽
