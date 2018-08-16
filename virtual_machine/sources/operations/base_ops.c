@@ -30,7 +30,9 @@ bool		base_fork(t_session *game, t_carry *carry, bool idx)
 	int     pos;
 	t_carry *fork;
 
-	pos = get_value_by_arg(game, T_DIR, carry->pc, idx);
+	pos = get_value_by_arg(game, T_DIR, carry->pc, 1);
+	if (idx)
+		pos %= IDX_MOD;
 	fork = new_carry(&game->carrys, carry->regs[0]);
 	RET_CHECK(fork, false);
 	copy_carry(fork, carry);

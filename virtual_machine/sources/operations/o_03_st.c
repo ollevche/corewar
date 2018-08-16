@@ -15,7 +15,7 @@
 
 bool	st(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][2 + 1]; // TODO: check (is it wrong size or last elem?)
+	int 	args[2][2 + 1];
 	int		lpc;
 
 	(void)head;

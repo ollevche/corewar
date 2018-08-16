@@ -103,6 +103,7 @@ typedef struct			s_op
 	char	description[50];
 	int		codage;
 	int		label_size;
+	bool	ind_idx;
 }						t_op;
 
 extern const t_op		g_optab[18];

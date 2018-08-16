@@ -110,10 +110,11 @@ bool    base_fork(t_session *game, t_carry *carry, bool idx);
 **	op_tools.c ▽
 */
 
-void	set_arg_values(int **args, int *lpc, t_session *game, bool idx_mod);
-int     get_pc_move(int arg);
+void	set_arg_values(int **args, int *lpc, t_session *game, int op_code);
+int     get_pc_move(int arg, int lable_size);
 void	set_arg_types(int coding_byte, int *args, int size);
-int 	get_value_by_arg(t_session *game, int arg, int lpc, bool idx_mod);
+int		get_idx_ind(t_session *game, int lpc);
+int 	get_value_by_arg(t_session *game, int arg, int lpc, int lable_size);
 bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);
 
 #endif

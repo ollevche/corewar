@@ -18,7 +18,7 @@ bool	lld(t_session *game, t_carry *carry, t_champ *head)
 	int 	args[2][3 + 1];
 	int		lpc;
 
-	(void)head; // TODO: head is unused in a lot of ops
+	(void)head;
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
 	args[0][3] = -1;

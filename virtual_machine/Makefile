@@ -65,3 +65,9 @@ fclean:
 	@rm -rf $(NAME) $(LIB)
 
 re: fclean $(NAME)
+
+corclean:
+	@echo "removing $(NAME) object files"
+	@rm -rf $(OBJ) $(OBJDIR)
+
+recor: corclean $(NAME)
