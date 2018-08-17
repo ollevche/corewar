@@ -15,14 +15,14 @@
 
 bool	live(t_session *game, t_carry *carry, t_champ *head)
 {
-	t_uint	id;
+	int		id;
 	t_champ	*arg_champ;
 
 	LAST_LIVE = CYCLE;
 	LAST_ALIVE = get_champ_by_id(head, REGS[0]);
 	PERIOD_LIVES++;
 	ft_printf("A process shows that player %s is alive\n", LAST_ALIVE->name);
-	id = ft_byte_to_uint(MAP[PC + 1], MAP[PC + 2], MAP[PC + 3], MAP[PC + 4]);
+	id = get_value_by_arg(game, T_DIR, PC, 0);
 	arg_champ = get_champ_by_id(head, id);
 	if (arg_champ)
 	{

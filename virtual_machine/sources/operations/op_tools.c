@@ -92,13 +92,13 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, int label_size)
 }
 
 
-bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc)
+bool	check_reg(int *value, t_session *game, t_carry *carry, int jmp)
 {
 	if (IS_REG(*value))
 	{
 		*value = REGS[*value - 1];
 		return (true);
 	}
-	update_position(game, carry, lpc + 1);
+	update_position(game, carry, jmp + 1);
 	return (false);
 }

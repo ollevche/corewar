@@ -1,6 +1,6 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_13_sti.c                                         :+:      :+:    :+:   */
+/*   o_11_sti.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,18 +17,16 @@ bool	sti(t_session *game, t_carry *carry, t_champ *head)
 	int 	args[2][3 + 1];
 	int		lpc;
 
+	(void)head;
 	lpc = PC;
 	ft_bzero(args, 8 * sizeof(int));
 	args[0][3] = -1;
-	set_arg_values(args, &lpc, game, false);
+	set_arg_values(args, &lpc, game, 11);
 	if (IS_REG(VAL1))
 	{
 		RET_CHECK(TYP2 == T_REG && check_reg(&VAL2, game, carry, lpc), false);
 		RET_CHECK(TYP3 == T_REG && check_reg(&VAL3, game, carry, lpc), false);
-		if (TYP2 == T_IND)
-			MAP[PC + (VAL2 + VAL3 % IDX_MOD)] = REGS[VAL1 - 1];
-		else if (IS_REG(VAL2))
-			REGS[VAL2 = 1] = REGS[VAL1 - 1];
+		MAP[PC + ((VAL2 + VAL3) % IDX_MOD)] = REGS[VAL1 - 1];
 	}
 	update_position(game, carry, lpc + 1);
 	return (true);

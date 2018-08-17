@@ -22,11 +22,10 @@ bool	ld(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero(args, 8 * sizeof(int));
 	args[0][3] = -1;
-	// Если первый аргумент T_IND, то сначала T_IND перезаписывается на T_IND % IDX_MOD,
-	// а потом идём на ячейку, от текущей позиции + это значение, с той позиции считываем 4 байта -> idx_mod = true
-	set_arg_values(args, &lpc, game, true);
+	set_arg_values(args, &lpc, game, 2);
 	if (IS_REG(VAL2))
-		REGS[VAL2 - 1] = VAL1; // записываем в T_REG
-	update_position(game, carry, lpc + 1);
+		REGS[VAL2 - 1] = VAL1;
+	update_position(game, carry, JMP + 1);
+	CARRY = (REGS[VAL2 - 1] == 0 ? true : false);
 	return (IS_REG(VAL2));
 }
