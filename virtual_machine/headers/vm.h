@@ -32,6 +32,7 @@
 
 # define RET_CHECK(X, R) if (!(X)) return (R);
 # define IS_REG(r) (r > 0 && r < REG_NUMBER)
+# define JMP (lpc - PC)
 
 /*
 ** DEFINES FOR READABILITY ▽
