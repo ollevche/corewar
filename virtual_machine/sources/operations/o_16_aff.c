@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_03_st.c                                          :+:      :+:    :+:   */
+/*   o_13_aff.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 14:24:35 by ollevche          #+#    #+#             */
-/*   Updated: 2018/08/10 14:24:36 by ollevche         ###   ########.fr       */
+/*   Created: 2018/07/26 13:51:26 by dpozinen          #+#    #+#             */
+/*   Updated: 2018/07/26 13:51:27 by dpozinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	st(t_session *game, t_carry *carry, t_champ *head)
+bool	aff(t_session *game, t_carry *carry, t_champ *head)
 {
 	int 	args[2][3 + 1];
 	int		lpc;
@@ -21,15 +21,10 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 	(void)head;
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
-	args[0][2] = -1;
-	set_arg_values(args, &lpc, game, 3);
+	args[0][1] = -1;
+	set_arg_values(args, &lpc, game, 16);
 	if (IS_REG(VAL1))
-	{
-		if (TYP2 == T_IND)
-			MAP[PC + (VAL2 % IDX_MOD)] = REGS[VAL1 - 1];
-		else if (IS_REG(VAL2))
-			REGS[VAL2 - 1] = REGS[VAL1 - 1];
-	}
+		ft_printf("%c", REGS[VAL1 - 1] % 256);
 	update_position(game, carry, JMP + 1);
-	return (true);
+	return (IS_REG(VAL1));
 }

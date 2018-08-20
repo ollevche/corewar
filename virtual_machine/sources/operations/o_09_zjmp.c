@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_02_ld.c                                          :+:      :+:    :+:   */
+/*   o_13_lld.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/09 15:15:22 by dpozinen          #+#    #+#             */
-/*   Updated: 2018/08/09 15:15:23 by dpozinen         ###   ########.fr       */
+/*   Created: 2018/07/26 13:51:26 by dpozinen          #+#    #+#             */
+/*   Updated: 2018/07/26 13:51:27 by dpozinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	ld(t_session *game, t_carry *carry, t_champ *head)
+bool	lld(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][3 + 1];
-	int		lpc;
+	int 	dir;
+    int     lpc;
 
 	(void)head;
-	lpc = PC;
-	ft_bzero(args, 8 * sizeof(int));
-	args[0][2] = -1;
-	set_arg_values(args, &lpc, game, 2);
-	if (IS_REG(VAL2))
-		REGS[VAL2 - 1] = VAL1;
+    lpc = PC;
+    dir = ft_byte_to_uint(0, 0, MAP[PC + 2], MAP[PC + 1]);
+    lpc = move_pc(lpc, 2);
+    if (CARRY == true)
+        return (PC = dir);
 	update_position(game, carry, JMP + 1);
-	CARRY = (REGS[VAL2 - 1] == 0 ? true : false);
-	return (IS_REG(VAL2));
+	return (false);
 }
