@@ -57,7 +57,7 @@ int			move_pc(int pc, int val)
 
 void		update_position(t_session *game, t_carry *carry, int val)
 {
-	carry->pc += move_pc(carry->pc, val);
+	carry->pc = move_pc(carry->pc, val);
 	carry->op_code = game->map[carry->pc];
 	if (carry->op_code >= 1 && carry->op_code <= OP_COUNT)
 		carry->inactive = g_optab[carry->op_code].cycles - 1;
