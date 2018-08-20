@@ -70,7 +70,7 @@ int		visu_finalizing(t_vdata *vdata, t_arg *arg)
 {
 	if (!arg->is_visual)
 		return (1);
-	usleep(20000000);
+	usleep(20000000); // test
 	delwin(vdata->left_window);
 	delwin(vdata->right_window);
 	endwin();
