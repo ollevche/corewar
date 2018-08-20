@@ -58,6 +58,7 @@ typedef struct			s_carry
 	int				inactive; // inactive for N cycles required by op
 	t_uchar			op_code; // current operation code
 	int				last_live; // cycle, when last live was called
+	int				champ; // 'father' champ
 	struct s_carry	*next;
 }						t_carry;
 

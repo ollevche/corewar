@@ -63,25 +63,27 @@ static void	control_game_flow(t_session *game)
 	}
 }
 
-// static void	log(t_session *game)
-// {
-// 	t_carry	*icarry;
+static void	log(t_session *game, bool is_log)
+{
+	t_carry	*icarry;
 
-// 	ft_printf("--- --- --- --- --- --- --- --- ---\n");
-// 	ft_printf("cycle: %d\n", game->cycle);
-// 	ft_printf("period lives: %d\n", game->period_lives);
-// 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
-// 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
-// 	ft_printf("carrys positions (champ - pos - last_live):\n");
-// 	icarry = game->carrys;
-// 	while (icarry)
-// 	{
-// 		ft_printf("%d\t%d\t%d\n", icarry->regs[0], icarry->pc, icarry->last_live);
-// 		icarry = icarry->next;
-// 	}
-// 	if (game->last_alive)
-// 		ft_printf("last alive champ: %d\n", game->last_alive->id);
-// }
+	if (!is_log)
+		return ;
+	ft_printf("--- --- --- --- --- --- --- --- ---\n");
+	ft_printf("cycle: %d\n", game->cycle);
+	ft_printf("period lives: %d\n", game->period_lives);
+	ft_printf("cycle to die: %d\n", game->cycle_to_die);
+	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
+	ft_printf("carrys positions (champ - pos - last_live - inactive):\n");
+	icarry = game->carrys;
+	while (icarry)
+	{
+		ft_printf("%d\t%d\t%d\t%d\n", icarry->regs[0], icarry->pc, icarry->last_live, icarry->inactive);
+		icarry = icarry->next;
+	}
+	if (game->last_alive)
+		ft_printf("last alive champ: %d\n", game->last_alive->id);
+}
 
 static bool	is_dump(t_session *game, t_arg *arg)
 {
@@ -118,7 +120,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		//log(game); // DEL
+		log(game, false); // DEL
 		visu_drawing(&vdata, game, champs, arg);
 		execute_carries(game, champs);
 		game->cycle++;
