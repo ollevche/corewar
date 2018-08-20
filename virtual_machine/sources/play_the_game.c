@@ -12,6 +12,7 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
+#include "visu.h"
 
 static int	kill_carries(t_carry *carrys, int period_start)
 {
@@ -62,32 +63,32 @@ static void	control_game_flow(t_session *game)
 	}
 }
 
-static void	log(t_session *game)
-{
-	t_carry	*icarry;
+// static void	log(t_session *game)
+// {
+// 	t_carry	*icarry;
 
-	ft_printf("--- --- --- --- --- --- --- --- ---\n");
-	ft_printf("cycle: %d\n", game->cycle);
-	ft_printf("period lives: %d\n", game->period_lives);
-	ft_printf("cycle to die: %d\n", game->cycle_to_die);
-	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
-	ft_printf("carrys positions (champ - pos - last_live):\n");
-	icarry = game->carrys;
-	while (icarry)
-	{
-		ft_printf("%d\t%d\t%d\n", icarry->regs[0], icarry->pc, icarry->last_live);
-		icarry = icarry->next;
-	}
-	if (game->last_alive)
-		ft_printf("last alive champ: %d\n", game->last_alive->id);
-}
+// 	ft_printf("--- --- --- --- --- --- --- --- ---\n");
+// 	ft_printf("cycle: %d\n", game->cycle);
+// 	ft_printf("period lives: %d\n", game->period_lives);
+// 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
+// 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
+// 	ft_printf("carrys positions (champ - pos - last_live):\n");
+// 	icarry = game->carrys;
+// 	while (icarry)
+// 	{
+// 		ft_printf("%d\t%d\t%d\n", icarry->regs[0], icarry->pc, icarry->last_live);
+// 		icarry = icarry->next;
+// 	}
+// 	if (game->last_alive)
+// 		ft_printf("last alive champ: %d\n", game->last_alive->id);
+// }
 
-static bool	is_dump(t_session *game, int dump)
+static bool	is_dump(t_session *game, t_arg *arg)
 {
 	int		iter;
 	t_uchar	*map;
 
-	if (game->cycle <= dump || dump < 0)
+	if (arg->is_visual || game->cycle <= arg->dump || arg->dump < 0)
 		return (false);
 	iter = 0;
 	map = game->map;
@@ -110,17 +111,21 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 {
 	t_session	*game;
 	t_champ		*winner;
+	t_vdata		vdata;
 
+	RET_CHECK(visu_initializing(&vdata, arg), NULL);
 	RET_CHECK(prepare(champs, &game), NULL)
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
-			&& !is_dump(game, arg->dump))
+			&& !is_dump(game, arg))
 	{
-		log(game); // DEL
+		//log(game); // DEL
+		visu_drawing(&vdata, game, champs, arg);
 		execute_carries(game, champs);
 		game->cycle++;
 		control_game_flow(game);
 	}
 	free_session(&game);
 	winner = game->last_alive;
+	visu_finalizing(&vdata, arg);
 	return (winner);
 }
