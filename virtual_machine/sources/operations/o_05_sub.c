@@ -22,7 +22,7 @@ bool	sub(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
 	args[0][3] = -1;
-	set_arg_values(args, &lpc, game, 5);
+	RET_CHECK(set_arg_values(args, &lpc, game, 5), false);
 	if (!IS_REG(VAL1) || !IS_REG(VAL2) || !IS_REG(VAL3))
 	{
 		update_position(game, carry, JMP + 1);

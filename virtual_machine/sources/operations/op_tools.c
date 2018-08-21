@@ -31,7 +31,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	i = 0;
 	while (i < n_of_args) // get value for every arg_type and move pc each time
 	{
-		if (args[0][i] == T_IND && g_optab[op_code].ind_idx)
+		if (args[0][i] == IND_CODE && g_optab[op_code].ind_idx)
 			args[1][i] = get_idx_ind(game, *lpc);
 		else
 			args[1][i] = get_value_by_arg(game, args[0][i], *lpc, g_optab[op_code].label_size);
@@ -43,22 +43,28 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 
 int		get_pc_move(int arg, int label_size)
 {
-	if (arg == T_DIR)
+	if (arg == DIR_CODE)
 		return (2 + 2 * (1 - label_size));
-	if (arg == T_IND)
+	if (arg == IND_CODE)
 		return (2);
 	return (1);
 }
 
 bool	set_arg_types(int coding_byte, int *args, int size) // gets bits
 {
+	int i;
+
 	if (size >= 1)
 		args[0] = coding_byte >> 6;
 	if (size >= 2)
 		args[1] = ((coding_byte | 192) ^ 192) >> 4;
 	if (size >= 3)
 		args[2] = ((coding_byte | 240) ^ 240) >> 2;
-	// TODO: check coding byte
+	i = -1;
+	while (++i < size)
+		if(args[i] < 1 || args[i] > 3)
+			return (false);
+	return (true);
 }
 
 int		get_idx_ind(t_session *game, int lpc)
@@ -75,15 +81,15 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, int label_size)
 {
 	int ind_value;
 
-	if (arg == T_IND) // read value where to jump; jump to that value; read value after jump and return it
+	if (arg == IND_CODE) // read value where to jump; jump to that value; read value after jump and return it
 	{
 		ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
 		lpc = move_pc(lpc, ind_value);
 		return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
 	}
-	if (arg == T_REG)
+	if (arg == REG_CODE)
 		return (ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]));
-	if (arg == T_DIR)
+	if (arg == DIR_CODE)
 	{
 		if (label_size == 1)
 			return (ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]));

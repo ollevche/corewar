@@ -22,7 +22,7 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 	LAST_ALIVE = get_champ_by_id(head, REGS[0]);
 	PERIOD_LIVES++;
 	// ft_printf("A process shows that player %s is alive\n", LAST_ALIVE->name); // TODO: hide this
-	id = get_value_by_arg(game, T_DIR, PC, 0);
+	id = get_value_by_arg(game, DIR_CODE, PC, 0);
 	arg_champ = get_champ_by_id(head, id);
 	if (arg_champ)
 	{
