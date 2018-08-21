@@ -22,7 +22,7 @@ bool	and(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
 	args[0][3] = -1;
-	RET_CHECK(set_arg_values(args, &lpc, game, 6), false);
+	CHK_MV(set_arg_values(args, &lpc, game, 6));
 	if (IS_REG(VAL3))
 	{
 		if (TYP1 == REG_CODE)

@@ -30,7 +30,7 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
 	args[0][2] = -1;
-	RET_CHECK(set_arg_values(args, &lpc, game, 3), false);
+	CHK_MV(set_arg_values(args, &lpc, game, 3));
 	if (IS_REG(VAL1))
 	{
 		if (TYP2 == IND_CODE)
