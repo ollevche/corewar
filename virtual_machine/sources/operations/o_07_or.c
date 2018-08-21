@@ -25,8 +25,10 @@ bool	or(t_session *game, t_carry *carry, t_champ *head)
 	set_arg_values(args, &lpc, game, 7);
 	if (IS_REG(VAL3))
 	{
-		RET_CHECK(TYP1 == T_REG && check_reg(&VAL1, game, carry, JMP), false);
-		RET_CHECK(TYP2 == T_REG && check_reg(&VAL2, game, carry, JMP), false);
+		if (TYP1 == T_REG)
+			RET_CHECK(check_reg(&VAL1, game, carry, JMP), false);
+		if (TYP2 == T_REG)
+			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
 		REGS[VAL3 - 1] = VAL1 | VAL2;
 		CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
 	}

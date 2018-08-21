@@ -96,12 +96,14 @@ bool	sub(t_session *game, t_carry *carry, t_champ *head);
 bool	and(t_session *game, t_carry *carry, t_champ *head);
 bool	or(t_session *game, t_carry *carry, t_champ *head);
 bool	xor(t_session *game, t_carry *carry, t_champ *head);
+bool	zjmp(t_session *game, t_carry *carry, t_champ *head);
 bool	ldi(t_session *game, t_carry *carry, t_champ *head);
 bool	sti(t_session *game, t_carry *carry, t_champ *head);
 bool	op_fork(t_session *game, t_carry *carry, t_champ *head);
 bool	lld(t_session *game, t_carry *carry, t_champ *head);
 bool	lldi(t_session *game, t_carry *carry, t_champ *head);
 bool	op_lfork(t_session *game, t_carry *carry, t_champ *head);
+bool	aff(t_session *game, t_carry *carry, t_champ *head);
 
 /*
 **  base_ops.c ▽

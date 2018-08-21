@@ -29,6 +29,7 @@ void	show_left(WINDOW *left_window, t_session *game, t_champ *champs)
 	int y;
 	int x;
 
+	(void)champs;
 	index = 0;
 	y = 0;
 	x = 2;
@@ -52,7 +53,7 @@ void	show_left(WINDOW *left_window, t_session *game, t_champ *champs)
 		x += 3;
 		index++;
 	}
-	
+
 	wrefresh(left_window);
 }
 

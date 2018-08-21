@@ -28,15 +28,15 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 	operations[6] = and;
 	operations[7] = or;
 	operations[8] = xor;
-	// operations[9] = zjmp;
-	// operations[10] = ldi;
-	// operations[11] = sti;
-	// operations[12] = op_fork;
-	// operations[13] = lld;
-	// operations[14] = lldi;
-	// operations[15] = op_lfork;
-	// operations[16] = aff;
-	// operations[17] = NULL;
+	operations[9] = zjmp;
+	operations[10] = ldi;
+	operations[11] = sti;
+	operations[12] = op_fork;
+	operations[13] = lld;
+	operations[14] = lldi;
+	operations[15] = op_lfork;
+	operations[16] = aff;
+	operations[17] = NULL;
 }
 
 int			move_pc(int pc, int val)

@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-void	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
+bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 {
 	int		coding_byte;
 	int		i;
@@ -25,19 +25,20 @@ void	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 
 	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[*lpc + 1]);
 	*lpc = move_pc(*lpc, 1);
+	if (!set_arg_types(coding_byte, args[0], n_of_args))
+		return (false);
 
-	set_arg_types(coding_byte, args[0], n_of_args);
 	i = 0;
 	while (i < n_of_args) // get value for every arg_type and move pc each time
 	{
 		if (args[0][i] == T_IND && g_optab[op_code].ind_idx)
 			args[1][i] = get_idx_ind(game, *lpc);
 		else
-			args[1][i] = get_value_by_arg(game, args[0][i], *lpc,
-										g_optab[op_code].label_size);
+			args[1][i] = get_value_by_arg(game, args[0][i], *lpc, g_optab[op_code].label_size);
 		*lpc = move_pc(*lpc, get_pc_move(args[0][i], g_optab[op_code].label_size));
 		i++;
 	}
+	return (true);
 }
 
 int		get_pc_move(int arg, int label_size)
@@ -49,7 +50,7 @@ int		get_pc_move(int arg, int label_size)
 	return (1);
 }
 
-void	set_arg_types(int coding_byte, int *args, int size) // gets bits
+bool	set_arg_types(int coding_byte, int *args, int size) // gets bits
 {
 	if (size >= 1)
 		args[0] = coding_byte >> 6;
@@ -57,6 +58,7 @@ void	set_arg_types(int coding_byte, int *args, int size) // gets bits
 		args[1] = ((coding_byte | 192) ^ 192) >> 4;
 	if (size >= 3)
 		args[2] = ((coding_byte | 240) ^ 240) >> 2;
+	// TODO: check coding byte
 }
 
 int		get_idx_ind(t_session *game, int lpc)
@@ -84,7 +86,7 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, int label_size)
 	if (arg == T_DIR)
 	{
 		if (label_size == 1)
-			return (ft_byte_to_uint(0, 0, MAP[lpc + 3], MAP[lpc + 4]));
+			return (ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]));
 		else
 			return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
 	}

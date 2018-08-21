@@ -24,10 +24,12 @@ bool	sti(t_session *game, t_carry *carry, t_champ *head)
 	set_arg_values(args, &lpc, game, 11);
 	if (IS_REG(VAL1))
 	{
-		RET_CHECK(TYP2 == T_REG && check_reg(&VAL2, game, carry, lpc), false);
-		RET_CHECK(TYP3 == T_REG && check_reg(&VAL3, game, carry, lpc), false);
+		if (TYP2 == T_REG)
+			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
+		if (TYP3 == T_REG)
+			RET_CHECK(check_reg(&VAL3, game, carry, JMP), false);
 		MAP[PC + ((VAL2 + VAL3) % IDX_MOD)] = REGS[VAL1 - 1];
 	}
-	update_position(game, carry, lpc + 1);
+	update_position(game, carry, JMP + 1);
 	return (true);
 }

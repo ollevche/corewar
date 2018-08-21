@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_13_lld.c                                         :+:      :+:    :+:   */
+/*   o_09_zjmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,17 +13,18 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	lld(t_session *game, t_carry *carry, t_champ *head)
+bool	zjmp(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	dir;
-    int     lpc;
+	short	dir;
+	int		lpc;
 
 	(void)head;
-    lpc = PC;
-    dir = ft_byte_to_uint(0, 0, MAP[PC + 2], MAP[PC + 1]);
-    lpc = move_pc(lpc, 2);
-    if (CARRY == true)
-        return (PC = dir);
-	update_position(game, carry, JMP + 1);
-	return (false);
+	lpc = PC;
+	dir = ft_byte_to_uint(0, 0, MAP[PC + 1], MAP[PC + 2]);
+	lpc = move_pc(lpc, 2);
+	if (CARRY)
+		update_position(game, carry, dir % IDX_MOD);
+	else
+		update_position(game, carry, JMP + 1);
+	return (CARRY);
 }
