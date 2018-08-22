@@ -89,7 +89,7 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, int label_size)
 	if (arg == IND_CODE) // read value where to jump; jump to that value; read value after jump and return it
 	{
 		ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
-		lpc = move_pc(lpc, ind_value);
+		lpc = move_pc(lpc, ind_value); // TODO: st and sti writes to the map by pointer (IND)
 		return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
 	}
 	if (arg == REG_CODE)

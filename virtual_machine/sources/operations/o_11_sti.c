@@ -29,7 +29,7 @@ bool	sti(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero(args, 8 * sizeof(int));
 	args[0][3] = -1;
-	CHK_MV(set_arg_values(args, &lpc, game, 11));
+	RET_CHECK(set_arg_values(args, &lpc, game, 11), false);
 	if (IS_REG(VAL1))
 	{
 		if (TYP2 == REG_CODE)
