@@ -13,7 +13,7 @@
 #include "visu.h"
 #include "vm.h"
 
-static int  appropriate_window(t_vdata *vdata, t_arg *arg)
+static int  appropriate_window(t_vdata *vdata)
 {
 
 
@@ -26,7 +26,6 @@ static int  appropriate_window(t_vdata *vdata, t_arg *arg)
 		exit(1);
 		return (0);
 	}
-	(void)arg;
 	return (1);
 }
 
@@ -34,7 +33,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg)
 {
 	if (!arg->is_visual)
 		return (1);
-	if (!initscr() || !appropriate_window(vdata, arg))
+	if (!initscr() || !appropriate_window(vdata))
 		return (0);
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
@@ -127,7 +126,7 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 {
 	if (!arg->is_visual)
 		return (1);
-	// wattroff(vdata->right_window, COLOR_PAIR(LEFT_W));
+	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W));
 	// wattroff(vdata->left_window, COLOR_PAIR(LEFT_W));
 	playback_controls(vdata, game, champs);
 	delwin(vdata->left_window);

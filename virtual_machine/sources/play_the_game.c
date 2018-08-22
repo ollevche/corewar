@@ -115,8 +115,9 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	t_champ		*winner;
 	t_vdata		vdata;
 
+	
+	RET_CHECK(prepare(champs, &game), NULL);
 	RET_CHECK(visu_initializing(&vdata, arg), NULL);
-	RET_CHECK(prepare(champs, &game), NULL)
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
