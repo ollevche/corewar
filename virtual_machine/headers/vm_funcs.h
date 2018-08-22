@@ -117,7 +117,6 @@ bool    base_fork(t_session *game, t_carry *carry, bool idx);
 
 bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code);
 int     get_pc_move(int arg, int lable_size);
-bool	set_arg_types(int coding_byte, int *args, int size);
 int		get_idx_ind(t_session *game, int lpc);
 int 	get_value_by_arg(t_session *game, int arg, int lpc, int lable_size);
 bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);

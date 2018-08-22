@@ -13,11 +13,31 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+static int	set_arg_types(int coding_byte, int *args, int size) // gets bits
+{
+	int i;
+	int valid;
+
+	if (size >= 1)
+		args[0] = coding_byte >> 6;
+	if (size >= 2)
+		args[1] = ((coding_byte | 192) ^ 192) >> 4;
+	if (size >= 3)
+		args[2] = ((coding_byte | 240) ^ 240) >> 2;
+	i = -1;
+	valid = 0;
+	while (++i < size)
+		if (args[i] >= 1 && args[i] <= 3)
+			valid++;
+	return (valid);
+}
+
 bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 {
 	int		coding_byte;
 	int		i;
 	int		n_of_args;
+	int		valid_args;
 
 	n_of_args = 0;
 	while (args[0][n_of_args] != -1) // get size of arg_types == number of arguments
@@ -25,7 +45,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 
 	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[*lpc + 1]);
 	*lpc = move_pc(*lpc, 1);
-	if (!set_arg_types(coding_byte, args[0], n_of_args))
+	if (!(valid_args = set_arg_types(coding_byte, args[0], n_of_args)))
 		return (false);
 
 	i = 0;
@@ -33,12 +53,14 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	{
 		if (args[0][i] == IND_CODE && g_optab[op_code].ind_idx)
 			args[1][i] = get_idx_ind(game, *lpc);
-		else
+		else if (args[0][i] == REG_CODE || args[0][i] == DIR_CODE)
+		{
 			args[1][i] = get_value_by_arg(game, args[0][i], *lpc, g_optab[op_code].label_size);
-		*lpc = move_pc(*lpc, get_pc_move(args[0][i], g_optab[op_code].label_size));
+			*lpc = move_pc(*lpc, get_pc_move(args[0][i], g_optab[op_code].label_size));
+		}
 		i++;
 	}
-	return (true);
+	return (n_of_args == valid_args);
 }
 
 int		get_pc_move(int arg, int label_size)
@@ -48,23 +70,6 @@ int		get_pc_move(int arg, int label_size)
 	if (arg == IND_CODE)
 		return (2);
 	return (1);
-}
-
-bool	set_arg_types(int coding_byte, int *args, int size) // gets bits
-{
-	int i;
-
-	if (size >= 1)
-		args[0] = coding_byte >> 6;
-	if (size >= 2)
-		args[1] = ((coding_byte | 192) ^ 192) >> 4;
-	if (size >= 3)
-		args[2] = ((coding_byte | 240) ^ 240) >> 2;
-	i = -1;
-	while (++i < size)
-		if(args[i] < 1 || args[i] > 3)
-			return (false);
-	return (true);
 }
 
 int		get_idx_ind(t_session *game, int lpc)
@@ -98,7 +103,6 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, int label_size)
 	}
 	return (0);
 }
-
 
 bool	check_reg(int *value, t_session *game, t_carry *carry, int jmp)
 {
