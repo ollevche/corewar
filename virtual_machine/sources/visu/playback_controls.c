@@ -21,7 +21,8 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	//  	mvwprintw(bye2, 1, 1, "%d", vdata->key);
 	// 	wrefresh(bye2);
 
-
+	if (vdata->key == 'm')
+		music_player();
 	if (vdata->key == 127)
 	{
 		//exit(1);
@@ -31,7 +32,7 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 			WINDOW *bye;
 			bye = newwin(3 , 12, 4, 228);
 
-wattron(bye, COLOR_PAIR(141) | A_BOLD);
+wattron(bye, A_BOLD);
 			mvwprintw(bye, 1, 1, "%s", vdata->user_cycle);
 			
 			wattroff(bye, A_BOLD);	
@@ -101,7 +102,7 @@ wattron(bye, COLOR_PAIR(141) | A_BOLD);
 		 	}
 
 		 	if (vdata->paused)
-		 		show_left(vdata->left_window, game, champs);
+		 		show_left(vdata, game, champs);
 		}
 
 
@@ -151,7 +152,7 @@ vdata->key = 0;
 		 		vdata->key = getch();
 		 	vdata->key = -1;
 		 	if (vdata->paused)
-		 		show_left(vdata->left_window, game, champs);
+		 		show_left(vdata, game, champs);
 		}
 
 

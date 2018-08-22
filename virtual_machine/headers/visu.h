@@ -28,7 +28,15 @@
 # define W_HEIGHT 68
 # define W_WIDTH 251
 # define START_X 2
-# define CARRY_COLOR_PAIR 100
+# define LEFT_W 0
+# define PLAYER_1 1
+# define PLAYER_2 2
+# define PLAYER_3 3
+# define PLAYER_4 4
+# define CARRY_P1 10
+# define CARRY_P2 20
+# define CARRY_P3 30
+# define CARRY_P4 40
 
 
 typedef struct				s_scrolling_controls
@@ -69,20 +77,19 @@ typedef struct				s_vdata
 
 	int 					vasya;
 }							t_vdata;
-
+void						show_carries(t_vdata *vdata, t_session *game);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
-void						show_left(WINDOW *left_window, t_session *game, t_champ *champs);
+void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
+void 						print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player);
 int							visu_initializing	(t_vdata *vdata, t_arg *arg);
 int							visu_finalizing		(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg);
 int							visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs,t_arg *arg);
 void						show_players(WINDOW *nbr_win, t_champ *champs, int *i);
-int							is_carry(t_carry *carrys, int index);
-
 void						playback_controls(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						scrolling_controls(t_vdata *vdata, int x, int y);
 void						scrolling_name(t_vdata *vdata, char *player_name, int x, int y);
 void						scrolling_of_the_names(t_vdata *vdata);
 void						scrolling_finalizing(t_vdata *vdata);
-
+void						music_player();
 #endif

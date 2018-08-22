@@ -26,6 +26,7 @@ static int  appropriate_window(t_vdata *vdata, t_arg *arg)
 		exit(1);
 		return (0);
 	}
+	(void)arg;
 	return (1);
 }
 
@@ -58,25 +59,34 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg)
 	nodelay(vdata->right_window, FALSE);
 	curs_set(0);
 	start_color();
-	init_pair(0, COLOR_WHITE, COLOR_BLACK);
-	init_color(COLOR_WHITE, 200, 300, 300);
-	init_pair(CARRY_COLOR_PAIR, COLOR_BLACK, COLOR_WHITE);
-	init_pair(14, COLOR_WHITE, COLOR_BLACK);
-	init_pair(1, COLOR_GREEN, COLOR_BLACK);
-	init_pair(11, COLOR_WHITE, COLOR_GREEN);
-	
-	wattron(vdata->left_window, COLOR_PAIR(14));
-	
+
+	init_color(COLOR_GREEN, 880, 880, 480);
+	init_color(COLOR_RED, 450, 350, 490);
+	init_color(COLOR_YELLOW, 300, 800, 800);
+	init_color(COLOR_BLUE, 850, 80, 350);
+
+	int color;
+
+	color = 1;
+	while (color <= 4)
+	{
+		init_pair(color * 10, COLOR_BLACK, color);
+		init_pair(color, color, COLOR_BLACK);
+		color++;
+	}
+	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
+
+	// wattron(vdata->left_window, COLOR_PAIR(LEFT_W));
+	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
-	
-	init_pair(141, COLOR_GREEN, COLOR_BLACK);
+
 	scrolling_name(vdata, "REALLY Fucking Viktoriya. Yes she is", 30, 212);
 	scrolling_name(vdata, "Serzh Ivasyshyn", 35, 212);
 	scrolling_name(vdata, "Sasha Levchenkov", 40, 212);
 	scrolling_name(vdata, "Dariy Pozinenko", 45, 212);	
 	scrolling_controls(vdata, 50, 198);
-	
+	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
 	return (1);
 }
 
@@ -97,7 +107,7 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 
 	if (vdata->skip <= game->cycle || !vdata->skip)
 	{
-		show_left(vdata->left_window, game, champs);
+		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
 		playback_controls(vdata, game, champs);
 		refresh();
@@ -105,7 +115,7 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 
 	if (game->carry_num <= 0 || game->cycle_to_die <0)
 	{
-		show_left(vdata->left_window, game, champs);
+		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
 	}
 
@@ -117,12 +127,39 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 {
 	if (!arg->is_visual)
 		return (1);
-
-	
+	// wattroff(vdata->right_window, COLOR_PAIR(LEFT_W));
+	// wattroff(vdata->left_window, COLOR_PAIR(LEFT_W));
 	playback_controls(vdata, game, champs);
 	delwin(vdata->left_window);
 	delwin(vdata->right_window);
 	endwin();
+	system("killall afplay");
 	exit(1);
 	return (0);
+}
+
+void	music_player()
+{
+	static int stop = 1;
+	static int i = 0;
+
+	noecho();
+	if (stop == 0 && i <= 3)
+	{
+		system("killall afplay");
+		stop = 1;
+	}
+	else if (stop == 1)
+	{
+		if (i == 0)
+			system("afplay La_Valse_OST_Ameli.mp3 &");
+		else if(i == 1)
+			system("afplay Hooked_On_A_Feeling.mp3 &");
+		else if(i == 2)
+			system("afplay Game_of_Thrones.mp3 &");
+		else
+			timeout(0);
+		stop = 0;
+		i++;
+	}
 }
