@@ -30,7 +30,7 @@ bool		base_fork(t_session *game, t_carry *carry, bool idx)
 	short	pos;
 	t_carry	*fork;
 
-	pos = get_value_by_arg(game, DIR_CODE, carry->pc, 1);
+	pos = get_value_by_arg(game, DIR_CODE, carry->pc, 12);
 	// ft_printf("\t\t\t\tpos = %x\n", pos); // DEL
 	if (idx)
 		pos %= IDX_MOD;
