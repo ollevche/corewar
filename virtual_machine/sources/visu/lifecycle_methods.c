@@ -13,7 +13,7 @@
 #include "visu.h"
 #include "vm.h"
 
-static int  appropriate_window(t_vdata *vdata, t_arg *arg)
+static int  appropriate_window(t_vdata *vdata)
 {
 
 
@@ -33,7 +33,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg)
 {
 	if (!arg->is_visual)
 		return (1);
-	if (!initscr() || !appropriate_window(vdata, arg))
+	if (!initscr() || !appropriate_window(vdata))
 		return (0);
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
