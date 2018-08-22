@@ -21,8 +21,8 @@ bool	lld(t_session *game, t_carry *carry, t_champ *head)
 	(void)head;
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
-	args[0][3] = -1;
-	set_arg_values(args, &lpc, game, 13);
+	args[0][2] = -1;
+	CHK_MV(set_arg_values(args, &lpc, game, 13));
 	if (IS_REG(VAL2))
 		REGS[VAL2 - 1] = VAL1;
 	update_position(game, carry, JMP + 1);

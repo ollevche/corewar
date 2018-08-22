@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_01_live.c                                        :+:      :+:    :+:   */
+/*   o_16_aff.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,23 +13,18 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	live(t_session *game, t_carry *carry, t_champ *head)
+bool	aff(t_session *game, t_carry *carry, t_champ *head)
 {
-	int		id;
-	t_champ	*arg_champ;
+	int 	args[2][3 + 1];
+	int		lpc;
 
-	LAST_LIVE = CYCLE;
-	LAST_ALIVE = get_champ_by_id(head, REGS[0]);
-	PERIOD_LIVES++;
-	// ft_printf("A process shows that player %s is alive\n", LAST_ALIVE->name); // TODO: hide this
-	id = get_value_by_arg(game, DIR_CODE, PC, 1);
-	arg_champ = get_champ_by_id(head, id);
-	if (arg_champ)
-	{
-		LAST_ALIVE = arg_champ;
-		PERIOD_LIVES++;
-		//ft_printf("A process shows that player %s is alive\n", LAST_ALIVE->name);
-	}
-	update_position(game, carry, 5);
-	return (true);
+	(void)head;
+	lpc = PC;
+	ft_bzero((int**)args, 8 * sizeof(int));
+	args[0][1] = -1;
+	CHK_MV(set_arg_values(args, &lpc, game, 16));
+	if (IS_REG(VAL1))
+		ft_printf("%c", REGS[VAL1 - 1] % 256);
+	update_position(game, carry, JMP + 1);
+	return (IS_REG(VAL1));
 }

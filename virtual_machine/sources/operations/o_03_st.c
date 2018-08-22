@@ -13,20 +13,30 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+static void write_to_map(t_session *game, int pos, int value)
+{
+	MAP[pos + 0] = (value & -16777216) >> 24;
+	MAP[pos + 1] = (value & 16711680) >> 16;
+	MAP[pos + 2] = (value & 65280) >> 8;
+	MAP[pos + 3] = value & 255;
+}
+
 bool	st(t_session *game, t_carry *carry, t_champ *head)
 {
 	int 	args[2][3 + 1];
 	int		lpc;
+	short	del_me_pls;
 
 	(void)head;
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
-	args[0][3] = -1;
-	set_arg_values(args, &lpc, game, 3);
+	args[0][2] = -1;
+	CHK_MV(set_arg_values(args, &lpc, game, 3));
 	if (IS_REG(VAL1))
 	{
-		if (TYP2 == T_IND)
-			MAP[PC + (VAL2 % IDX_MOD)] = REGS[VAL1 - 1];
+		del_me_pls = VAL2;
+		if (TYP2 == IND_CODE)
+			write_to_map(game, PC + (del_me_pls % IDX_MOD), REGS[VAL1 - 1]);
 		else if (IS_REG(VAL2))
 			REGS[VAL2 - 1] = REGS[VAL1 - 1];
 	}

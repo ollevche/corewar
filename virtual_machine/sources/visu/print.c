@@ -29,6 +29,7 @@ void	show_left(WINDOW *left_window, t_session *game, t_champ *champs)
 	int y;
 	int x;
 
+	(void)champs;
 	index = 0;
 	y = 0;
 	x = 2;
@@ -52,7 +53,7 @@ void	show_left(WINDOW *left_window, t_session *game, t_champ *champs)
 		x += 3;
 		index++;
 	}
-	
+
 	wrefresh(left_window);
 }
 
@@ -62,9 +63,16 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 
 	y = 3;
 
+wattron(vdata->right_window, COLOR_PAIR(141));
+
 mvwprintw(vdata->right_window, 3, START_X, "Cycles/second:\t%d     ", vdata->sec);
 
+		wattron(vdata->right_window, COLOR_PAIR(141) | A_BOLD);
+ 		
+
 	mvwprintw(vdata->right_window, y += 2, START_X, "Total cycle:\t\t%d", game->cycle);
+
+			wattroff(vdata->right_window, A_BOLD);	
 	mvwprintw(vdata->right_window, y += 1, START_X, "Current cycle:\t%d", 0);
 	show_players(vdata->right_window, champs, &y);
 	mvwprintw(vdata->right_window, y += 2, START_X,"Carrys:\t%d", game->carry_num);

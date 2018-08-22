@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   o_01_live.c                                        :+:      :+:    :+:   */
+/*   o_09_zjmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpozinen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,23 +13,18 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-bool	live(t_session *game, t_carry *carry, t_champ *head)
+bool	zjmp(t_session *game, t_carry *carry, t_champ *head)
 {
-	int		id;
-	t_champ	*arg_champ;
+	short	dir;
+	int		lpc;
 
-	LAST_LIVE = CYCLE;
-	LAST_ALIVE = get_champ_by_id(head, REGS[0]);
-	PERIOD_LIVES++;
-	// ft_printf("A process shows that player %s is alive\n", LAST_ALIVE->name); // TODO: hide this
-	id = get_value_by_arg(game, DIR_CODE, PC, 1);
-	arg_champ = get_champ_by_id(head, id);
-	if (arg_champ)
-	{
-		LAST_ALIVE = arg_champ;
-		PERIOD_LIVES++;
-		//ft_printf("A process shows that player %s is alive\n", LAST_ALIVE->name);
-	}
-	update_position(game, carry, 5);
-	return (true);
+	(void)head;
+	lpc = PC;
+	dir = ft_byte_to_uint(0, 0, MAP[PC + 1], MAP[PC + 2]);
+	lpc = move_pc(lpc, 2);
+	if (CARRY)
+		update_position(game, carry, dir % IDX_MOD);
+	else
+		update_position(game, carry, JMP + 1);
+	return (CARRY);
 }

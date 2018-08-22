@@ -121,13 +121,14 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 			&& !is_dump(game, arg))
 	{
 		log(game, false); // DEL
-		visu_drawing(&vdata, game, champs, arg);
 		execute_carries(game, champs);
 		game->cycle++;
 		control_game_flow(game);
+		visu_drawing(&vdata, game, champs, arg);
 	}
+
 	free_session(&game);
 	winner = game->last_alive;
-	visu_finalizing(&vdata, arg);
+	visu_finalizing(&vdata, game, champs, arg);
 	return (winner);
 }

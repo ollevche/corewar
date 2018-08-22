@@ -22,11 +22,13 @@ bool	and(t_session *game, t_carry *carry, t_champ *head)
 	lpc = PC;
 	ft_bzero((int**)args, 8 * sizeof(int));
 	args[0][3] = -1;
-	set_arg_values(args, &lpc, game, 6);
+	CHK_MV(set_arg_values(args, &lpc, game, 6));
 	if (IS_REG(VAL3))
 	{
-		RET_CHECK(TYP1 == T_REG && check_reg(&VAL1, game, carry, JMP), false);
-		RET_CHECK(TYP2 == T_REG && check_reg(&VAL2, game, carry, JMP), false);
+		if (TYP1 == REG_CODE)
+			RET_CHECK(check_reg(&VAL1, game, carry, JMP), false);
+		if (TYP2 == REG_CODE)
+			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
 		REGS[VAL3 - 1] = VAL1 & VAL2;
 		CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
 	}

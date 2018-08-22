@@ -24,7 +24,7 @@
 
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
-# define OP_COUNT		8 // original 16
+# define OP_COUNT		16
 
 /*
 ** FUNCTIONAL DEFINES ▽
@@ -33,6 +33,7 @@
 # define RET_CHECK(X, R) if (!(X)) return (R);
 # define IS_REG(r) (r > 0 && r < REG_NUMBER)
 # define JMP (lpc - PC)
+# define CHK_MV(x) if (!x) {update_position(game, carry, JMP + 1); return (0);}
 
 /*
 ** DEFINES FOR READABILITY ▽
@@ -84,7 +85,7 @@ typedef struct			s_session
 	int			cycle_to_die;
 	int			last_ctd; // last change of cycle_to_die
 	t_champ		*last_alive;
-	t_carry	*carrys; // all of the carries
+	t_carry		*carrys; // all of the carries
 	int			carry_num; // number of carries in a session
 	int			total_champs;
 }						t_session;
