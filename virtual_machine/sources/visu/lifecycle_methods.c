@@ -103,6 +103,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_ch
 
 int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 {
+	werase(vdata->right_window);
 	if (!arg->is_visual)
 		return (1);
 
