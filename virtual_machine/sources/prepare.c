@@ -59,7 +59,7 @@ static bool	prepare_session(t_session **gameptr, int n)
 **	sets carries pc to start positions (first byte of champ code)
 */
 
-static bool	place_code(t_champ *champs, t_session *game) // test it
+static bool	place_code(t_champ *champs, t_session *game)
 {
 	int			gap;
 	int			champ_mark;
@@ -86,7 +86,7 @@ bool		prepare(t_champ *champs, t_session **game)
 	champs_n = count_champs(champs);
 	if (champs_n > MAX_PLAYERS)
 	{
-		ft_printf("Too many champions\n");
+		ft_printf("Too many champions\n"); // TODO: print this before visualization
 		return (false);
 	}
 	RET_CHECK(prepare_session(game, champs_n), NULL);

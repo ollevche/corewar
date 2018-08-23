@@ -14,20 +14,20 @@
 #include "vm_funcs.h"
 #include "visu.h"
 
-static int	kill_carries(t_carry *carrys, int period_start)
+static int	kill_carries(t_carry **carrys, int period_start)
 {
 	t_carry	*icarry;
 	t_carry	*tmp;
-	int			killed;
+	int		killed;
 
-	icarry = carrys;
+	icarry = *carrys;
 	killed = 0;
 	while (icarry)
 	{
 		tmp = icarry->next;
 		if (icarry->last_live < period_start)
 		{
-			del_carry(&carrys, icarry);
+			del_carry(carrys, icarry);
 			killed++;
 		}
 		icarry = tmp;
@@ -52,7 +52,7 @@ static void	control_game_flow(t_session *game)
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
 	if (cycles == 0) // it's start of the period
 	{
-		killed = kill_carries(game->carrys, game->cycle - game->cycle_to_die);
+		killed = kill_carries(&(game->carrys), game->cycle - game->cycle_to_die);
 		game->carry_num -= killed;
 		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
