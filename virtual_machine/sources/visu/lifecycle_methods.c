@@ -51,6 +51,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_ch
 	vdata->vasya = 0;
 	vdata->skip = 0;
 	vdata->index = 0;
+	vdata->total_champs = total_champs;
 	vdata->user_input = 0;
 	ft_bzero(vdata->user_cycle, 10);
 

@@ -69,12 +69,22 @@ static void		create_window_for_the_name(t_scroll_name *name, int x, int y)
 
 void	add_scrolling_name(t_scroll_name *name, t_scroll_name **scrolling_name)
 {
-	t_scroll_name *tmp;
+	t_scroll_name *head;
 
-	tmp = *scrolling_name;
-	while (tmp != NULL)
-		tmp = tmp->next;
-	tmp = name;
+	head = *scrolling_name;
+	if (*scrolling_name == NULL)
+	{
+		*scrolling_name = name;
+		// *scrolling_name->next = NULL;
+	}
+	else
+	{
+		
+		while ((*scrolling_name)->next != NULL)
+			*scrolling_name = (*scrolling_name)->next;
+		(*scrolling_name)->next = name;
+	}
+	*scrolling_name = head;
 }
 
 void			scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y)
@@ -82,9 +92,14 @@ void			scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y)
 	t_scroll_name *name;
 
 	name = (t_scroll_name *)ft_memalloc(sizeof(t_scroll_name));
+	name->next = NULL;
+	if (vdata->scrolling_names)
+		name->next = vdata->scrolling_names;
+	vdata->scrolling_names = name;
+
 	name->full_name = (char *)player_name;
 	name->displayed_name = ft_strnew(MAX_NAME_LEN);
-	add_scrolling_name(name, &vdata->scrolling_names);
+	// add_scrolling_name(name, &vdata->scrolling_names);
 	if ((name->full_name_len = ft_strlen(name->full_name)) < MAX_NAME_LEN)
 	{
 		ft_memset(name->displayed_name, ' ', MAX_NAME_LEN);
@@ -142,11 +157,11 @@ static void		direction_key_listener(t_scrolling_controls *sc)
 	}
 }
 
-static void		scroll_manually_keys_listener(t_scrolling_controls *sc, t_scroll_name *scrolling_names)
+static void		scroll_manually_keys_listener(t_scrolling_controls *sc, t_scroll_name *scrolling_names, int total_champs)
 {
 	int color;
 
-	color = 1;
+	color = total_champs;
 	t_scroll_name *name;
 	if (sc->seconds != 150 && (sc->key == 46 || sc->key == 44)) // < > keys
 	{
@@ -155,7 +170,7 @@ static void		scroll_manually_keys_listener(t_scrolling_controls *sc, t_scroll_na
 		{
 			sc->key == 46 ? scroll_to_right(name, color) : scroll_to_left(name, color);
 			name = name->next;
-			color++;
+			color--;
 		}
 	}
 }
@@ -202,7 +217,7 @@ static void		pause_key_listener(t_vdata *vdata)
  {
 	int color;
 
-	color = 1;
+	color = vdata->total_champs;
 	struct timeval time;
 	gettimeofday(&time, NULL);
 	t_scroll_name *name;
@@ -216,14 +231,14 @@ static void		pause_key_listener(t_vdata *vdata)
 			else
 				scroll_to_right(name, color);
 			name = name->next;
-			color++;
+			color--;
 		}
 		vdata->time = (time.tv_usec / 1000);
 		wrefresh(vdata->scrolling_controls->window);
 	}
 	direction_key_listener(vdata->scrolling_controls);
 	pause_key_listener(vdata);
-	scroll_manually_keys_listener(vdata->scrolling_controls, vdata->scrolling_names);
+	scroll_manually_keys_listener(vdata->scrolling_controls, vdata->scrolling_names, vdata->total_champs);
 }
 
 void			scrolling_finalizing(t_vdata *vdata)

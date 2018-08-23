@@ -83,6 +83,7 @@ typedef struct				s_vdata
 	int skip;
 
 	int 					vasya;
+	int						total_champs;
 }							t_vdata;
 void						show_carries(t_vdata *vdata, t_session *game);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
