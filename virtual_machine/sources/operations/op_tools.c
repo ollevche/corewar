@@ -43,7 +43,7 @@ static int	get_pc_move(int arg, int label_size)
 
 static int	get_idx_ind(t_session *game, int lpc, int op_code)
 {
-	int ind_value;
+	short ind_value;
 
 	ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
 	ind_value %= IDX_MOD;
