@@ -29,7 +29,7 @@ static int  appropriate_window(t_vdata *vdata)
 	return (1);
 }
 
-int		visu_initializing(t_vdata *vdata, t_arg *arg)
+int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_champs)
 {
 	if (!arg->is_visual)
 		return (1);
@@ -58,34 +58,46 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg)
 	nodelay(vdata->right_window, FALSE);
 	curs_set(0);
 	start_color();
-
+	init_color(COLOR_WHITE, 200, 200, 200);
 	init_color(COLOR_GREEN, 880, 880, 480);
 	init_color(COLOR_RED, 450, 350, 490);
 	init_color(COLOR_YELLOW, 300, 800, 800);
 	init_color(COLOR_BLUE, 850, 80, 350);
 
-	int color;
 
+	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
+	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
+
+
+	int color;
+	int y;
+
+	y = 30;
 	color = 1;
-	while (color <= 4)
+	while (color <= total_champs)
 	{
 		init_pair(color * 10, COLOR_BLACK, color);
 		init_pair(color, color, COLOR_BLACK);
+		scrolling_name(vdata, champs->name, y, 197);
+		champs = champs->next;
+		y += 3;
 		color++;
 	}
-	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
-
+	
+	// scrolling_name(vdata, champs->name, 30, 197);
+	// scrolling_name(vdata, champs->next->name, 33, 197);
 	// wattron(vdata->left_window, COLOR_PAIR(LEFT_W));
-	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
+	
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
 
-	scrolling_name(vdata, "REALLY Fucking Viktoriya. Yes she is", 30, 212);
-	scrolling_name(vdata, "Serzh Ivasyshyn", 35, 212);
-	scrolling_name(vdata, "Sasha Levchenkov", 40, 212);
-	scrolling_name(vdata, "Dariy Pozinenko", 45, 212);	
+	// scrolling_name(vdata, "REALLY Fucking Viktoriya. Yes she is", 30, 212);
+	// scrolling_name(vdata, "Serzh Ivasyshyn", 35, 212);
+	// scrolling_name(vdata, "Sasha Levchenkov", 40, 212);
+	// scrolling_name(vdata, "Dariy Pozinenko", 45, 212);	
 	scrolling_controls(vdata, 50, 198);
 	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
+
 	return (1);
 }
 

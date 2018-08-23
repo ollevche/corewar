@@ -104,10 +104,10 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	wattroff(vdata->right_window, A_BOLD);	
 	mvwprintw(vdata->right_window, y += 1, START_X, "Current cycle:\t%d", 0);
 	show_players(vdata->right_window, champs, &y);
-	mvwprintw(vdata->right_window, y += 2, START_X,"Carrys:\t%d", game->carry_num);
+	mvwprintw(vdata->right_window, y += 2, START_X,"Carries:\t%d", game->carry_num);
 	mvwprintw(vdata->right_window, y += 2, START_X, "Cycle to die: %d\tLast change:  %d",
 		game->cycle_to_die, game->last_ctd);
-	mvwprintw(vdata->right_window, y += 2, START_X, "PERIOD LIVES:\t%d", game->period_lives);
+	mvwprintw(vdata->right_window, y += 2, START_X,  "LIVES:\t%d", game->period_lives);
 	mvwprintw(vdata->right_window, y += 2, START_X, "LAST ALIVE:");
 	if (game->last_alive != NULL)
 		mvwprintw(vdata->right_window, y, START_X + 11, "\t%s", game->last_alive->name);
@@ -130,8 +130,8 @@ void show_players(WINDOW *right_window, t_champ *champs, int *y)
 		wattron(right_window, COLOR_PAIR(player));
 		mvwprintw(right_window, *y, START_X, "Player %d:   %s",  champs->id, champs->name);
 		wattroff(right_window, COLOR_PAIR(player));
-		mvwprintw(right_window, *y += 1, START_X, "Last live: %d", 0);		
-		mvwprintw(right_window, *y += 1, START_X, "Lives in current period: %d", 0);
+		// mvwprintw(right_window, *y += 1, START_X, "Last live: %d", 0);		
+		// mvwprintw(right_window, *y += 1, START_X, "Lives in current period: %d", 0);
 		
 		(*y) += 2;
 		player++;

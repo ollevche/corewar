@@ -13,7 +13,7 @@
 #include "visu.h"
 #include "vm.h"
 
-static void		scroll_to_left(t_scroll_name *name)
+static void		scroll_to_left(t_scroll_name *name, int color)
 {
 	char sign_1;
 	char sign_2;
@@ -24,12 +24,14 @@ static void		scroll_to_left(t_scroll_name *name)
 	ft_strcpy(name->hidden_name, name->hidden_name + 1);
 	name->displayed_name[MAX_NAME_LEN - 1] = sign_2;
 	name->hidden_name[name->hidden_len - 1] = sign_1;
+	wattron(name->window, COLOR_PAIR(color));
 	mvwprintw(name->window, 1, 1, name->displayed_name);
+	wattroff(name->window, COLOR_PAIR(color));
 	refresh();
 	wrefresh(name->window);
 }
 
-static void		scroll_to_right(t_scroll_name *name)
+static void		scroll_to_right(t_scroll_name *name, int color)
 {
 	char sign_1;
 	char sign_2;
@@ -40,35 +42,49 @@ static void		scroll_to_right(t_scroll_name *name)
 	ft_memmove(name->hidden_name + 1, name->hidden_name, name->hidden_len - 1);
 	name->displayed_name[0] = sign_2;
 	name->hidden_name[0] = sign_1;
+	wattron(name->window, COLOR_PAIR(color));
 	mvwprintw(name->window, 1, 1, name->displayed_name);
+	wattroff(name->window, COLOR_PAIR(color));
 	refresh();
 	wrefresh(name->window);
 }
 
 static void		create_window_for_the_name(t_scroll_name *name, int x, int y)
 {
+	static int color = 1;
+
 	name->window = newwin(3, MAX_NAME_LEN + 2, x, y);
 	nodelay(name->window, FALSE);
 	//box(name->window, 0, ' ');
 	wborder(name->window, 0, 0, 1, 1, 1, 1, 1, 1);
 	
-	// wattron(name->window, COLOR_PAIR(14));
 	nodelay(name->window, FALSE);
+	wattron(name->window, COLOR_PAIR(color));
 	mvwprintw(name->window, 1, 1, name->displayed_name);
+	wattroff(name->window, COLOR_PAIR(color));
 	refresh();
 	wrefresh(name->window);
+	color++;
 }
 
-void			scrolling_name(t_vdata *vdata, char *player_name, int x, int y)
+void	add_scrolling_name(t_scroll_name *name, t_scroll_name **scrolling_name)
+{
+	t_scroll_name *tmp;
+
+	tmp = *scrolling_name;
+	while (tmp != NULL)
+		tmp = tmp->next;
+	tmp = name;
+}
+
+void			scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y)
 {
 	t_scroll_name *name;
 
 	name = (t_scroll_name *)ft_memalloc(sizeof(t_scroll_name));
-	if (vdata->scrolling_names)
-		name->next = vdata->scrolling_names;
-	vdata->scrolling_names = name;
-	name->full_name = player_name;
+	name->full_name = (char *)player_name;
 	name->displayed_name = ft_strnew(MAX_NAME_LEN);
+	add_scrolling_name(name, &vdata->scrolling_names);
 	if ((name->full_name_len = ft_strlen(name->full_name)) < MAX_NAME_LEN)
 	{
 		ft_memset(name->displayed_name, ' ', MAX_NAME_LEN);
@@ -128,14 +144,18 @@ static void		direction_key_listener(t_scrolling_controls *sc)
 
 static void		scroll_manually_keys_listener(t_scrolling_controls *sc, t_scroll_name *scrolling_names)
 {
+	int color;
+
+	color = 1;
 	t_scroll_name *name;
 	if (sc->seconds != 150 && (sc->key == 46 || sc->key == 44)) // < > keys
 	{
 		name = scrolling_names;
 		while (name)
 		{
-			sc->key == 46 ? scroll_to_right(name) : scroll_to_left(name);
+			sc->key == 46 ? scroll_to_right(name, color) : scroll_to_left(name, color);
 			name = name->next;
+			color++;
 		}
 	}
 }
@@ -180,6 +200,9 @@ static void		pause_key_listener(t_vdata *vdata)
 
  void			scrolling_of_the_names(t_vdata *vdata)
  {
+	int color;
+
+	color = 1;
 	struct timeval time;
 	gettimeofday(&time, NULL);
 	t_scroll_name *name;
@@ -189,10 +212,11 @@ static void		pause_key_listener(t_vdata *vdata)
 		while (name)
 		{
 			if (vdata->scrolling_controls->direction)
-				scroll_to_left(name);
+				scroll_to_left(name, color);
 			else
-				scroll_to_right(name);
+				scroll_to_right(name, color);
 			name = name->next;
+			color++;
 		}
 		vdata->time = (time.tv_usec / 1000);
 		wrefresh(vdata->scrolling_controls->window);

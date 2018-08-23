@@ -30,7 +30,7 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 			bye = newwin(3 , 12, 4, 228);
 
 wattron(bye, A_BOLD);
-			wattron(bye, COLOR_PAIR(141) | A_BOLD);
+			wattron(bye, COLOR_PAIR(0) | A_BOLD);
 			mvwprintw(bye, 1, 1, "%s", vdata->user_cycle);
 			
 			wattroff(bye, A_BOLD);	
@@ -74,7 +74,7 @@ wattron(bye, A_BOLD);
 		WINDOW *bye3;
 		bye3 = newwin(14 , 59, W_HEIGHT / 2 - 7, W_WIDTH / 2 - 30);
 
-		wattron(bye3, COLOR_PAIR(141) | A_BOLD);
+		wattron(bye3, COLOR_PAIR(0) | A_BOLD);
 		mvwprintw(bye3, 9, 14, "%s", "Are you sure you want to exit?");
 		mvwprintw(bye3, 11, 17, "%s", "[Y] Yes           No [N]");
 		box(bye3, 0, 0);
@@ -129,7 +129,7 @@ wattron(bye, A_BOLD);
 		{
 			WINDOW *bye3;
 			bye3 = newwin(14 , 59, W_HEIGHT / 2 - 7, W_WIDTH / 2 - 30);
-			wattron(bye3, COLOR_PAIR(141) | A_BOLD);
+			wattron(bye3, COLOR_PAIR(0) | A_BOLD);
 			mvwprintw(bye3, 9, 8, "%s", "Unfortunately, you can't go back in time!");
 			mvwprintw(bye3, 11, 17, "%s", "Press [Enter] to continue.");
 			box(bye3, 0, 0);
