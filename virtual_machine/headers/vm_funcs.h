@@ -72,7 +72,7 @@ int		move_pc(int pc, int val);
 
 t_champ	*new_champ(t_champ **champs);
 t_carry *new_carry(t_carry **all_carrys, int first_reg);
-void	del_carry(t_carry **carrys, t_carry *target);
+void	del_carry(t_carry **head, t_carry **prev, t_carry *target);
 t_champ	*get_champ_by_id(t_champ *head, int id);
 
 /*

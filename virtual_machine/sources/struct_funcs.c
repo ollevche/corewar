@@ -56,21 +56,15 @@ t_carry	*new_carry(t_carry **all_carrys, int first_reg)
 	return (carry);
 }
 
-void	del_carry(t_carry **carrys, t_carry *target)
+void	del_carry(t_carry **head, t_carry **prev, t_carry *target)
 {
-	t_carry	*iter;
-
-	iter = *carrys;
-	if (!iter)
-		return ;
-	if (iter == target)
-		*carrys = iter->next;
-	else
+	if (*prev == NULL)
 	{
-		while (iter->next != target)
-			iter = iter->next;
-		iter->next = target->next;
+		*head = (*head)->next;
+		*prev = *head;
 	}
+	else
+		(*prev)->next = target->next;
 	target->next = NULL;
 	free_carries(target);
 }

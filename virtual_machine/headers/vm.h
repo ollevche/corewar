@@ -80,7 +80,7 @@ typedef struct			s_champ
 typedef struct			s_session
 {
 	t_uchar	map[MEM_SIZE];
-	int			cycle;
+	t_uint		cycle; // TODO: was int
 	int			period_lives; // number of live calls in the last period
 	int			cycle_to_die;
 	int			last_ctd; // last change of cycle_to_die

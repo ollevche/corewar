@@ -17,20 +17,22 @@
 static int	kill_carries(t_carry **carrys, int period_start)
 {
 	t_carry	*icarry;
-	t_carry	*tmp;
+	t_carry	*prev;
 	int		killed;
 
 	icarry = *carrys;
+	prev = NULL;
 	killed = 0;
 	while (icarry)
 	{
-		tmp = icarry->next;
 		if (icarry->last_live < period_start)
 		{
-			del_carry(carrys, icarry);
+			del_carry(carrys, &prev, icarry); // TODO: prev == NULL
+			icarry = prev;
 			killed++;
 		}
-		icarry = tmp;
+		prev = icarry;
+		icarry = icarry->next;
 	}
 	return (killed);
 }
@@ -70,7 +72,7 @@ static void	log(t_session *game, bool is_log)
 	if (!is_log)
 		return ;
 	ft_printf("--- --- --- --- --- --- --- --- ---\n");
-	ft_printf("cycle: %d\n", game->cycle);
+	ft_printf("cycle: %u\n", game->cycle);
 	ft_printf("period lives: %d\n", game->period_lives);
 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
@@ -90,7 +92,7 @@ static bool	is_dump(t_session *game, t_arg *arg)
 	int		iter;
 	t_uchar	*map;
 
-	if (arg->is_visual || game->cycle <= arg->dump || arg->dump < 0)
+	if (arg->is_visual || game->cycle <= (t_uint)arg->dump || arg->dump < 0)
 		return (false);
 	iter = 0;
 	map = game->map;
@@ -125,6 +127,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		game->cycle++;
 		control_game_flow(game);
 		visu_drawing(&vdata, game, champs, arg);
+		// printf("c%d\n", game->cycle);
 	}
 
 	free_session(&game);

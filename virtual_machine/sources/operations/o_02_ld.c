@@ -18,14 +18,17 @@ bool	ld(t_session *game, t_carry *carry, t_champ *head)
 	int 	args[2][3 + 1];
 	int		lpc;
 
+	if (game->cycle == 24171)
+		game->cycle = 24171;
 	(void)head;
 	lpc = PC;
 	ft_bzero(args, 8 * sizeof(int));
 	args[0][2] = -1;
 	CHK_MV(set_arg_values(args, &lpc, game, 2));
-	if (IS_REG(VAL2))
-		REGS[VAL2 - 1] = VAL1;
 	update_position(game, carry, JMP + 1);
+	if (!IS_REG(VAL2)) // TODO: check every op for reg/dir/ind values
+		return (false);
+	REGS[VAL2 - 1] = VAL1;
 	CARRY = (REGS[VAL2 - 1] == 0 ? true : false);
-	return (IS_REG(VAL2));
+	return (true);
 }
