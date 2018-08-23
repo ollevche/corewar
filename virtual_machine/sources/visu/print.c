@@ -12,17 +12,6 @@
 
 #include "visu.h"
 
-// int	is_carry(t_carry *carrys, int index)
-// {
-// 	while (carrys != NULL)
-// 	{
-// 		if (carrys->pc == index)
-// 			return (1);
-// 		carrys = carrys->next;
-// 	}
-// 	return (0);
-// }
-
 void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	int	index;
@@ -41,7 +30,6 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 			y++;
 			x = 2;
 		}
-		// if (is_carry(game->carrys, index) != 1)//comment this line if 
 			print_player_code(vdata->left_window, y, x, game->map[index], 0);
 		x += 3;
 		index++;
@@ -86,25 +74,22 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 
 	y = 3;
 
+	//werase(vdata->right_window);
 	wattron(vdata->right_window, COLOR_PAIR(0));
-	if (vdata->paused)
-		mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED **");			
-	else
-		mvwprintw(vdata->right_window, 1, START_X, "%s", "** RUNNING **");			
+
+	mvwprintw(vdata->right_window, 1, START_X, "%s", vdata->paused ? "** PAUSED ** " : "** RUNNING **");	
 		
 	mvwprintw(vdata->right_window, 3, START_X, "Cycles/second:\t%d     ", vdata->sec);
 
 	wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
 
-		wattron(vdata->right_window, A_BOLD);
- 		
+	mvwprintw(vdata->right_window, y += 2, START_X, "Current cycle:\t%d", game->cycle);
 
-	mvwprintw(vdata->right_window, y += 2, START_X, "Total cycle:\t\t%d", game->cycle);
-
-	wattroff(vdata->right_window, A_BOLD);	
-	mvwprintw(vdata->right_window, y += 1, START_X, "Current cycle:\t%d", 0);
-	show_players(vdata->right_window, champs, &y);
-	mvwprintw(vdata->right_window, y += 2, START_X,"Carries:\t%d", game->carry_num);
+	wattroff(vdata->right_window, COLOR_PAIR(0) | A_BOLD);	
+	mvwprintw(vdata->right_window, y += 1, START_X, "[E] Enter a cycle");
+	
+	//show_players(vdata->right_window, champs, &y);
+	mvwprintw(vdata->right_window, y += 5, START_X,"Carries:\t%d", game->carry_num);
 	mvwprintw(vdata->right_window, y += 2, START_X, "Cycle to die: %d\tLast change:  %d",
 		game->cycle_to_die, game->last_ctd);
 	mvwprintw(vdata->right_window, y += 2, START_X,  "LIVES:\t%d", game->period_lives);
@@ -113,28 +98,35 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 		mvwprintw(vdata->right_window, y, START_X + 11, "\t%s", game->last_alive->name);
 	else
 		mvwprintw(vdata->right_window, y, START_X + 11, "\tNO ONE");
-	// wattroff(vdata->right_window, COLOR_PAIR(PLAYER_2));
+
+
+	wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
+	mvwprintw(vdata->right_window, 6, START_X + 1, "E");
+	wattroff(vdata->right_window, A_BOLD);
 	wrefresh(vdata->right_window);
+
 }
 
-void show_players(WINDOW *right_window, t_champ *champs, int *y)
-{
-	// init_pair(, COLOR_GREEN, COLOR_BLACK);
-	//wattron(right_window, COLOR_PAIR(5));
-	//mvwprintw(right_window, *y, 25 - 3, "PLAYERS");
-	int player;
-	player = 1;
-	*y += 3;
-	while (champs != NULL)
-	{
-		wattron(right_window, COLOR_PAIR(player));
-		mvwprintw(right_window, *y, START_X, "Player %d:   %s",  champs->id, champs->name);
-		wattroff(right_window, COLOR_PAIR(player));
-		// mvwprintw(right_window, *y += 1, START_X, "Last live: %d", 0);		
-		// mvwprintw(right_window, *y += 1, START_X, "Lives in current period: %d", 0);
+// void show_players(WINDOW *right_window, t_champ *champs, int *y)
+// {
+// 	// init_pair(, COLOR_GREEN, COLOR_BLACK);
+// 	//wattron(right_window, COLOR_PAIR(5));
+// 	//mvwprintw(right_window, *y, 25 - 3, "PLAYERS");
+// 	int player;
+// 	player = 1;
+// 	*y += 3;
+// 	while (champs != NULL)
+// 	{
+// 		wattron(right_window, COLOR_PAIR(player));
+// 		mvwprintw(right_window, *y, START_X, "Player %d:",  champs->id);
 		
-		(*y) += 2;
-		player++;
-		champs = champs->next;
-	}
-}
+// 		//mvwprintw(right_window, *y, START_X, "Player %d:   %s",  champs->id, champs->name);
+// 		wattroff(right_window, COLOR_PAIR(player));
+// 		// mvwprintw(right_window, *y += 1, START_X, "Last live: %d", 0);		
+// 		// mvwprintw(right_window, *y += 1, START_X, "Lives in current period: %d", 0);
+		
+// 		(*y) += 2;
+// 		player++;
+// 		champs = champs->next;
+// 	}
+// }

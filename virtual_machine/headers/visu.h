@@ -27,7 +27,7 @@
 // Scrolling names
 #define LEFT_D 1
 #define RIGHT_D 0
-#define MAX_NAME_LEN 30
+#define MAX_NAME_LEN 33
 #include <sys/time.h>
 // Scrolling names
 
@@ -45,6 +45,24 @@
 # define CARRY_P3 30
 # define CARRY_P4 40
 
+
+//COLORS
+# define COLOR_JA 4181
+
+//KEYS
+# define ESC 27
+# define LEFT 260
+# define RIGHT 261
+# define ENTER '\n'
+# define E 101
+# define Y 121
+# define N 110
+# define SPACE 32
+# define BACKSPACE 127
+# define NUMBER_KEYS (vdata->key >= '0' && vdata->key <= '9')
+# define KEY(x) (vdata->key == x)
+# define ERASE_KEY (vdata->key = -1)
+//KEYS
 
 typedef struct				s_scrolling_controls
 {
@@ -69,21 +87,22 @@ typedef struct				s_vdata
 {
 	WINDOW					*left_window;
 	WINDOW					*right_window;
+	WINDOW					*alert_window;
+	WINDOW					*input_window;
 	int						key;
 	int						paused;
 	unsigned long long		sec;
 	t_scroll_name			*scrolling_names;
 	t_scrolling_controls	*scrolling_controls;
 	unsigned long long		time;
-	unsigned long long		time2;
 
-	int						user_input;
-	char					user_cycle[10];
-	int 					index;
-	int skip;
-
-	int 					vasya;
 	int						total_champs;
+	
+	int						input_cycle;
+	int						input_entered;
+	int						input_index;
+	char					input_line[10];
+	int						input_paused;
 }							t_vdata;
 void						show_carries(t_vdata *vdata, t_session *game);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
@@ -95,10 +114,16 @@ int							visu_finalizing		(t_vdata *vdata, t_session *game, t_champ *champs, t_
 int							visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs,t_arg *arg);
 void						show_players(WINDOW *nbr_win, t_champ *champs, int *i);
 void						playback_controls(t_vdata *vdata, t_session *game, t_champ *champs);
-void	add_scrolling_name(t_scroll_name *name, t_scroll_name **scrolling_name);
+void						add_scrolling_name(t_scroll_name *name, t_scroll_name **scrolling_name);
 void						scrolling_controls(t_vdata *vdata, int x, int y);
 void						scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y);
 void						scrolling_of_the_names(t_vdata *vdata);
 void						scrolling_finalizing(t_vdata *vdata);
 void						music_player();
+
+void						custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs);
+
+void						custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs);
+void						exit_window(t_vdata *vdata, t_session *game, t_champ *champs);
+void						gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
 #endif

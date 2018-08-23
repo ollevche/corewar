@@ -15,8 +15,6 @@
 
 static int  appropriate_window(t_vdata *vdata)
 {
-
-
 	if (COLS < W_WIDTH || LINES < W_HEIGHT)
 	{  
 		ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
@@ -29,6 +27,27 @@ static int  appropriate_window(t_vdata *vdata)
 	return (1);
 }
 
+static void		set_defaults(t_vdata *vdata, int total_champs)
+{
+	vdata->left_window = newwin(66 , 195, 0, 0);
+	vdata->right_window = newwin(20, 49, 0, 195);
+	vdata->alert_window = newwin(14 , 59, W_HEIGHT / 2 - 7, W_WIDTH / 2 - 30);
+	vdata->input_window = newwin(1, 12, 6, 219);
+	vdata->key = 0;
+	vdata->paused = 1;
+	vdata->sec = 5;
+	vdata->scrolling_names = NULL;
+	vdata->scrolling_controls = NULL;
+	vdata->time = 0;
+	vdata->input_cycle = 0;
+	vdata->input_entered = 0;
+	vdata->input_index = 0;
+	ft_bzero(vdata->input_line, 10);
+	vdata->input_paused = 0;
+
+	vdata->total_champs = total_champs;
+}
+
 int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_champs)
 {
 	if (!arg->is_visual)
@@ -37,26 +56,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_ch
 		return (0);
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
-
-	vdata->left_window = newwin(66 , 195, 0, 0);
-	vdata->right_window = newwin(30, 50, 0, 195);
-	vdata->sec = 5;
-	vdata->key = 0;
-	vdata->paused = 1;
-	vdata->scrolling_names = NULL;
-	vdata->scrolling_controls = NULL;
-	vdata->time = 0;
-	vdata->time2 = 0;
-
-	vdata->vasya = 0;
-	vdata->skip = 0;
-	vdata->index = 0;
-	vdata->total_champs = total_champs;
-	vdata->user_input = 0;
-	ft_bzero(vdata->user_cycle, 10);
-
-	nodelay(vdata->left_window, TRUE);
-	nodelay(vdata->right_window, FALSE);
+	set_defaults(vdata, total_champs);
 	curs_set(0);
 	start_color();
 	init_color(COLOR_WHITE, 200, 200, 200);
@@ -69,70 +69,48 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_ch
 	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
 	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
 
-
+	
 	int color;
 	int y;
 
-	y = 30;
+	y = 21;
 	color = 1;
 	while (color <= total_champs)
 	{
 		init_pair(color * 10, COLOR_BLACK, color);
 		init_pair(color, color, COLOR_BLACK);
-		scrolling_name(vdata, champs->name, y, 197);
+		scrolling_name(vdata, champs->name, y, 198);
 		champs = champs->next;
-		y += 3;
+		y += 2;
 		color++;
 	}
-	
-	// scrolling_name(vdata, champs->name, 30, 197);
-	// scrolling_name(vdata, champs->next->name, 33, 197);
-	// wattron(vdata->left_window, COLOR_PAIR(LEFT_W));
-	
-	box(vdata->left_window, 0, 0);
-	box(vdata->right_window, 0, 0);
 
-	// scrolling_name(vdata, "REALLY Fucking Viktoriya. Yes she is", 30, 212);
-	// scrolling_name(vdata, "Serzh Ivasyshyn", 35, 212);
-	// scrolling_name(vdata, "Sasha Levchenkov", 40, 212);
-	// scrolling_name(vdata, "Dariy Pozinenko", 45, 212);	
-	scrolling_controls(vdata, 50, 198);
+
+	
+	
 	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
 
+box(vdata->left_window, 0, 0);
+	box(vdata->right_window, 0, 0);
+	scrolling_controls(vdata, 29, 197);
 	return (1);
 }
 
 int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 {
-	werase(vdata->right_window);
+	//werase(vdata->right_window);
 	if (!arg->is_visual)
 		return (1);
-
-	if (game->cycle == vdata->skip)
-		vdata->skip = 0;
-
-
-	if (vdata->vasya)
-	{
-		vdata->paused = 1;
-		vdata->vasya = 0;
-	}
-
-	if (vdata->skip <= game->cycle || !vdata->skip)
+	if (game->cycle == vdata->input_cycle)
+		vdata->input_cycle = 0;
+	if (!vdata->input_cycle)
 	{
 		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
 		playback_controls(vdata, game, champs);
-		refresh();
 	}
-
-	if (game->carry_num <= 0 || game->cycle_to_die <0)
-	{
-		show_left(vdata, game, champs);
-		show_right(vdata, game, champs);
-	}
-
-
+	if (game->carry_num <= 0 || game->cycle_to_die < 0)
+		gameover_window(vdata, game, champs);
 	return (0);
 }
 
@@ -142,9 +120,12 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 		return (1);
 	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W));
 	// wattroff(vdata->left_window, COLOR_PAIR(LEFT_W));
-	playback_controls(vdata, game, champs);
+
+	scrolling_finalizing(vdata);
 	delwin(vdata->left_window);
 	delwin(vdata->right_window);
+	delwin(vdata->alert_window);
+	delwin(vdata->input_window);
 	endwin();
 	system("killall afplay");
 	exit(1);
