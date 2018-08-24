@@ -108,7 +108,7 @@ void						show_carries(t_vdata *vdata, t_session *game);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
 void 						print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player);
-int							visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_champs);
+int							visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs);
 void						set_champs_names_to_scrolling(t_vdata *vdata, t_champ *champs, int total_champs);
 int							visu_finalizing		(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg);
 int							visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs,t_arg *arg);
