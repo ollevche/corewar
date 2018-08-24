@@ -34,6 +34,7 @@
 # define IS_REG(r) (r > 0 && r < REG_NUMBER)
 # define JMP (lpc - PC)
 # define CHK_MV(x) if (!x) {update_position(game, carry, JMP + 1); return (0);}
+# define MAPVAL(p, n) MAP[move_pc(p, n)]
 
 /*
 ** DEFINES FOR READABILITY ▽
@@ -47,6 +48,13 @@
 # define CYCLE			game->cycle
 # define REGS			carry->regs
 # define CARRY			carry->carry
+
+# define TYP1 args[0][0]
+# define TYP2 args[0][1]
+# define TYP3 args[0][2]
+# define VAL1 args[1][0]
+# define VAL2 args[1][1]
+# define VAL3 args[1][2]
 
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;

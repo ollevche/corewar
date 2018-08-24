@@ -16,17 +16,6 @@
 # include "vm.h"
 
 /*
-** DEFINES FOR READABILITY ▽
-*/
-
-# define TYP1 args[0][0]
-# define TYP2 args[0][1]
-# define TYP3 args[0][2]
-# define VAL1 args[1][0]
-# define VAL2 args[1][1]
-# define VAL3 args[1][2]
-
-/*
 **	main.c
 */
 

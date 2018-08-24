@@ -20,7 +20,7 @@ bool	zjmp(t_session *game, t_carry *carry, t_champ *head)
 
 	(void)head;
 	lpc = PC;
-	dir = ft_byte_to_uint(0, 0, MAP[PC + 1], MAP[PC + 2]);
+	dir = ft_byte_to_uint(0, 0, MAPVAL(PC, 1), MAPVAL(PC, 2));
 	lpc = move_pc(lpc, 2);
 	if (CARRY)
 		update_position(game, carry, dir % IDX_MOD);

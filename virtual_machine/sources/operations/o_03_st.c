@@ -16,9 +16,9 @@
 static void write_to_map(t_session *game, int pos, int value) // TODO: remove 2 write_to_map funcs
 {
 	MAP[pos] = (value & -16777216) >> 24;
-	MAP[move_pc(pos, 1)] = (value & 16711680) >> 16;
-	MAP[move_pc(pos, 2)] = (value & 65280) >> 8;
-	MAP[move_pc(pos, 3)] = value & 255;
+	MAPVAL(pos, 1) = (value & 16711680) >> 16;
+	MAPVAL(pos, 1) = (value & 65280) >> 8;
+	MAPVAL(pos, 1) = value & 255;
 }
 
 bool	st(t_session *game, t_carry *carry, t_champ *head)

@@ -45,12 +45,12 @@ static int	get_idx_ind(t_session *game, int lpc, int op_code)
 {
 	short ind_value;
 
-	ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
+	ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
 	ind_value %= IDX_MOD;
 	if (op_code == 3 || op_code == 11) // st or sti
 		return (ind_value);
 	lpc = move_pc(lpc, ind_value);
-	return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
+	return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 }
 
 bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
@@ -64,7 +64,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	while (args[0][n_of_args] != -1) // get size of arg_types == number of arguments
 		n_of_args++;
 
-	coding_byte = ft_byte_to_uint(0, 0, 0, MAP[*lpc + 1]);
+	coding_byte = ft_byte_to_uint(0, 0, 0, MAPVAL(*lpc, 1));
 	*lpc = move_pc(*lpc, 1);
 	if (!(valid_args = set_arg_types(coding_byte, args[0], n_of_args)))
 		return (false);
@@ -90,20 +90,20 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, int op_code)
 
 	if (arg == IND_CODE) // read value where to jump; jump to that value; read value after jump and return it
 	{
-		ind_value = ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]);
+		ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
 		if (op_code == 3 || op_code == 11) // st or sti
 			return (ind_value);
 		lpc = move_pc(lpc, ind_value); // TODO: st and sti writes to the map by pointer (IND)
-		return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
+		return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 	}
 	if (arg == REG_CODE)
-		return (ft_byte_to_uint(0, 0, 0, MAP[lpc + 1]));
+		return (ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, 1)));
 	if (arg == DIR_CODE)
 	{
 		if (g_optab[op_code].label_size == 1)
-			return (ft_byte_to_uint(0, 0, MAP[lpc + 1], MAP[lpc + 2]));
+			return (ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2)));
 		else
-			return (ft_byte_to_uint(MAP[lpc + 1], MAP[lpc + 2], MAP[lpc + 3], MAP[lpc + 4]));
+			return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 	}
 	return (0);
 }
