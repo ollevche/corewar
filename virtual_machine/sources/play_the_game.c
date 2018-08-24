@@ -72,7 +72,7 @@ static void	log(t_session *game, bool is_log)
 	if (!is_log)
 		return ;
 	ft_printf("--- --- --- --- --- --- --- --- ---\n");
-	ft_printf("cycle: %u\n", game->cycle);
+	ft_printf("cycle: %d\n", game->cycle);
 	ft_printf("period lives: %d\n", game->period_lives);
 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
@@ -127,7 +127,6 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		game->cycle++;
 		control_game_flow(game);
 		visu_drawing(&vdata, game, champs, arg);
-		// printf("c%d\n", game->cycle);
 	}
 
 	free_session(&game);

@@ -79,7 +79,7 @@ int			main(int argc, char **args)
 	winner = play_the_game(champs, &arg);
 	if (!winner)
 		terminate(&champs);
-	// print_result(winner);
+	// TODO: print_result(winner);
 	free_champs(&champs);
 	return (0);
 }

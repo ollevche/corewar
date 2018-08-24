@@ -102,7 +102,7 @@ int		get_value_by_arg(t_session *game, int arg, int lpc, int op_code)
 		ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
 		if (op_code == 3 || op_code == 11) // st or sti
 			return (ind_value);
-		lpc = move_pc(lpc, ind_value); // TODO: st and sti writes to the map by pointer (IND)
+		lpc = move_pc(lpc, ind_value);
 		return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 	}
 	if (arg == REG_CODE)

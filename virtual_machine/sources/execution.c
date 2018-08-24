@@ -80,7 +80,7 @@ void		execute_carries(t_session *game, t_champ *champs)
 		if (icarry->inactive == 0)
 		{
 			if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT)
-				operations[icarry->op_code](game, icarry, champs); // TODO: fix a bug with 1-16 bytes which aren't op_codes
+				operations[icarry->op_code](game, icarry, champs);
 			else
 				update_position(game, icarry, 1);
 		}
