@@ -47,9 +47,24 @@ static void		set_defaults(t_vdata *vdata, int total_champs)
 
 	vdata->total_champs = total_champs;
 }
-
-int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, int total_champs)
+int count_champs(t_champ *champs)
 {
+	int count;
+
+	count = 0;
+	while (champs != NULL)
+	{
+		champs = champs->next;
+		count++;
+	}
+	return (count);
+}
+
+int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
+{
+	int total_champs;
+
+	total_champs = count_champs(champs);
 	if (!arg->is_visual)
 		return (1);
 	if (!initscr() || !appropriate_window(vdata))
