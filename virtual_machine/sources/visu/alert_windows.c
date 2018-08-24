@@ -12,7 +12,7 @@
 
 #include "visu.h"
 
-static void		show_alert_window(t_vdata *vdata, char *alert, char *options)
+void		show_alert_window(t_vdata *vdata, char *alert, char *options)
 {
 	werase(vdata->alert_window);
 	wattron(vdata->alert_window, COLOR_PAIR(0) | A_BOLD);
