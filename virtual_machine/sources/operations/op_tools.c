@@ -53,6 +53,15 @@ static int	get_idx_ind(t_session *game, int lpc, int op_code)
 	return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 }
 
+bool	check_opcode_cbyte(int args[2][4], int op_code)
+{
+	if (TYP1 == 1)
+		if (OP_ATYP(op_code, 0) != 7 || OP_ATYP(op_code, 0) != 1)
+			return (false);
+	return (true);
+
+}
+
 bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 {
 	int		coding_byte;
@@ -81,7 +90,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 			continue ;
 		*lpc = move_pc(*lpc, get_pc_move(args[0][i], g_optab[op_code].label_size));
 	}
-	return (n_of_args == valid_args);
+	return (n_of_args == valid_args && check_opcode_cbyte(coding_byte, op_code));
 }
 
 int		get_value_by_arg(t_session *game, int arg, int lpc, int op_code)

@@ -92,7 +92,7 @@ static bool	is_dump(t_session *game, t_arg *arg)
 	int		iter;
 	t_uchar	*map;
 
-	if (arg->is_visual || game->cycle <= (t_uint)arg->dump || arg->dump < 0)
+	if (arg->is_visual || game->cycle <= arg->dump || arg->dump < 0)
 		return (false);
 	iter = 0;
 	map = game->map;

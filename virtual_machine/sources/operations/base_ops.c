@@ -39,6 +39,5 @@ bool		base_fork(t_session *game, t_carry *carry, bool idx)
 	update_position(game, fork, pos);
 	update_position(game, carry, 3);
 	game->carry_num++;
-	// fork->inactive++; // TODO: check if the fork runs in current cycle
 	return (true);
 }

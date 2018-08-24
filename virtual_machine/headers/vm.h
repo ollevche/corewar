@@ -35,6 +35,7 @@
 # define JMP (lpc - PC)
 # define CHK_MV(x) if (!x) {update_position(game, carry, JMP + 1); return (0);}
 # define MAPVAL(p, n) MAP[move_pc(p, n)]
+# define OP_ATYP(c, i)	g_optab[c].params_type[i]
 
 /*
 ** DEFINES FOR READABILITY ▽
@@ -88,7 +89,7 @@ typedef struct			s_champ
 typedef struct			s_session
 {
 	t_uchar	map[MEM_SIZE];
-	t_uint		cycle; // TODO: was int
+	int			cycle;
 	int			period_lives; // number of live calls in the last period
 	int			cycle_to_die;
 	int			last_ctd; // last change of cycle_to_die
@@ -108,7 +109,7 @@ typedef struct			s_op
 {
 	char	name[PROG_NAME_LENGTH];
 	int		nb_params;
-	char	params_type[3];
+	int		params_type[3];
 	int		id;
 	int		cycles;
 	char	description[50];
