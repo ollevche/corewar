@@ -104,7 +104,7 @@ typedef struct				s_vdata
 	char					input_line[10];
 	int						input_paused;
 }							t_vdata;
-void						show_carries(t_vdata *vdata, t_session *game);
+void						show_carries(t_vdata *vdata, t_session *game, t_carry *carries);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
 void 						print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player);

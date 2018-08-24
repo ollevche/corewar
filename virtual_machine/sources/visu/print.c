@@ -34,27 +34,25 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 		x += 3;
 		index++;
 	}
-	show_carries(vdata, game);
+	show_carries(vdata, game, game->carrys);
 	wrefresh(vdata->left_window);
 }
 
-void	show_carries(t_vdata *vdata, t_session *game)
+void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries)
 {
 	int x;
 	int y;
 	int pc;
-	t_carry *carries;
-	carries = game->carrys;
+
 	while (carries != NULL)
 	{
 		pc = carries->pc;
 		x = pc % 64 * 3 + 2;
 		y = pc / 64 + 1;
-		wattron(vdata->left_window, COLOR_PAIR(carries->champ * (-10)));
+		wattron(vdata->left_window, COLOR_PAIR(CARRY_P1));
 		mvwprintw(vdata->left_window, y, x, "%02x", game->map[pc]);
-		wattroff(vdata->left_window, COLOR_PAIR(carries->champ * (-10)));
+		wattroff(vdata->left_window, COLOR_PAIR(CARRY_P1));
         mvwprintw(vdata->left_window, y, x + 2, " ");
-		
 		carries = carries->next;
 	}
 }
@@ -95,7 +93,11 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	mvwprintw(vdata->right_window, y += 2, START_X,  "LIVES:\t%d", game->period_lives);
 	mvwprintw(vdata->right_window, y += 2, START_X, "LAST ALIVE:");
 	if (game->last_alive != NULL)
+	{
+		wattron(vdata->right_window, COLOR_PAIR(game->last_alive->id * (-1)));
 		mvwprintw(vdata->right_window, y, START_X + 11, "\t%s", game->last_alive->name);
+		wattroff(vdata->right_window, COLOR_PAIR(game->last_alive->id * (-1)));
+	}
 	else
 		mvwprintw(vdata->right_window, y, START_X + 11, "\tNO ONE");
 

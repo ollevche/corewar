@@ -74,7 +74,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	set_defaults(vdata, total_champs);
 	curs_set(0);
 	start_color();
-	init_color(COLOR_WHITE, 200, 200, 200);
+	init_color(COLOR_WHITE, 400, 400, 400);
 	init_color(COLOR_GREEN, 880, 880, 480);
 	init_color(COLOR_RED, 450, 350, 490);
 	init_color(COLOR_YELLOW, 300, 800, 800);
@@ -82,6 +82,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 
 
 	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
+	init_pair(100, COLOR_BLACK, COLOR_WHITE);
 	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
 
 	
@@ -161,11 +162,11 @@ void	music_player()
 	else if (stop == 1)
 	{
 		if (i == 0)
-			system("afplay La_Valse_OST_Ameli.mp3 &");
+			system("afplay media/La_Valse_OST_Ameli.mp3 &");
 		else if(i == 1)
-			system("afplay Hooked_On_A_Feeling.mp3 &");
+			system("afplay media/Hooked_On_A_Feeling.mp3 &");
 		else if(i == 2)
-			system("afplay Game_of_Thrones.mp3 &");
+			system("afplay media/Game_of_Thrones.mp3 &");
 		else
 			timeout(0);
 		stop = 0;

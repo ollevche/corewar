@@ -56,8 +56,8 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	timeout(1000 / vdata->sec);
 	vdata->key = getch();
 	vdata->scrolling_controls->key = vdata->key;
-	
-
+	if (vdata->key == 'm' || vdata->key == 'M')
+		music_player();
 	custom_cycle(vdata, game, champs);
 	exit_window(vdata, game, champs);
 	speed_controls(vdata, game, champs);
