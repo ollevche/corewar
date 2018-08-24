@@ -119,17 +119,26 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 	//werase(vdata->right_window);
 	if (!arg->is_visual)
 		return (1);
-	if (game->cycle == vdata->input_cycle)
-		vdata->input_cycle = 0;
 
-	
 	if (vdata->input_cycle && show_cycles)
 	{
-		char *cycles = ft_itoa(game->cycle);
-		show_cycles = true;
-		show_alert_window(vdata, "Loading...", show_cycles ? cycles : "The window is rendered only ONCE");
-		ft_strdel(&cycles);
+		timeout(0);
+		vdata->key = getch();
+		vdata->scrolling_controls->key = vdata->key;
+		if (KEY(ESC))
+			vdata->input_cycle = 0;
+		else
+		{
+			scrolling_of_the_names(vdata);
+			char *cycles = ft_itoa(game->cycle);
+			show_cycles = true;	//SET TO FALSE TO RENDER THE LOADING WINDOW ONLY ONCE
+			show_alert_window(vdata, "     Loading... Press [ESC] to abort!", show_cycles ? cycles : "The window is rendered only ONCE");
+			ft_strdel(&cycles);
+		}
 	}
+
+	if (game->cycle == vdata->input_cycle)
+		vdata->input_cycle = 0;
 			
 	if (!vdata->input_cycle)
 	{
