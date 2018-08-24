@@ -32,7 +32,8 @@ static int	kill_carries(t_carry **carrys, int period_start)
 			killed++;
 		}
 		prev = icarry;
-		icarry = icarry->next;
+		if (icarry)
+			icarry = icarry->next;
 	}
 	return (killed);
 }
