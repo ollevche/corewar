@@ -49,9 +49,9 @@ void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries)
 		pc = carries->pc;
 		x = pc % 64 * 3 + 2;
 		y = pc / 64 + 1;
-		wattron(vdata->left_window, COLOR_PAIR(CARRY_P1));
+		wattron(vdata->left_window, COLOR_PAIR(carries->champ * (-10)));
 		mvwprintw(vdata->left_window, y, x, "%02x", game->map[pc]);
-		wattroff(vdata->left_window, COLOR_PAIR(CARRY_P1));
+		wattroff(vdata->left_window, COLOR_PAIR(carries->champ * (-10)));
         mvwprintw(vdata->left_window, y, x + 2, " ");
 		carries = carries->next;
 	}
