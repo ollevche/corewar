@@ -96,6 +96,8 @@ box(vdata->left_window, 0, 0);
 	return (1);
 }
 
+int show_cycles = true;
+
 int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 {
 	//werase(vdata->right_window);
@@ -103,6 +105,16 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 		return (1);
 	if (game->cycle == vdata->input_cycle)
 		vdata->input_cycle = 0;
+
+	
+	if (vdata->input_cycle && show_cycles)
+	{
+		char *cycles = ft_itoa(game->cycle);
+		show_cycles = true;
+		show_alert_window(vdata, "Loading...", show_cycles ? cycles : "The window is rendered only ONCE");
+		ft_strdel(&cycles);
+	}
+			
 	if (!vdata->input_cycle)
 	{
 		show_left(vdata, game, champs);

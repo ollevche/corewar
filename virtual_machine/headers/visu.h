@@ -123,6 +123,7 @@ void						music_player();
 
 void						custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs);
 
+void						show_alert_window(t_vdata *vdata, char *alert, char *options);
 void						custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs);
 void						exit_window(t_vdata *vdata, t_session *game, t_champ *champs);
 void						gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
