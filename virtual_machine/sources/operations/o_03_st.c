@@ -17,8 +17,8 @@ static void write_to_map(t_session *game, int pos, int value) // TODO: remove 2 
 {
 	MAP[pos] = (value & -16777216) >> 24;
 	MAPVAL(pos, 1) = (value & 16711680) >> 16;
-	MAPVAL(pos, 1) = (value & 65280) >> 8;
-	MAPVAL(pos, 1) = value & 255;
+	MAPVAL(pos, 2) = (value & 65280) >> 8;
+	MAPVAL(pos, 3) = value & 255;
 }
 
 bool	st(t_session *game, t_carry *carry, t_champ *head)

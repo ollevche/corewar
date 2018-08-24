@@ -108,4 +108,10 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code);
 int 	get_value_by_arg(t_session *game, int arg, int lpc, int op_code);
 bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);
 
+/*
+**	op_tools_more.c ▽
+*/
+
+bool	check_cbyte(int args[2][4], int op_code, int size);
+
 #endif
