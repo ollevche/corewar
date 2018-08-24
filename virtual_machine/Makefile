@@ -10,9 +10,11 @@
 #                                                                              #
 #******************************************************************************#
 
+#-Wall -Werror -Wextra 
+
 NAME	=	corewar
 
-FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers -g # DEL
+FLAGS	=	-I./headers -I$(LIBDIR)/headers -g # DEL
 
 SRCDIR	=	sources/
 
@@ -34,7 +36,7 @@ OP		=	o_01_live.c o_02_ld.c o_03_st.c o_04_add.c o_05_sub.c o_06_and.c \
 			o_13_lld.c o_14_lldi.c o_15_lfork.c o_16_aff.c base_ops.c \
 			op_tools.c op_tools_more.c
 
-VISU	=	lifecycle_methods.c playback_controls.c print.c scrolling_names.c
+VISU	=	lifecycle_methods.c playback_controls.c print.c scrolling_names.c custom_cycle.c alert_windows.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
