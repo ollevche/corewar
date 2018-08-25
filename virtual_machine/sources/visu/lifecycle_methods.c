@@ -17,12 +17,16 @@ static int  appropriate_window(t_vdata *vdata)
 {
 	if (COLS < W_WIDTH || LINES < W_HEIGHT)
 	{  
-		ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
-		delwin(vdata->left_window);
-		delwin(vdata->right_window);
-		endwin();
-		exit(1);
-		return (0);
+
+		refresh();
+		system("printf \'\033[8;66;244t\'");
+		//system("printf \'\033[8;68;251t\'");
+		//ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
+		//delwin(vdata->left_window);
+		//delwin(vdata->right_window);
+		//endwin();
+		//exit(1);
+		//return (0);
 	}
 	return (1);
 }
@@ -46,6 +50,9 @@ static void		set_defaults(t_vdata *vdata, int total_champs)
 	vdata->input_paused = 0;
 
 	vdata->total_champs = total_champs;
+	vdata->last_win_cols_size = COLS;
+	vdata->last_win_lines_size = LINES;
+	vdata->active_alert = 0;
 }
 int count_champs(t_champ *champs)
 {
@@ -67,12 +74,14 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	total_champs = count_champs(champs);
 	if (!arg->is_visual)
 		return (1);
+
 	if (!initscr() || !appropriate_window(vdata))
 		return (0);
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
 	set_defaults(vdata, total_champs);
-	curs_set(0);
+	curs_set(0);	
+	refresh();
 	start_color();
 	init_color(COLOR_WHITE, 400, 400, 400);
 	init_color(COLOR_GREEN, 880, 880, 480);
