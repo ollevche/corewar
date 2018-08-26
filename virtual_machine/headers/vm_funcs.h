@@ -113,6 +113,7 @@ bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);
 */
 
 bool	check_cbyte(int args[2][4], int op_code, int size);
-void    write_to_map(t_session *game, int pos, int value);
+void    write_to_map(t_session *game, int pos, int value, int champ_id);
+
 
 #endif

@@ -89,14 +89,15 @@ typedef struct			s_champ
 typedef struct			s_session
 {
 	t_uchar	map[MEM_SIZE];
-	int			cycle;
-	int			period_lives; // number of live calls in the last period
-	int			cycle_to_die;
-	int			last_ctd; // last change of cycle_to_die
-	t_champ		*last_alive;
-	t_carry		*carrys; // all of the carries
-	int			carry_num; // number of carries in a session
-	int			total_champs;
+	int		spot_map[MEM_SIZE]; // a node stores owners id
+	int		cycle;
+	int		period_lives; // number of live calls in the last period
+	int		cycle_to_die;
+	int		last_ctd; // last change of cycle_to_die
+	t_champ	*last_alive;
+	t_carry	*carrys; // all of the carries
+	int		carry_num; // number of carries in a session
+	int		total_champs;
 }						t_session;
 
 /*

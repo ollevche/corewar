@@ -28,7 +28,7 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 	{
 		del_me_pls = VAL2;
 		if (TYP2 == IND_CODE)
-			write_to_map(game, PC + (del_me_pls % IDX_MOD), REGS[VAL1 - 1]);
+			write_to_map(game, PC + (del_me_pls % IDX_MOD), REGS[VAL1 - 1], REGS[0]);
 		else if (IS_REG(VAL2))
 			REGS[VAL2 - 1] = REGS[VAL1 - 1];
 	}

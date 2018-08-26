@@ -55,10 +55,14 @@ bool	check_reg(int *value, t_session *game, t_carry *carry, int jmp)
 	return (false);
 }
 
-void    write_to_map(t_session *game, int pos, int value)
+void    write_to_map(t_session *game, int pos, int value, int champ_id)
 {
 	MAP[pos] = (value & -16777216) >> 24;
 	MAPVAL(pos, 1) = (value & 16711680) >> 16;
 	MAPVAL(pos, 2) = (value & 65280) >> 8;
 	MAPVAL(pos, 3) = value & 255;
+    game->spot_map[pos] = champ_id; // TODO: :( :( :( :( :( :O
+    game->spot_map[move_pc(pos, 1)] = champ_id;
+    game->spot_map[move_pc(pos, 2)] = champ_id;
+    game->spot_map[move_pc(pos, 3)] = champ_id;
 }

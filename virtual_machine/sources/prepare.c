@@ -30,6 +30,32 @@ static int	count_champs(t_champ *champs)
 	return (champs_count);
 }
 
+static void	prepare_spot_map(t_champ *champs, t_session *game)
+{
+	int		def_value;
+	bool	def_value_found;
+	t_champ	*iter;
+
+	def_value = 0;
+	def_value_found = false;
+	while (!def_value_found)
+	{
+		iter = champs;
+		while (iter)
+		{
+			if (iter->id == def_value)
+			{
+				def_value++;
+				break ;
+			}
+			iter = iter->next;
+		}
+		if (!iter)
+			def_value_found = true;
+	}
+	ft_intset(game->spot_map, def_value, MEM_SIZE);
+}
+
 /*
 **	allocates mem for t_session and sets def values
 */
@@ -69,6 +95,7 @@ static bool	place_code(t_champ *champs, t_session *game)
 	while (champs)
 	{
 		ft_memcpy(game->map + champ_mark, champs->code, champs->code_len);
+		ft_intset(game->spot_map + champ_mark, champs->id, champs->code_len);
 		RET_CHECK(new_carry(&(game->carrys), champs->id), false);
 		game->carrys->pc = champ_mark;
 		update_position(game, game->carrys, 0);
@@ -89,6 +116,7 @@ bool		prepare(t_champ *champs, t_session **game)
 		return (false);
 	}
 	RET_CHECK(prepare_session(game, champs_n), NULL);
+	prepare_spot_map(champs, *game);
 	place_code(champs, *game);
 	return (true);
 }
