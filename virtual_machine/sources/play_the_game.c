@@ -45,7 +45,7 @@ static int	kill_carries(t_carry **carries, int period_start)
 **	(3) setting params to correct values -> end
 */
 
-static void	control_game_flow(t_session *game)
+static void	control_game_flow(t_session *game, t_champ *champs)
 {
 	int	periods; // since last cycle_to_die change
 	int	cycles; // in current period
@@ -63,6 +63,11 @@ static void	control_game_flow(t_session *game)
 			game->last_ctd = game->cycle;
 		}
 		game->period_lives = 0;
+		while (champs)
+		{
+			champs->period_lives = 0;
+			champs = champs->next;
+		}
 	}
 }
 
@@ -130,7 +135,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 			log(game, false); // DEL
 		execute_carries(game, champs);
 		game->cycle++;
-		control_game_flow(game);
+		control_game_flow(game, champs);
 		visu_drawing(&vdata, game, champs, arg);
 	}
 

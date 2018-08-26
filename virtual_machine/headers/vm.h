@@ -79,6 +79,7 @@ typedef struct			s_champ
 	t_uint			code_len;
 	t_uchar			*code;
 	int				id;
+	int				period_lives;
 	struct s_champ	*next;
 }						t_champ;
 

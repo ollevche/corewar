@@ -25,6 +25,7 @@ t_champ	*new_champ(t_champ **champs)
 	champ->code_len = 0;
 	champ->code = NULL;
 	champ->id = 0;
+	champ->period_lives = 0;
 	champ->next = NULL;
 	if (*champs)
 	{
