@@ -52,6 +52,7 @@ t_carry	*new_carry(t_carry **all_carrys, int first_reg)
 	carry->op_code = 0;
 	carry->last_live = -1;
 	carry->next = *all_carrys;
+	carry->champ = first_reg; // champ fix
 	*all_carrys = carry;
 	return (carry);
 }

@@ -17,12 +17,16 @@ static int  appropriate_window(t_vdata *vdata)
 {
 	if (COLS < W_WIDTH || LINES < W_HEIGHT)
 	{  
-		ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
-		delwin(vdata->left_window);
-		delwin(vdata->right_window);
-		endwin();
-		exit(1);
-		return (0);
+
+		refresh();
+		system("printf \'\033[8;66;244t\'");
+		//system("printf \'\033[8;68;251t\'");
+		//ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
+		//delwin(vdata->left_window);
+		//delwin(vdata->right_window);
+		//endwin();
+		//exit(1);
+		//return (0);
 	}
 	return (1);
 }
@@ -46,6 +50,9 @@ static void		set_defaults(t_vdata *vdata, int total_champs)
 	vdata->input_paused = 0;
 
 	vdata->total_champs = total_champs;
+	vdata->last_win_cols_size = COLS;
+	vdata->last_win_lines_size = LINES;
+	vdata->active_alert = 0;
 }
 int count_champs(t_champ *champs)
 {
@@ -67,14 +74,16 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	total_champs = count_champs(champs);
 	if (!arg->is_visual)
 		return (1);
+
 	if (!initscr() || !appropriate_window(vdata))
 		return (0);
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
 	set_defaults(vdata, total_champs);
-	curs_set(0);
+	curs_set(0);	
+	refresh();
 	start_color();
-	init_color(COLOR_WHITE, 200, 200, 200);
+	init_color(COLOR_WHITE, 400, 400, 400);
 	init_color(COLOR_GREEN, 880, 880, 480);
 	init_color(COLOR_RED, 450, 350, 490);
 	init_color(COLOR_YELLOW, 300, 800, 800);
@@ -82,6 +91,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 
 
 	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
+	init_pair(100, COLOR_BLACK, COLOR_WHITE);
 	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
 
 	
@@ -111,13 +121,34 @@ box(vdata->left_window, 0, 0);
 	return (1);
 }
 
+int show_cycles = true;
+
 int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 {
 	//werase(vdata->right_window);
 	if (!arg->is_visual)
 		return (1);
+
+	if (vdata->input_cycle && show_cycles)
+	{
+		timeout(0);
+		vdata->key = getch();
+		vdata->scrolling_controls->key = vdata->key;
+		if (KEY(ESC))
+			vdata->input_cycle = 0;
+		else
+		{
+			scrolling_of_the_names(vdata);
+			char *cycles = ft_itoa(game->cycle);
+			show_cycles = true;	//SET TO FALSE TO RENDER THE LOADING WINDOW ONLY ONCE
+			show_alert_window(vdata, "     Loading... Press [ESC] to abort!", show_cycles ? cycles : "The window is rendered only ONCE");
+			ft_strdel(&cycles);
+		}
+	}
+
 	if (game->cycle == vdata->input_cycle)
 		vdata->input_cycle = 0;
+			
 	if (!vdata->input_cycle)
 	{
 		show_left(vdata, game, champs);
@@ -161,11 +192,11 @@ void	music_player()
 	else if (stop == 1)
 	{
 		if (i == 0)
-			system("afplay La_Valse_OST_Ameli.mp3 &");
+			system("afplay media/La_Valse_OST_Ameli.mp3 &");
 		else if(i == 1)
-			system("afplay Hooked_On_A_Feeling.mp3 &");
+			system("afplay media/Hooked_On_A_Feeling.mp3 &");
 		else if(i == 2)
-			system("afplay Game_of_Thrones.mp3 &");
+			system("afplay media/Game_of_Thrones.mp3 &");
 		else
 			timeout(0);
 		stop = 0;

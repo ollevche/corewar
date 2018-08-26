@@ -64,6 +64,12 @@
 # define ERASE_KEY (vdata->key = -1)
 //KEYS
 
+//ALERT WINDOWS
+# define CUSTOM_CYCLE 1
+# define GAME_OVER 2
+# define EXIT 3
+# define ACTIVE_ALERT(x) x == CUSTOM_CYCLE || x == GAME_OVER || x == GAME_OVER
+
 typedef struct				s_scrolling_controls
 {
 	WINDOW					*window;
@@ -103,8 +109,14 @@ typedef struct				s_vdata
 	int						input_index;
 	char					input_line[10];
 	int						input_paused;
+
+	int						last_win_cols_size;
+	int						last_win_lines_size;
+
+	int						active_alert;
+
 }							t_vdata;
-void						show_carries(t_vdata *vdata, t_session *game);
+void						show_carries(t_vdata *vdata, t_session *game, t_carry *carries);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
 void 						print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player);
@@ -114,7 +126,6 @@ int							visu_finalizing		(t_vdata *vdata, t_session *game, t_champ *champs, t_
 int							visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs,t_arg *arg);
 void						show_players(WINDOW *nbr_win, t_champ *champs, int *i);
 void						playback_controls(t_vdata *vdata, t_session *game, t_champ *champs);
-void						add_scrolling_name(t_scroll_name *name, t_scroll_name **scrolling_name);
 void						scrolling_controls(t_vdata *vdata, int x, int y);
 void						scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y);
 void						scrolling_of_the_names(t_vdata *vdata);
@@ -123,7 +134,10 @@ void						music_player();
 
 void						custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs);
 
+void						show_alert_window(t_vdata *vdata, char *alert, char *options);
 void						custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs);
 void						exit_window(t_vdata *vdata, t_session *game, t_champ *champs);
 void						gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
+
+void						terminal_size_listener(t_vdata *vdata, t_session *game, t_champ *champs);
 #endif
