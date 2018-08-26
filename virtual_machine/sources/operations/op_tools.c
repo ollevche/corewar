@@ -75,7 +75,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 		i++;
 		if (args[0][i] == IND_CODE && g_optab[op_code].ind_idx)
 			args[1][i] = get_idx_ind(game, *lpc, op_code);
-		else if (args[0][i] == REG_CODE || args[0][i] == DIR_CODE)
+		else if (args[0][i] == REG_CODE || args[0][i] == DIR_CODE || args[0][i] == IND_CODE)
 			args[1][i] = get_value_by_arg(game, args[0][i], *lpc, op_code);
 		else
 			continue ;
