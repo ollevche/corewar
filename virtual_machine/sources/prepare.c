@@ -70,7 +70,6 @@ static bool	place_code(t_champ *champs, t_session *game)
 	{
 		ft_memcpy(game->map + champ_mark, champs->code, champs->code_len);
 		RET_CHECK(new_carry(&(game->carrys), champs->id), false);
-		// game->carrys->champ = champs->id; champs fix
 		game->carrys->pc = champ_mark;
 		update_position(game, game->carrys, 0);
 		champ_mark += gap;
