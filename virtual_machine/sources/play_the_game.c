@@ -124,7 +124,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		if (game->cycle % 1000 == 0)
+		if (game->cycle == 4400 || game->cycle == 4405) // TODO: 4400 - two carries at the same pos so we cannot be sure there is the same pos in our corewar and original; 4405 - diff
 			log(game, false); // DEL
 		execute_carries(game, champs);
 		game->cycle++;
