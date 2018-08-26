@@ -77,6 +77,7 @@ static void	log(t_session *game, bool is_log)
 	ft_printf("period lives: %d\n", game->period_lives);
 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
+	ft_printf("total carries: %d\n", game->carry_num);
 	ft_printf("carrys positions (champ - pos - last_live - inactive):\n");
 	icarry = game->carrys;
 	while (icarry)
@@ -123,7 +124,8 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		log(game, false); // DEL
+		if (game->cycle % 1000 == 0)
+			log(game, false); // DEL
 		execute_carries(game, champs);
 		game->cycle++;
 		control_game_flow(game);
