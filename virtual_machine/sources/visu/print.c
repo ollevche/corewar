@@ -34,7 +34,7 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 		x += 3;
 		index++;
 	}
-	show_carries(vdata, game, game->carrys);
+	show_carries(vdata, game, game->carries);
 	wrefresh(vdata->left_window);
 }
 

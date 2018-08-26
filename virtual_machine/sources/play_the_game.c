@@ -14,20 +14,20 @@
 #include "vm_funcs.h"
 #include "visu.h"
 
-static int	kill_carries(t_carry **carrys, int period_start)
+static int	kill_carries(t_carry **carries, int period_start)
 {
 	t_carry	*icarry;
 	t_carry	*prev;
 	int		killed;
 
-	icarry = *carrys;
+	icarry = *carries;
 	prev = NULL;
 	killed = 0;
 	while (icarry)
 	{
 		if (icarry->last_live < period_start)
 		{
-			del_carry(carrys, &prev, icarry); // TODO: prev == NULL
+			del_carry(carries, &prev, icarry); // TODO: prev == NULL
 			icarry = prev;
 			killed++;
 		}
@@ -55,7 +55,7 @@ static void	control_game_flow(t_session *game)
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
 	if (cycles == 0) // it's start of the period
 	{
-		killed = kill_carries(&(game->carrys), game->cycle - game->cycle_to_die);
+		killed = kill_carries(&(game->carries), game->cycle - game->cycle_to_die);
 		game->carry_num -= killed;
 		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
@@ -78,8 +78,8 @@ static void	log(t_session *game, bool is_log)
 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
 	ft_printf("total carries: %d\n", game->carry_num);
-	ft_printf("carrys positions (champ - pos - last_live - inactive):\n");
-	icarry = game->carrys;
+	ft_printf("carries positions (champ - pos - last_live - inactive):\n");
+	icarry = game->carries;
 	while (icarry)
 	{
 		ft_printf("%d\t%d\t%d\t%d\n", icarry->regs[0], icarry->pc, icarry->last_live, icarry->inactive);
@@ -98,11 +98,13 @@ static bool	is_dump(t_session *game, t_arg *arg)
 		return (false);
 	iter = 0;
 	map = game->map;
+	int *spot_map = game->spot_map; // DEL // TODO: func is broken
 	while (iter < MEM_SIZE)
 	{
 		if (iter % 64 == 0)
 			ft_printf("\n0x%04x : ", iter);
-		ft_printf("%02x ", map[iter]);
+		// ft_printf("%02x ", map[iter]);
+		ft_printf("%04d ", spot_map[iter]); // DEL
 		iter++;
 	}
 	ft_printf("\n");

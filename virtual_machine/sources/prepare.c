@@ -73,7 +73,7 @@ static bool	prepare_session(t_session **gameptr, int n)
 	game->cycle_to_die = CYCLE_TO_DIE;
 	game->last_ctd = 0;
 	game->last_alive = NULL;
-	game->carrys = NULL;
+	game->carries = NULL;
 	game->total_champs = n;
 	game->carry_num = n;
 	return (true);
@@ -96,9 +96,9 @@ static bool	place_code(t_champ *champs, t_session *game)
 	{
 		ft_memcpy(game->map + champ_mark, champs->code, champs->code_len);
 		ft_intset(game->spot_map + champ_mark, champs->id, champs->code_len);
-		RET_CHECK(new_carry(&(game->carrys), champs->id), false);
-		game->carrys->pc = champ_mark;
-		update_position(game, game->carrys, 0);
+		RET_CHECK(new_carry(&(game->carries), champs->id), false);
+		game->carries->pc = champ_mark;
+		update_position(game, game->carries, 0);
 		champ_mark += gap;
 		champs = champs->next;
 	}

@@ -24,8 +24,8 @@ void	free_champs(t_champ **champs)
 	//	TODO: this
 }
 
-void	free_carries(t_carry *carrys)
+void	free_carries(t_carry *carries)
 {
-	(void)carrys;
+	(void)carries;
 	//	TODO: this
 }

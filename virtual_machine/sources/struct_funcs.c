@@ -38,7 +38,7 @@ t_champ	*new_champ(t_champ **champs)
 	return (champ);
 }
 
-t_carry	*new_carry(t_carry **all_carrys, int first_reg)
+t_carry	*new_carry(t_carry **all_carries, int first_reg)
 {
 	t_carry	*carry;
 
@@ -51,9 +51,9 @@ t_carry	*new_carry(t_carry **all_carrys, int first_reg)
 	carry->inactive = 0;
 	carry->op_code = 0;
 	carry->last_live = -1;
-	carry->next = *all_carrys;
+	carry->next = *all_carries;
 	carry->champ = first_reg;
-	*all_carrys = carry;
+	*all_carries = carry;
 	return (carry);
 }
 

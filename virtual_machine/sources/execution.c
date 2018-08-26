@@ -74,7 +74,7 @@ void		execute_carries(t_session *game, t_champ *champs)
 	t_operation operations[OP_COUNT + 2]; // static?
 
 	init_operations(operations);
-	icarry = game->carrys;
+	icarry = game->carries;
 	while (icarry)
 	{
 		if (icarry->inactive == 0)
