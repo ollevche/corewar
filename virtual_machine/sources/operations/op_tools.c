@@ -81,7 +81,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 			continue ;
 		*lpc = move_pc(*lpc, get_pc_move(args[0][i], g_optab[op_code].label_size));
 	}
-	return (n_args == valid_args/* && check_cbyte(args, op_code, n_args)*/); // TODO: check_cbyte blocks sti execution
+	return (n_args == valid_args && check_cbyte(args, op_code, n_args));
 }
 
 int		get_value_by_arg(t_session *game, int arg, int lpc, int op_code)

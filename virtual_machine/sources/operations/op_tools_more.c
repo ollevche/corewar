@@ -27,16 +27,16 @@ bool	check_cbyte(int args[2][4], int op_code, int size) // TODO: refact
     while (i < size)
     {
         if (args[0][i] == REG_CODE)
-            if (OP_ATYP(op_code, i) != 1 || OP_ATYP(op_code, i) != 3
-            || OP_ATYP(op_code, i) != 5 || OP_ATYP(op_code, i) != 7)
+            if (OP_ATYP(op_code, i) != 1 && OP_ATYP(op_code, i) != 3
+            && OP_ATYP(op_code, i) != 5 && OP_ATYP(op_code, i) != 7)
                 return (false);
         if (args[0][i] == DIR_CODE)
-            if (OP_ATYP(op_code, i) != 2 || OP_ATYP(op_code, i) != 3
-            || OP_ATYP(op_code, i) != 6 || OP_ATYP(op_code, i) != 7)
+            if (OP_ATYP(op_code, i) != 2 && OP_ATYP(op_code, i) != 3
+            && OP_ATYP(op_code, i) != 6 && OP_ATYP(op_code, i) != 7)
                 return (false);
         if (args[0][i] == IND_CODE)
-            if (OP_ATYP(op_code, i) != 1 || OP_ATYP(op_code, i) != 5
-            || OP_ATYP(op_code, i) != 6 || OP_ATYP(op_code, i) != 7)
+            if (OP_ATYP(op_code, i) != 4 && OP_ATYP(op_code, i) != 5
+            && OP_ATYP(op_code, i) != 6 && OP_ATYP(op_code, i) != 7)
                 return (false);
         i++;
     }
@@ -57,11 +57,11 @@ bool	check_reg(int *value, t_session *game, t_carry *carry, int jmp)
 
 void    write_to_map(t_session *game, int pos, int value, int champ_id)
 {
-	MAP[pos] = (value & -16777216) >> 24;
+	MAPVAL(pos, 0) = (value & -16777216) >> 24;
 	MAPVAL(pos, 1) = (value & 16711680) >> 16;
 	MAPVAL(pos, 2) = (value & 65280) >> 8;
 	MAPVAL(pos, 3) = value & 255;
-    game->spot_map[pos] = champ_id; // TODO: :( :( :( :( :( :O
+    game->spot_map[move_pc(pos, 0)] = champ_id; // TODO: :( :( :( :( :( :O
     game->spot_map[move_pc(pos, 1)] = champ_id;
     game->spot_map[move_pc(pos, 2)] = champ_id;
     game->spot_map[move_pc(pos, 3)] = champ_id;
