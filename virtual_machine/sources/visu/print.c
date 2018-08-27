@@ -30,7 +30,7 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 			y++;
 			x = 2;
 		}
-			print_player_code(vdata->left_window, y, x, game->map[index], 0);
+			print_player_code(vdata->left_window, y, x, game->map[index], game->spot_map[index] * (-1));
 		x += 3;
 		index++;
 	}
@@ -58,6 +58,8 @@ void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries)
 }
 void print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player)
 {
+    if (player > 5 && player < 1)
+        player = 0;
 	wattron(left_window, COLOR_PAIR(player));
 
     //mvwaddchstr(left_window, y, x, L"333");
