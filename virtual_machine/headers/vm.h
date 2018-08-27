@@ -31,7 +31,7 @@
 */
 
 # define RET_CHECK(X, R) if (!(X)) return (R);
-# define IS_REG(r) (r > 0 && r < REG_NUMBER)
+# define IS_REG(r) (r > 0 && r <= REG_NUMBER)
 # define JMP (lpc - PC)
 # define CHK_MV(x) if (!x) {update_position(game, carry, JMP + 1); return (0);}
 # define MAPVAL(p, n) MAP[move_pc(p, n)]
