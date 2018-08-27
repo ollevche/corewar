@@ -27,6 +27,6 @@ bool	lld(t_session *game, t_carry *carry, t_champ *head)
 	if (!IS_REG(VAL2))
 		return (false);
 	REGS[VAL2 - 1] = VAL1;
-	CARRY = (REGS[VAL2 - 1] == 0 ? true : false);
+	CARRY = (REGS[VAL2 - 1] == 0 ? true : false); // NOTE: original corewar acts diff
 	return (IS_REG(VAL2));
 }
