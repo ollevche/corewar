@@ -27,12 +27,12 @@
 // Scrolling names
 #define LEFT_D 1
 #define RIGHT_D 0
-#define MAX_NAME_LEN 33
+#define MAX_NAME_LEN 20
 #include <sys/time.h>
 // Scrolling names
 
 
-# define W_HEIGHT 68
+# define W_HEIGHT 76
 # define W_WIDTH 251
 # define START_X 2
 # define LEFT_W 0
@@ -57,6 +57,7 @@
 # define E 101
 # define Y 121
 # define N 110
+# define S 115
 # define SPACE 32
 # define BACKSPACE 127
 # define NUMBER_KEYS (vdata->key >= '0' && vdata->key <= '9')
@@ -69,6 +70,10 @@
 # define GAME_OVER 2
 # define EXIT 3
 # define ACTIVE_ALERT(x) x == CUSTOM_CYCLE || x == GAME_OVER || x == GAME_OVER
+
+
+//LIVE BAR
+#define BAR_LEN 150
 
 typedef struct				s_scrolling_controls
 {
@@ -88,6 +93,20 @@ typedef struct 				s_scroll_name
 	int						hidden_len;
 	struct s_scroll_name	*next;
 }							t_scroll_name;
+
+typedef struct 				s_live_bar
+{
+	WINDOW					*window;
+	WINDOW					*sub_window;
+	char					line[BAR_LEN];
+	int						*lives;
+	int						prev_lives;
+	int						prev_line;
+	struct s_live_bar		*next;
+}							t_live_bar;
+
+
+
 
 typedef struct				s_vdata
 {
@@ -115,6 +134,8 @@ typedef struct				s_vdata
 
 	int						active_alert;
 
+	t_live_bar				*live_bars;
+
 }							t_vdata;
 void						show_carries(t_vdata *vdata, t_session *game, t_carry *carries);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
@@ -140,4 +161,10 @@ void						exit_window(t_vdata *vdata, t_session *game, t_champ *champs);
 void						gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						terminal_size_listener(t_vdata *vdata, t_session *game, t_champ *champs);
+
+
+int							get_total_champs(t_champ *champ);
+
+void						refresh_live_bars(t_vdata *vdata, int rerender);
+void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
 #endif

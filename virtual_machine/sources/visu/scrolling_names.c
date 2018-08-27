@@ -63,21 +63,21 @@ static void		create_window_for_the_name(t_scroll_name *name, int x, int y)
 	color++;
 }
 
-static void			add_scrolling_name(t_scroll_name *name, t_scroll_name **scrolling_name)
-{
-	t_scroll_name *head;
+// static void			add_scrolling_name(t_scroll_name *name, t_scroll_name **scrolling_name)
+// {
+// 	t_scroll_name *head;
 
-	head = *scrolling_name;
-	if (*scrolling_name == NULL)
-		*scrolling_name = name;
-	else
-	{		
-		while ((*scrolling_name)->next != NULL)
-			*scrolling_name = (*scrolling_name)->next;
-		(*scrolling_name)->next = name;
-	}
-	*scrolling_name = head;
-}
+// 	head = *scrolling_name;
+// 	if (*scrolling_name == NULL)
+// 		*scrolling_name = name;
+// 	else
+// 	{		
+// 		while ((*scrolling_name)->next != NULL)
+// 			*scrolling_name = (*scrolling_name)->next;
+// 		(*scrolling_name)->next = name;
+// 	}
+// 	*scrolling_name = head;
+// }
 
 void			scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y)
 {

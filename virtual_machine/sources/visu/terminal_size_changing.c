@@ -57,7 +57,7 @@ void static temp_names(t_scroll_name *relative, int *y, int *player) //TODO temp
 	if (relative->next)
 		temp_names(relative->next, y, player);
 	wresize(child->window, 1, MAX_NAME_LEN + 2 + 10);
-	mvwin(child->window, *y, 198);
+	mvwin(child->window, *y, 2);
 	wattron(child->window, COLOR_PAIR(*player));
 	mvwprintw(child->window, 0, 0, "Player %d: %s", *player, child->displayed_name);	
 	wattroff(child->window, COLOR_PAIR(*player));
@@ -68,7 +68,7 @@ void static temp_names(t_scroll_name *relative, int *y, int *player) //TODO temp
 
 void static rerender_scrolling_names(t_vdata *vdata) //TODO Not finished
 {
-	int y = 21;
+	int y = 67;
 	int player = 1;
 	temp_names(vdata->scrolling_names, &y, &player);
 
@@ -103,22 +103,37 @@ void static rerender_scrolling_names(t_vdata *vdata) //TODO Not finished
 	mvwprintw(vdata->scrolling_controls->window, 2, 3, "R");
 	mvwprintw(vdata->scrolling_controls->window, 3, 3, "P");
 	wattroff(vdata->scrolling_controls->window, A_BOLD);
-	mvwin(vdata->scrolling_controls->window, 29, 197);
+	mvwin(vdata->scrolling_controls->window, 67, 197);
 	wrefresh(vdata->scrolling_controls->window);
+}
+
+void static	rerender_live_bars(t_vdata *vdata, int x, int y)
+{
+	t_live_bar	*bar;
+
+	bar = vdata->live_bars;
+	while(bar)
+	{
+		wresize(bar->window, 1, BAR_LEN + 11);
+		mvwin(bar->window, (x += 2), y);
+		bar = bar->next;
+	}
+	refresh_live_bars(vdata, TRUE);
 }
 
 void		terminal_size_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 {
-	refresh();	
+	refresh();
 	if (vdata->last_win_cols_size != COLS || vdata->last_win_lines_size != LINES)
 	{
-		system("printf \'\033[8;66;244t\'");
+		system("printf \'\033[8;76;244t\'");
 		vdata->last_win_cols_size = COLS;
 		vdata->last_win_lines_size = LINES;	
-		refresh();	
+		refresh();
 		rerender_left_and_right(vdata, game, champs);
 		rerender_input_cycle(vdata);
 		rerender_alert_window(vdata);
 		rerender_scrolling_names(vdata);
+		rerender_live_bars(vdata, 65, 33);
 	}
 }

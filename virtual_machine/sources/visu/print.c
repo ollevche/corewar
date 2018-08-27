@@ -73,6 +73,7 @@ void print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player)
 
 void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 {
+	(void)champs;
 	int y;
 
 	y = 3;
@@ -126,10 +127,15 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	else
 		mvwprintw(vdata->right_window, y, START_X + 11, "\tNO ONE");
 
+	mvwprintw(vdata->right_window, y += 2, START_X, "[S] Make one step forward");
 
 	wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
 	mvwprintw(vdata->right_window, 8, START_X + 1, "E");
+	mvwprintw(vdata->right_window, y , START_X + 1, "S");
+	mvwprintw(vdata->right_window, y , START_X + 30, ">> NEW <<");
+
 	wattroff(vdata->right_window, A_BOLD);
+
 	wrefresh(vdata->right_window);
 
 // TODO TEMP
@@ -142,7 +148,7 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 		wattroff(vdata->input_window, COLOR_PAIR(0) | A_BOLD);	
 		wrefresh(vdata->input_window);
 	}
-
+	
 }
 
 // void show_players(WINDOW *right_window, t_champ *champs, int *y)
