@@ -10,11 +10,9 @@
 #                                                                              #
 #******************************************************************************#
 
-#-Wall -Werror -Wextra 
-
 NAME	=	corewar
 
-FLAGS	=	-I./headers -I$(LIBDIR)/headers -g # DEL
+FLAGS	=	-I./headers -I$(LIBDIR)/headers -Wall -Werror -Wextra -g # DEL -g
 
 SRCDIR	=	sources/
 

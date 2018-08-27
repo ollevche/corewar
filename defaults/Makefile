@@ -7,5 +7,5 @@ comp:
 	./asm test.s
 
 re:
-	make re -C ../virtual_machine
+	make recor -C ../virtual_machine
 	cp ../virtual_machine/corewar ./

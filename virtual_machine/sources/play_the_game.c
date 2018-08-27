@@ -83,11 +83,12 @@ static void	log(t_session *game, bool is_log)
 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
 	ft_printf("total carries: %d\n", game->carry_num);
-	ft_printf("carries positions (champ - pos - last_live - inactive):\n");
+	ft_printf("carries positions (champ - pos - last_live - inactive - map bytes):\n");
 	icarry = game->carries;
 	while (icarry)
 	{
-		ft_printf("%d\t%d\t%d\t%d\n", icarry->regs[0], icarry->pc, icarry->last_live, icarry->inactive);
+		ft_printf("%d\t%d\t%d\t%d\t%02x %02x %02x %02x\n", icarry->regs[0], icarry->pc, icarry->last_live, icarry->inactive,
+			game->map[move_pc(icarry->pc, -1)], game->map[icarry->pc], game->map[move_pc(icarry->pc, 1)], game->map[move_pc(icarry->pc, 2)]);
 		icarry = icarry->next;
 	}
 	if (game->last_alive)
@@ -108,8 +109,8 @@ static bool	is_dump(t_session *game, t_arg *arg)
 	{
 		if (iter % 64 == 0)
 			ft_printf("\n0x%04x : ", iter);
-		// ft_printf("%02x ", map[iter]);
-		ft_printf("%04d ", spot_map[iter]); // DEL
+		ft_printf("%x", map[iter]);
+		ft_printf("(%d) ", spot_map[iter]); // DEL
 		iter++;
 	}
 	ft_printf("\n");
