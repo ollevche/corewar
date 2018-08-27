@@ -60,9 +60,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	int		n_args;
 	int		valid_args;
 
-	n_args = 0;
-	while (args[0][n_args] != -1) // get size of arg_types == number of arguments
-		n_args++;
+	n_args = g_optab[op_code].nb_params;
 
 	coding_byte = ft_byte_to_uint(0, 0, 0, MAPVAL(*lpc, 1));
 	*lpc = move_pc(*lpc, 1);

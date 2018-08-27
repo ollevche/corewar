@@ -20,8 +20,8 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 
 	LAST_LIVE = CYCLE;
 	LAST_ALIVE = get_champ_by_id(head, REGS[0]);
-	LAST_ALIVE->period_lives++;
-	PERIOD_LIVES++;
+	// LAST_ALIVE->period_lives++; // NOTE: original vm can be incorrect
+	// PERIOD_LIVES++;
 	id = get_value_by_arg(game, DIR_CODE, PC, 1);
 	arg_champ = get_champ_by_id(head, id);
 	if (arg_champ)
