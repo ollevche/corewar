@@ -18,11 +18,11 @@ void static	rerender_input_cycle(t_vdata *vdata)
 	mvwin(vdata->input_window, 6, 219);
 	if (vdata->input_entered)
 	{
-		wattron(vdata->input_window, COLOR_PAIR(0) | A_BOLD);
+		wattron(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);
 		mvwprintw(vdata->input_window, 0, 0, "%s", "_________");
 		if (vdata->input_index)
 			mvwprintw(vdata->input_window, 0, 0, "%s", vdata->input_line);
-		wattroff(vdata->input_window, COLOR_PAIR(0) | A_BOLD);	
+		wattroff(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);	
 		wrefresh(vdata->input_window);
 	}
 }
@@ -80,7 +80,7 @@ void static rerender_scrolling_names(t_vdata *vdata) //TODO Not finished
 		wborder(vdata->scrolling_controls->window, 1, 1, 1, 1, 1, 1, 1, 1);
 		wrefresh(vdata->scrolling_controls->window);
 		wresize(vdata->scrolling_controls->window, 6, 45);
-		wattron(vdata->scrolling_controls->window, COLOR_PAIR(0) | A_BOLD);
+		wattron(vdata->scrolling_controls->window, COLOR_PAIR(GRAY) | A_BOLD);
 		mvwprintw(vdata->scrolling_controls->window, 3, 22, "auto  ");
 		wattroff(vdata->scrolling_controls->window, A_BOLD);
 	}
@@ -89,7 +89,7 @@ void static rerender_scrolling_names(t_vdata *vdata) //TODO Not finished
 		wresize(vdata->scrolling_controls->window, 8, 45);
 		mvwprintw(vdata->scrolling_controls->window, 4, 2, "[<] Scroll manually to left");
 		mvwprintw(vdata->scrolling_controls->window, 5, 2, "[>] Scroll manually to right");
-		wattron(vdata->scrolling_controls->window, COLOR_PAIR(0) | A_BOLD);
+		wattron(vdata->scrolling_controls->window, COLOR_PAIR(GRAY) | A_BOLD);
 		mvwprintw(vdata->scrolling_controls->window, 3, 22, "manual");
 		mvwprintw(vdata->scrolling_controls->window, 4, 3, "<");
 		mvwprintw(vdata->scrolling_controls->window, 5, 3, ">");
@@ -98,7 +98,7 @@ void static rerender_scrolling_names(t_vdata *vdata) //TODO Not finished
 	box(vdata->scrolling_controls->window, 0, ' ');
 	mvwprintw(vdata->scrolling_controls->window, 2, 2, "[R] Scrolling direction: ");
 	mvwprintw(vdata->scrolling_controls->window, 3, 2, "[P] Scrolling type:");
-	wattron(vdata->scrolling_controls->window, COLOR_PAIR(0) | A_BOLD);
+	wattron(vdata->scrolling_controls->window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->scrolling_controls->window, 0, 11, "Name scrolling controls");
 	mvwprintw(vdata->scrolling_controls->window, 2, 3, "R");
 	mvwprintw(vdata->scrolling_controls->window, 3, 3, "P");

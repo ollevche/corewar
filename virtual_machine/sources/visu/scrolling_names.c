@@ -118,17 +118,17 @@ void			scrolling_controls(t_vdata *vdata, int x, int y)
 	sc->window = newwin(6, 45, x, y);
 	sc->direction = LEFT_D;
 	sc->key = 0;
-	// wattron(sc->window, COLOR_PAIR(0));
+	// wattron(sc->window, COLOR_PAIR(GRAY));
 	box(sc->window, 0, ' ');
 	mvwprintw(sc->window, 2, 2, "[R] Scrolling direction: ");
 	mvwprintw(sc->window, 3, 2, "[P] Scrolling type:");
-	wattron(sc->window, COLOR_PAIR(LEFT_W) | A_BOLD);
+	wattron(sc->window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(sc->window, 0, 11, "Name scrolling controls");
 	mvwprintw(sc->window, 2, 3, "R");
 	mvwprintw(sc->window, 3, 3, "P");
 	mvwprintw(sc->window, 3, 22, "auto ");
 	mvwprintw(sc->window, 2, 27, "%s", sc->direction == LEFT_D ? "to left " : "to right");
-	wattroff(sc->window, COLOR_PAIR(LEFT_W) | A_BOLD);
+	wattroff(sc->window, COLOR_PAIR(GRAY) | A_BOLD);
 	//nodelay(sc->window, FALSE);
 	refresh();
 	wrefresh(sc->window);
@@ -140,7 +140,7 @@ static void		direction_key_listener(t_scrolling_controls *sc)
 	if (sc->key == 114) // R key
 	{
 		sc->direction = (sc->direction == LEFT_D ? RIGHT_D : LEFT_D);
-		// wattron(sc->window, COLOR_PAIR(0) | A_BOLD);
+		// wattron(sc->window, COLOR_PAIR(GRAY) | A_BOLD);
 		mvwprintw(sc->window, 2, 27, "%s", sc->direction == LEFT_D ? "to left " : "to right");
 		// wattroff(sc->window, A_BOLD);
 		wrefresh(sc->window);
@@ -177,7 +177,7 @@ static void		pause_key_listener(t_vdata *vdata)
 			box(vdata->scrolling_controls->window, 0, ' ');
 			mvwprintw(vdata->scrolling_controls->window, 4, 2, "[<] Scroll manually to left");
 			mvwprintw(vdata->scrolling_controls->window, 5, 2, "[>] Scroll manually to right");
-			wattron(vdata->scrolling_controls->window, COLOR_PAIR(0) | A_BOLD);
+			wattron(vdata->scrolling_controls->window, COLOR_PAIR(GRAY) | A_BOLD);
 			mvwprintw(vdata->scrolling_controls->window, 0, 11, "Name scrolling controls");
 			mvwprintw(vdata->scrolling_controls->window, 3, 22, "manual");
 			mvwprintw(vdata->scrolling_controls->window, 4, 3, "<");
@@ -194,7 +194,7 @@ static void		pause_key_listener(t_vdata *vdata)
 			wrefresh(vdata->scrolling_controls->window);
 			wresize(vdata->scrolling_controls->window, 6, 45);
 			box(vdata->scrolling_controls->window, 0, ' ');
-			wattron(vdata->scrolling_controls->window, COLOR_PAIR(0) | A_BOLD);
+			wattron(vdata->scrolling_controls->window, COLOR_PAIR(GRAY) | A_BOLD);
 			mvwprintw(vdata->scrolling_controls->window, 0, 11, "Name scrolling controls");
 			mvwprintw(vdata->scrolling_controls->window, 3, 22, "auto  ");
 			wattroff(vdata->scrolling_controls->window, A_BOLD);

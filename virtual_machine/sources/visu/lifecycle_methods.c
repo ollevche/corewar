@@ -48,25 +48,11 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 	vdata->input_index = 0;
 	ft_bzero(vdata->input_line, 10);
 	vdata->input_paused = 0;
-
 	vdata->total_champs = get_total_champs(champs);
 	vdata->last_win_cols_size = COLS;
 	vdata->last_win_lines_size = LINES;
 	vdata->active_alert = 0;
-
 	vdata->live_bars = NULL;
-}
-int count_champs(t_champ *champs)
-{
-	int count;
-
-	count = 0;
-	while (champs != NULL)
-	{		
-		champs = champs->next;
-		count++;
-	}
-	return (count);
 }
 
 int		get_total_champs(t_champ *champ)
@@ -97,38 +83,35 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	init_color(COLOR_YELLOW, 300, 800, 800);
 	init_color(COLOR_BLUE, 850, 80, 350);
 
+	init_pair(GRAY, COLOR_WHITE, COLOR_BLACK);
+	init_pair(GRAY_B, COLOR_BLACK, COLOR_WHITE);
 
-	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
-	init_pair(100, COLOR_BLACK, COLOR_WHITE);
-	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
-
-	
-	int color;
-	int y;
-
-	y = 67;
-	color = 1;
-
-	t_champ *champs2 = champs;
-	while (color <= vdata->total_champs)
-	{
-		init_pair(color * 10, COLOR_BLACK, color);
-		init_pair(color, color, COLOR_BLACK);
-		scrolling_name(vdata, champs2->name, y, 2);
-		champs2 = champs2->next;
-		y += 2;
-		color++;
-	}
-	
-	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
+    set_champs_for_visu(champs, vdata);
 
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
 	scrolling_controls(vdata, 67, 197);
-
 	live_bars_initializing(vdata, champs, 65, 33);
 
 	return (1);
+}
+
+void    set_champs_for_visu(t_champ *champs, t_vdata *vdata)
+{
+    int color;
+	int y;
+
+	y = 67;
+	color = 1;
+	while (champs != NULL)
+	{
+		init_pair(color * 10, COLOR_BLACK, color);
+		init_pair(color, color, COLOR_BLACK);
+		scrolling_name(vdata, champs->name, y, 2);
+		champs = champs->next;
+		y += 2;
+		color++;
+	}
 }
 
 int show_cycles = true;
@@ -175,8 +158,8 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 {
 	if (!arg->is_visual)
 		return (1);
-	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W));
-	// wattroff(vdata->left_window, COLOR_PAIR(LEFT_W));
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY));
+	// wattroff(vdata->left_window, COLOR_PAIR(GRAY));
 	(void)game;
 	(void)champs;
 	scrolling_finalizing(vdata);

@@ -35,7 +35,8 @@
 # define W_HEIGHT 76
 # define W_WIDTH 251
 # define START_X 2
-# define LEFT_W 0
+# define GRAY 0
+# define GRAY_B 100
 # define PLAYER_1 1
 # define PLAYER_2 2
 # define PLAYER_3 3
@@ -135,9 +136,8 @@ typedef struct				s_vdata
 	int						active_alert;
 
 	t_live_bar				*live_bars;
-
 }							t_vdata;
-void						show_carries(t_vdata *vdata, t_session *game, t_carry *carries);
+void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
 void 						print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player);
@@ -167,4 +167,7 @@ int							get_total_champs(t_champ *champ);
 
 void						refresh_live_bars(t_vdata *vdata, int rerender);
 void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
+
+void                        set_champs_for_visu(t_champ *champs, t_vdata *vdata);
+int							get_color(t_champ *champs, int id);
 #endif

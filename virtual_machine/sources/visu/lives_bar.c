@@ -97,7 +97,7 @@ void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
 	champ = champs;
 	while (champ)
 	{
-		if (-champ->id == player)
+		if (get_color(champs, champ->id) == player)
 			bar->lives = &champ->period_lives;
 		champ = champ->next;
 	}
