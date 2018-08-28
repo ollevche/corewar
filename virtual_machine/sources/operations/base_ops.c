@@ -23,6 +23,7 @@ static void	copy_carry(t_carry *to, t_carry *from)
 	to->pc = from->pc;
 	to->carry = from->carry;
 	to->last_live = from->last_live;
+	to->champ = from->champ;
 }
 
 bool		base_fork(t_session *game, t_carry *carry, bool idx)
