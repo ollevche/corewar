@@ -18,9 +18,9 @@ static int  appropriate_window(t_vdata *vdata)
 {
 	if (COLS < W_WIDTH || LINES < W_HEIGHT)
 	{  
-
+		(void)vdata;
 		refresh();
-		system("printf \'\033[8;66;244t\'");
+		system("printf \'\033[8;76;244t\'");
 		//system("printf \'\033[8;68;251t\'");
 		//ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
 		//delwin(vdata->left_window);
@@ -32,7 +32,7 @@ static int  appropriate_window(t_vdata *vdata)
 	return (1);
 }
 
-static void		set_defaults(t_vdata *vdata, int total_champs)
+static void		set_defaults(t_vdata *vdata, t_champ *champs)
 {
 	vdata->left_window = newwin(66 , 195, 0, 0);
 	vdata->right_window = newwin(20, 49, 0, 195);
@@ -49,26 +49,32 @@ static void		set_defaults(t_vdata *vdata, int total_champs)
 	vdata->input_index = 0;
 	ft_bzero(vdata->input_line, 10);
 	vdata->input_paused = 0;
-
-	vdata->total_champs = total_champs;
+	vdata->total_champs = get_total_champs(champs);
 	vdata->last_win_cols_size = COLS;
 	vdata->last_win_lines_size = LINES;
 	vdata->active_alert = 0;
+	vdata->live_bars = NULL;
+}
+
+int		get_total_champs(t_champ *champ)
+{
+	int players;
+
+	players = 0;
+	while(champ && (champ = champ->next))
+		players++;
+	return (++players);
 }
 
 int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 {
-	int total_champs;
-
-	total_champs = count_champs(champs);
 	if (!arg->is_visual)
 		return (1);
-
 	if (!initscr() || !appropriate_window(vdata))
 		return (0);
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
-	set_defaults(vdata, total_champs);
+	set_defaults(vdata, champs);
 	curs_set(0);	
 	refresh();
 	start_color();
@@ -78,36 +84,35 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	init_color(COLOR_YELLOW, 300, 800, 800);
 	init_color(COLOR_BLUE, 850, 80, 350);
 
+	init_pair(GRAY, COLOR_WHITE, COLOR_BLACK);
+	init_pair(GRAY_B, COLOR_BLACK, COLOR_WHITE);
 
-	init_pair(LEFT_W, COLOR_RED, COLOR_BLACK);
-	init_pair(100, COLOR_BLACK, COLOR_WHITE);
-	wattron(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
+    set_champs_for_visu(champs, vdata);
 
-	
-	int color;
+	box(vdata->left_window, 0, 0);
+	box(vdata->right_window, 0, 0);
+	scrolling_controls(vdata, 67, 197);
+	live_bars_initializing(vdata, champs, 65, 33);
+
+	return (1);
+}
+
+void    set_champs_for_visu(t_champ *champs, t_vdata *vdata)
+{
+    int color;
 	int y;
 
-	y = 21;
+	y = 67;
 	color = 1;
-	while (color <= total_champs)
+	while (champs != NULL)
 	{
 		init_pair(color * 10, COLOR_BLACK, color);
 		init_pair(color, color, COLOR_BLACK);
-		scrolling_name(vdata, champs->name, y, 198);
+		scrolling_name(vdata, champs->name, y, 2);
 		champs = champs->next;
 		y += 2;
 		color++;
 	}
-
-
-	
-	
-	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
-
-	box(vdata->left_window, 0, 0);
-	box(vdata->right_window, 0, 0);
-	scrolling_controls(vdata, 29, 197);
-	return (1);
 }
 
 int show_cycles = true;
@@ -142,6 +147,7 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 	{
 		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
+		refresh_live_bars(vdata, FALSE);
 		playback_controls(vdata, game, champs);
 	}
 	if (game->carry_num <= 0 || game->cycle_to_die < 0)
@@ -153,9 +159,10 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 {
 	if (!arg->is_visual)
 		return (1);
-	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W));
-	// wattroff(vdata->left_window, COLOR_PAIR(LEFT_W));
-
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY));
+	// wattroff(vdata->left_window, COLOR_PAIR(GRAY));
+	(void)game;
+	(void)champs;
 	scrolling_finalizing(vdata);
 	delwin(vdata->left_window);
 	delwin(vdata->right_window);

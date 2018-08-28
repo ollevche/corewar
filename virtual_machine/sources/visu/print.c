@@ -12,6 +12,21 @@
 
 #include "visu.h"
 
+int     get_color(t_champ *champs, int id)
+{
+    int i;
+
+    i = 1;
+    while (champs != NULL)
+    {
+        if (champs->id == id)
+            return (i);
+        i++;
+        champs = champs->next;
+    }
+    return (0);
+}
+
 void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	int	index;
@@ -30,15 +45,15 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 			y++;
 			x = 2;
 		}
-			print_player_code(vdata->left_window, y, x, game->map[index], game->spot_map[index] * (-1));
+			print_player_code(vdata->left_window, y, x, game->map[index], get_color(champs, game->spot_map[index]));
 		x += 3;
 		index++;
 	}
-	show_carries(vdata, game, game->carries);
+	show_carries(vdata, game, game->carries, champs);
 	wrefresh(vdata->left_window);
 }
 
-void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries)
+void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs)
 {
 	int x;
 	int y;
@@ -49,21 +64,16 @@ void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries)
 		pc = carries->pc;
 		x = pc % 64 * 3 + 2;
 		y = pc / 64 + 1;
-		wattron(vdata->left_window, COLOR_PAIR(carries->champ * (-10)));
+		wattron(vdata->left_window, COLOR_PAIR(get_color(champs, carries->champ) * 10));
 		mvwprintw(vdata->left_window, y, x, "%02x", game->map[pc]);
-		wattroff(vdata->left_window, COLOR_PAIR(carries->champ * (-10)));
+		wattroff(vdata->left_window, COLOR_PAIR(get_color(champs, carries->champ) * 10));
         mvwprintw(vdata->left_window, y, x + 2, " ");
 		carries = carries->next;
 	}
 }
 void print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player)
 {
-    if (player > 5 && player < 1)
-        player = 0;
 	wattron(left_window, COLOR_PAIR(player));
-
-    //mvwaddchstr(left_window, y, x, L"333");
-	//waddchstr
 	mvwprintw(left_window, y, x, "%02x", n);
 	wattroff(left_window, COLOR_PAIR(player));
 }
@@ -73,14 +83,15 @@ void print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player)
 
 void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 {
+	(void)champs;
 	int y;
 
 	y = 3;
 	werase(vdata->right_window); //TODO delets box	
-	wattron(vdata->right_window, COLOR_PAIR(0));
+	wattron(vdata->right_window, COLOR_PAIR(GRAY));
 	if (vdata->paused)
 	{
-		wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
+		wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 		mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED ** ");	
 		wattroff(vdata->right_window, A_BOLD);
 	}
@@ -88,25 +99,25 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 		mvwprintw(vdata->right_window, 1, START_X, "%s", "** RUNNING **");
 	//mvwprintw(vdata->right_window, 1, START_X, "%s", vdata->paused ? "** PAUSED ** " : "** RUNNING **");	
 	mvwprintw(vdata->right_window, 2, START_X, "[Space] changes status");
-	wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
+	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 2, START_X + 1, "Space");
 	
 	wattroff(vdata->right_window, A_BOLD);
 
 	mvwprintw(vdata->right_window, 4, START_X, "Cycles/second:\t%d     ", vdata->sec);
 	mvwprintw(vdata->right_window, 5, START_X, "[Left] and [Right] arrows change speed");
-	wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
+	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 5, START_X + 1, "Left");
 	mvwprintw(vdata->right_window, 5, START_X + 12, "Right");
 	
 	wattroff(vdata->right_window, A_BOLD);
 	
 
-	wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
+	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 
 	mvwprintw(vdata->right_window, y += 4, START_X, "Current cycle:\t%d", game->cycle);
 
-	wattroff(vdata->right_window, COLOR_PAIR(0) | A_BOLD);	
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);	
 	mvwprintw(vdata->right_window, y += 1, START_X, "[E] Enter a cycle");
 	
 	//show_players(vdata->right_window, champs, &y);
@@ -126,23 +137,28 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	else
 		mvwprintw(vdata->right_window, y, START_X + 11, "\tNO ONE");
 
+	mvwprintw(vdata->right_window, y += 2, START_X, "[S] Make one step forward");
 
-	wattron(vdata->right_window, COLOR_PAIR(0) | A_BOLD);
+	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 8, START_X + 1, "E");
+	mvwprintw(vdata->right_window, y , START_X + 1, "S");
+	mvwprintw(vdata->right_window, y , START_X + 30, ">> NEW <<");
+
 	wattroff(vdata->right_window, A_BOLD);
+
 	wrefresh(vdata->right_window);
 
 // TODO TEMP
 	if (vdata->input_entered)
 	{
-		wattron(vdata->input_window, COLOR_PAIR(0) | A_BOLD);
+		wattron(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);
 		mvwprintw(vdata->input_window, 0, 0, "%s", "_________");
 		if (vdata->input_index)
 			mvwprintw(vdata->input_window, 0, 0, "%s", vdata->input_line);
-		wattroff(vdata->input_window, COLOR_PAIR(0) | A_BOLD);	
+		wattroff(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);	
 		wrefresh(vdata->input_window);
 	}
-
+	
 }
 
 // void show_players(WINDOW *right_window, t_champ *champs, int *y)

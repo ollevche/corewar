@@ -15,11 +15,11 @@
 void		show_alert_window(t_vdata *vdata, char *alert, char *options)
 {
 	werase(vdata->alert_window);
-	wattron(vdata->alert_window, COLOR_PAIR(0) | A_BOLD);
+	wattron(vdata->alert_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->alert_window, 9, 8, "%s", alert);
 	mvwprintw(vdata->alert_window, 11, 17, "%s", options);
 	box(vdata->alert_window, 0, 0);
-	wattroff(vdata->alert_window, COLOR_PAIR(0) | A_BOLD);			
+	wattroff(vdata->alert_window, COLOR_PAIR(GRAY) | A_BOLD);			
 	wrefresh(vdata->alert_window);
 }
 

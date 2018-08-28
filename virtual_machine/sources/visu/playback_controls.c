@@ -12,13 +12,13 @@
 
 #include "visu.h"
 
-static void		temp_get_key_number(t_vdata *vdata)
-{
-	WINDOW *temp;
-	temp = newwin(3 , 33, 3, 3);
-	mvwprintw(temp, 1, 1, "%d", vdata->key);
-	wrefresh(temp);
-}
+// static void		temp_get_key_number(t_vdata *vdata)
+// {
+// 	WINDOW *temp;
+// 	temp = newwin(3 , 33, 3, 3);
+// 	mvwprintw(temp, 1, 1, "%d", vdata->key);
+// 	wrefresh(temp);
+// }
 
 static void		speed_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 {
@@ -60,6 +60,16 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	if (vdata->key == 'm' || vdata->key == 'M')
 		music_player();
 	custom_cycle(vdata, game, champs);
+	if (KEY(S)) // [S] Make one step forward
+	{
+		if (vdata->paused)
+		{
+			vdata->key = 32;
+			vdata->input_paused = 1;
+		}
+		else
+			vdata->paused = 1;
+	}
 	exit_window(vdata, game, champs);
 	speed_controls(vdata, game, champs);
 	scrolling_of_the_names(vdata);
@@ -76,7 +86,7 @@ void	playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 	{
 		show_right(vdata, game, champs);
 		while (!KEY(SPACE))		
-			key_listener(vdata, game, champs);
-		vdata->paused = (vdata->input_paused ? ((vdata->input_paused = 0) || 1) : 0);
+			key_listener(vdata, game, champs);		
 	}
+	vdata->paused = (vdata->input_paused ? ((vdata->input_paused = 0) || 1) : 0);
 }

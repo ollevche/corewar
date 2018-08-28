@@ -18,10 +18,10 @@ void static		backspace_listener(t_vdata *vdata)
 	{
 		vdata->input_line[--vdata->input_index] = '\0';
 		werase(vdata->input_window);
-		wattron(vdata->input_window, COLOR_PAIR(0) | A_BOLD);
+		wattron(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);
 		mvwprintw(vdata->input_window, 0, 0, "%s", "_________");
 		mvwprintw(vdata->input_window, 0, 0, "%s", vdata->input_line);
-		wattroff(vdata->input_window, COLOR_PAIR(0) | A_BOLD);	
+		wattroff(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);	
 		wrefresh(vdata->input_window);
 	}
 }
@@ -33,9 +33,9 @@ void static		number_listener(t_vdata *vdata)
 	if (NUMBER_KEYS && vdata->input_entered && vdata->input_index < 9)
 	{
 		vdata->input_line[vdata->input_index++] = vdata->key;
-		wattron(vdata->input_window, COLOR_PAIR(0) | A_BOLD);			
+		wattron(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);			
 		mvwprintw(vdata->input_window, 0, 0, "%s", vdata->input_line);
-		wattroff(vdata->input_window, COLOR_PAIR(0) | A_BOLD);	
+		wattroff(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);	
 		wrefresh(vdata->input_window);
 	}
 }
@@ -53,9 +53,9 @@ void static		input_entering_listener(t_vdata *vdata)
 		}
 		else
 		{
-			wattron(vdata->input_window, COLOR_PAIR(0) | A_BOLD);			
+			wattron(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);			
 			mvwprintw(vdata->input_window, 0, 0, "%s", "_________");
-			wattroff(vdata->input_window, COLOR_PAIR(0) | A_BOLD);	
+			wattroff(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);	
 			wrefresh(vdata->input_window);
 		}
 		vdata->input_entered = (vdata->input_entered ? 0 : 1);
