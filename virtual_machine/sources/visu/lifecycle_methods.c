@@ -58,9 +58,10 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 	vdata->author_adv_switch = 1;
 	vdata->author_time = 0;
 	vdata->first_run = 1;
+
+    ft_bzero(vdata->prev_map, sizeof(t_uchar) * MEM_SIZE);
+    ft_bzero(vdata->prev_spot_map, sizeof(int) * MEM_SIZE);
 }
-
-
 int		get_total_champs(t_champ *champ)
 {
 	int players;
