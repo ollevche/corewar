@@ -212,18 +212,28 @@ static void		pause_key_listener(t_vdata *vdata)
 	gettimeofday(&time, NULL);
 	t_scroll_name *name;
 
-	if (vdata->scrolling_controls->seconds && ((time.tv_usec / 1000) - vdata->time) >= vdata->scrolling_controls->seconds)
+	if (((time.tv_sec) - vdata->author_time) >= 5)
 	{
-		name = vdata->scrolling_names;
-		while (name)
+		vdata->author_adv_switch = (vdata->author_adv_switch ? 0 : 1);
+		vdata->author_time = (time.tv_sec);
+	}
+	if (((time.tv_usec / 1000) - vdata->time) >= (vdata->scrolling_controls->seconds ? 150 : 150))
+	{
+		author_line_scrolling(vdata);
+		if (vdata->scrolling_controls->seconds)
 		{
-			if (vdata->scrolling_controls->direction)
-				scroll_to_left(name, color);
-			else
-				scroll_to_right(name, color);
-			name = name->next;
-			color--;
+			name = vdata->scrolling_names;
+			while (name)
+			{
+				if (vdata->scrolling_controls->direction)
+					scroll_to_left(name, color);
+				else
+					scroll_to_right(name, color);
+				name = name->next;
+				color--;
+			}
 		}
+
 		vdata->time = (time.tv_usec / 1000);
 	}
 // refresh();

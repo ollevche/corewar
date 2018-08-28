@@ -19,7 +19,7 @@ static int  appropriate_window(t_vdata *vdata)
 	{  
 		(void)vdata;
 		refresh();
-		system("printf \'\033[8;76;244t\'");
+		system("printf \'\033[8;78;244t\'");
 		//system("printf \'\033[8;68;251t\'");
 		//ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
 		//delwin(vdata->left_window);
@@ -33,10 +33,11 @@ static int  appropriate_window(t_vdata *vdata)
 
 static void		set_defaults(t_vdata *vdata, t_champ *champs)
 {
-	vdata->left_window = newwin(66 , 195, 0, 0);
-	vdata->right_window = newwin(20, 49, 0, 195);
+	vdata->left_window = newwin(66 , 195, 2, 0);
+	vdata->right_window = newwin(20, 49, 2, 195);
 	vdata->alert_window = newwin(14 , 59, W_HEIGHT / 2 - 7, W_WIDTH / 2 - 30);
 	vdata->input_window = newwin(1, 12, 6, 219);
+	vdata->authors = newwin(2, 195, 0, 0);
 	vdata->key = 0;
 	vdata->paused = 1;
 	vdata->sec = 5;
@@ -53,7 +54,12 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 	vdata->last_win_lines_size = LINES;
 	vdata->active_alert = 0;
 	vdata->live_bars = NULL;
+
+	vdata->author_adv_switch = 1;
+	vdata->author_time = 0;
+	vdata->first_run = 1;
 }
+
 
 int		get_total_champs(t_champ *champ)
 {
@@ -90,9 +96,10 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
-	scrolling_controls(vdata, 67, 197);
-	live_bars_initializing(vdata, champs, 65, 33);
-
+	scrolling_controls(vdata, 69, 197);
+	
+	live_bars_initializing(vdata, champs, 67, 33);
+	author_line_initializing(vdata);
 	return (1);
 }
 
@@ -101,7 +108,7 @@ void    set_champs_for_visu(t_champ *champs, t_vdata *vdata)
     int color;
 	int y;
 
-	y = 67;
+	y = 69;
 	color = 1;
 	while (champs != NULL)
 	{
@@ -138,7 +145,6 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 			ft_strdel(&cycles);
 		}
 	}
-
 	if (game->cycle == vdata->input_cycle)
 		vdata->input_cycle = 0;
 			
@@ -146,7 +152,7 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 	{
 		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
-		refresh_live_bars(vdata, FALSE);
+		refresh_live_bars(vdata, FALSE);		
 		playback_controls(vdata, game, champs);
 	}
 	if (game->carry_num <= 0 || game->cycle_to_die < 0)
@@ -163,6 +169,7 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 	(void)game;
 	(void)champs;
 	scrolling_finalizing(vdata);
+	live_bars_finalizing(vdata);
 	delwin(vdata->left_window);
 	delwin(vdata->right_window);
 	delwin(vdata->alert_window);

@@ -123,5 +123,16 @@ void		live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y)
 		create_live_bar(vdata, champs, (x += 2), y);
 		player++;
 	}
+}
 
+void		live_bars_finalizing(t_vdata *vdata)
+{
+	t_live_bar *bar;
+
+	bar = vdata->live_bars;
+	while (bar)
+	{
+		delwin(bar->window);
+		bar = bar->next;
+	}
 }

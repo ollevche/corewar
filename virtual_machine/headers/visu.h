@@ -32,7 +32,7 @@
 // Scrolling names
 
 
-# define W_HEIGHT 76
+# define W_HEIGHT 78
 # define W_WIDTH 251
 # define START_X 2
 # define GRAY 0
@@ -59,6 +59,7 @@
 # define Y 121
 # define N 110
 # define S 115
+# define M 109
 # define SPACE 32
 # define BACKSPACE 127
 # define NUMBER_KEYS (vdata->key >= '0' && vdata->key <= '9')
@@ -74,7 +75,9 @@
 
 
 //LIVE BAR
-#define BAR_LEN 150
+# define BAR_LEN 150
+
+# define AUTHOR_LEN 186
 
 typedef struct				s_scrolling_controls
 {
@@ -98,7 +101,6 @@ typedef struct 				s_scroll_name
 typedef struct 				s_live_bar
 {
 	WINDOW					*window;
-	WINDOW					*sub_window;
 	char					line[BAR_LEN];
 	int						*lives;
 	int						prev_lives;
@@ -106,15 +108,13 @@ typedef struct 				s_live_bar
 	struct s_live_bar		*next;
 }							t_live_bar;
 
-
-
-
 typedef struct				s_vdata
 {
 	WINDOW					*left_window;
 	WINDOW					*right_window;
 	WINDOW					*alert_window;
 	WINDOW					*input_window;
+	WINDOW					*authors;
 	int						key;
 	int						paused;
 	unsigned long long		sec;
@@ -136,6 +136,15 @@ typedef struct				s_vdata
 	int						active_alert;
 
 	t_live_bar				*live_bars;
+
+	char					author_line[AUTHOR_LEN];
+	char					adv_line[AUTHOR_LEN];
+	int						author_adv_switch;
+	int						author_time;
+
+	int						first_run;
+
+
 }							t_vdata;
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
@@ -153,6 +162,8 @@ void						scrolling_of_the_names(t_vdata *vdata);
 void						scrolling_finalizing(t_vdata *vdata);
 void						music_player();
 
+int							get_total_champs(t_champ *champ);
+
 void						custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						show_alert_window(t_vdata *vdata, char *alert, char *options);
@@ -162,12 +173,17 @@ void						gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						terminal_size_listener(t_vdata *vdata, t_session *game, t_champ *champs);
 
+void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
+void						refresh_live_bars(t_vdata *vdata, int rerender);
+void						live_bars_finalizing(t_vdata *vdata);
 
-int							get_total_champs(t_champ *champ);
+void						author_line_initializing(t_vdata *vdata);
+void						author_line_scrolling();
 
 void						refresh_live_bars(t_vdata *vdata, int rerender);
 void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
 
 void                        set_champs_for_visu(t_champ *champs, t_vdata *vdata);
 int							get_color(t_champ *champs, int id);
+void						disclaimer(t_vdata *vdata, t_session *game, t_champ *champs);
 #endif

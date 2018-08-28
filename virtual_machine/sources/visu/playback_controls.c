@@ -49,18 +49,10 @@ static void		speed_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 			show_right(vdata, game, champs);
 	}
 }
-int d = 0;
-static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
-{	
-	terminal_size_listener(vdata, game, champs);
-	noecho();
-	timeout(1000 / vdata->sec);
-	vdata->key = getch();
-	vdata->scrolling_controls->key = vdata->key;
-	if (vdata->key == 'm' || vdata->key == 'M')
-		music_player();
-	custom_cycle(vdata, game, champs);
-	if (KEY(S)) // [S] Make one step forward
+
+static void		one_step_forward(t_vdata *vdata)
+{
+	if (KEY(S))
 	{
 		if (vdata->paused)
 		{
@@ -70,6 +62,25 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 		else
 			vdata->paused = 1;
 	}
+}
+
+static void		music(t_vdata *vdata)
+{
+	if (KEY(M))
+		music_player();
+}
+
+static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
+{	
+	terminal_size_listener(vdata, game, champs);
+	noecho();
+	timeout(1000 / vdata->sec);
+	vdata->key = getch();
+	disclaimer(vdata, game, champs);
+	vdata->scrolling_controls->key = vdata->key;
+	music(vdata);
+	custom_cycle(vdata, game, champs);
+	one_step_forward(vdata);
 	exit_window(vdata, game, champs);
 	speed_controls(vdata, game, champs);
 	scrolling_of_the_names(vdata);
@@ -77,9 +88,7 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 
 void	playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 {
-
 	key_listener(vdata, game, champs);
-
 	if (KEY(SPACE) && ERASE_KEY)
 		vdata->paused = 1;
 	if (vdata->paused == 1)
