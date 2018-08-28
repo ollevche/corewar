@@ -27,7 +27,7 @@ void	display_usage(char *usage_txt);
 */
 
 t_champ	*read_input(int argc, char **args, t_arg *arg);
-
+int		count_champs(t_champ *champs);
 
 /*
 **	read_champ.c
@@ -61,8 +61,8 @@ int		move_pc(int pc, int val);
 
 t_champ	*new_champ(t_champ **champs);
 t_carry *new_carry(t_carry **all_carries, int first_reg);
-void	del_carry(t_carry **head, t_carry **prev, t_carry *target);
 t_champ	*get_champ_by_id(t_champ *head, int id);
+void	del_carry(t_carry **head, t_carry *prev, t_carry *target);
 
 /*
 **	free_funcs.c

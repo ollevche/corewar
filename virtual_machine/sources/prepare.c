@@ -13,23 +13,6 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-/*
-**	returns total number of champs
-*/
-
-static int	count_champs(t_champ *champs)
-{
-	int champs_count;
-
-	champs_count = 0;
-	while (champs)
-	{
-		champs_count++;
-		champs = champs->next;
-	}
-	return (champs_count);
-}
-
 static void	prepare_spot_map(t_champ *champs, t_session *game)
 {
 	int		def_value;
@@ -110,11 +93,6 @@ bool		prepare(t_champ *champs, t_session **game)
 	int	champs_n;
 
 	champs_n = count_champs(champs);
-	if (champs_n > MAX_PLAYERS)
-	{
-		ft_printf("Too many champions\n"); // TODO: print this before visualization
-		return (false);
-	}
 	RET_CHECK(prepare_session(game, champs_n), NULL);
 	prepare_spot_map(champs, *game);
 	place_code(champs, *game);

@@ -16,24 +16,27 @@
 
 static int	kill_carries(t_carry **carries, int period_start)
 {
-	t_carry	*icarry;
+	t_carry	*current;
 	t_carry	*prev;
 	int		killed;
 
-	icarry = *carries;
+	current = *carries;
 	prev = NULL;
 	killed = 0;
-	while (icarry)
+	while (current)
 	{
-		if (icarry->last_live < period_start)
+		if (current->last_live < period_start)
 		{
-			del_carry(carries, &prev, icarry); // TODO: prev == NULL
-			icarry = prev;
+			del_carry(carries, prev, current);
+			if (prev)
+				current = prev->next;
+			else
+				current = *carries;
 			killed++;
+			continue ;
 		}
-		prev = icarry;
-		if (icarry)
-			icarry = icarry->next;
+		prev = current;
+		current = current->next;
 	}
 	return (killed);
 }
@@ -132,12 +135,11 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		if (game->cycle == 4400 || game->cycle == 4405) // TODO: 4400 - two carries at the same pos so we cannot be sure there is the same pos in our corewar and original; 4405 - diff
-			log(game, false); // DEL
+		log(game, false); // DEL
 		execute_carries(game, champs);
-		game->cycle++;
 		control_game_flow(game, champs);
 		visu_drawing(&vdata, game, champs, arg);
+		game->cycle++;
 	}
 
 	free_session(&game);

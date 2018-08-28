@@ -27,7 +27,7 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 	if (arg_champ)
 	{
 		LAST_ALIVE = arg_champ;
-		LAST_ALIVE->period_lives++; // TODO: test period_lives
+		LAST_ALIVE->period_lives++;
 		PERIOD_LIVES++;
 		//ft_printf("A process shows that player %s is alive\n", LAST_ALIVE->name); // TODO: hide this
 	}

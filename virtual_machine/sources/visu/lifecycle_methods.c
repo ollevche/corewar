@@ -12,6 +12,7 @@
 
 #include "visu.h"
 #include "vm.h"
+#include "vm_funcs.h"
 
 static int  appropriate_window(t_vdata *vdata)
 {
@@ -53,18 +54,6 @@ static void		set_defaults(t_vdata *vdata, int total_champs)
 	vdata->last_win_cols_size = COLS;
 	vdata->last_win_lines_size = LINES;
 	vdata->active_alert = 0;
-}
-int count_champs(t_champ *champs)
-{
-	int count;
-
-	count = 0;
-	while (champs != NULL)
-	{
-		champs = champs->next;
-		count++;
-	}
-	return (count);
 }
 
 int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
@@ -115,7 +104,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	
 	wattroff(vdata->right_window, COLOR_PAIR(LEFT_W) | A_BOLD);
 
-box(vdata->left_window, 0, 0);
+	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
 	scrolling_controls(vdata, 29, 197);
 	return (1);

@@ -67,7 +67,7 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	if (!(valid_args = set_arg_types(coding_byte, args[0], n_args)))
 		return (false);
 
-	i = -1; // TODO: this is ugly piece of code, but correct one (refactor this) // TODO: this isn't correct; (2 helltrains test)
+	i = -1;
 	while (i + 1 < n_args) // get value for every arg_type and move pc each time
 	{
 		i++;

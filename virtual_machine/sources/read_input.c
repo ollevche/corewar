@@ -60,6 +60,19 @@ static t_champ	*read_file(t_champ **champs, char *filename)
 	return (champ);
 }
 
+int			count_champs(t_champ *champs)
+{
+	int champs_count;
+
+	champs_count = 0;
+	while (champs)
+	{
+		champs_count++;
+		champs = champs->next;
+	}
+	return (champs_count);
+}
+
 t_champ			*read_input(int argc, char **args, t_arg *arg)
 {
 	t_champ	*champs;
@@ -79,6 +92,11 @@ t_champ			*read_input(int argc, char **args, t_arg *arg)
 		if (flag_res == NOT_FLAG)
 			ichamp->id = (arg->champ_id)--;
 		i++;
+	}
+	if (count_champs(champs) > MAX_PLAYERS)
+	{
+		ft_printf("Too many champions\n");
+		terminate(&champs);
 	}
 	return (champs);
 }
