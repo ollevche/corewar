@@ -151,6 +151,7 @@ typedef struct				s_vdata
 
     t_uchar                 prev_map[MEM_SIZE];
 	int		                prev_spot_map[MEM_SIZE];
+	long long int						color_map_div[4];
 }							t_vdata;
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);

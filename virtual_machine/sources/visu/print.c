@@ -37,6 +37,7 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 	y = 0;
 	x = 2;
 	(void)champs;
+	ft_bzero(vdata->color_map_div, sizeof(long long int) * 4);
 	while (index < MEM_SIZE)
 	{
 
@@ -52,6 +53,15 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 		index++;
 	}
 	show_carries(vdata, game, game->carries, champs);
+	
+	// y = 3;
+	// int i = 0; 
+	// while (i < vdata->total_champs)
+	// {
+	// 	mvwprintw(vdata->left_window, y, START_X, "[%d] = %lld", i,  vdata->color_map_div[i]);
+	// 	i++;
+	// 	y++;
+	// }
 	wrefresh(vdata->left_window);
 }
 
@@ -76,18 +86,22 @@ void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *ch
 void print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map, int index, t_champ *champs)
 {
 	static int i = 0;
+	int color;
 
+	color = get_color(champs, spot_map[index]);
+	if (color != 0)
+		vdata->color_map_div[color - 1]++;
 	if ( i <= MEM_SIZE || (vdata->prev_map[index] == map[index] && vdata->prev_spot_map[index] == spot_map[index]))
 	{
-		wattron(vdata->left_window, COLOR_PAIR(get_color(champs, spot_map[index])));
+		wattron(vdata->left_window, COLOR_PAIR(color));
 		mvwprintw(vdata->left_window, y, x, "%02x", map[index]);
-		wattroff(vdata->left_window, COLOR_PAIR(get_color(champs, spot_map[index])));
+		wattroff(vdata->left_window, COLOR_PAIR(color));
 	}
 	else
 	{
-		wattron(vdata->left_window, COLOR_PAIR(get_color(champs, spot_map[index]) + 10));
+		wattron(vdata->left_window, COLOR_PAIR(color + 10));
 		mvwprintw(vdata->left_window, y, x, "%02x", map[index]);
-		wattroff(vdata->left_window, COLOR_PAIR(get_color(champs, spot_map[index]) + 10));
+		wattroff(vdata->left_window, COLOR_PAIR(color + 10));
 	}
 	i++;
 }

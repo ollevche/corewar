@@ -61,6 +61,8 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 
     ft_bzero(vdata->prev_map, sizeof(t_uchar) * MEM_SIZE);
     ft_bzero(vdata->prev_spot_map, sizeof(int) * MEM_SIZE);
+
+	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
 }
 int		get_total_champs(t_champ *champ)
 {
