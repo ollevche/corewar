@@ -114,15 +114,15 @@ void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 	}
 }
 
-void		disclaimer(t_vdata *vdata, t_session *game, t_champ *champs)
+void		disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	if (vdata->first_run)
 	{
 		vdata->first_run = 0;
 
-			show_alert_window(vdata, "    Are you 18+ years old to continue?", "[Y] Yes           No [N]");
+			show_alert_window(vdata, "  Are you over 18 years old to continue?", "[Y] Yes           No [N]");
 		
-			vdata->active_alert = EXIT;
+			vdata->active_alert = DISCLAIMER;
 
 			while (!(KEY(Y) || KEY(N)))
 			{

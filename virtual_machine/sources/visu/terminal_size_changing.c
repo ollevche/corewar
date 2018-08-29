@@ -49,6 +49,8 @@ void static	rerender_alert_window(t_vdata *vdata)
 		show_alert_window(vdata, "      Are you sure you want to exit?", "[Y] Yes           No [N]");
 	else if (vdata->active_alert == GAME_OVER)
 		show_alert_window(vdata, "   Game is over, would you like to exit?", "[Y] Yes           No [N]");
+	else if (vdata->active_alert == DISCLAIMER)
+		show_alert_window(vdata, "  Are you over 18 years old to continue?", "[Y] Yes           No [N]");
 }		
 
 void static temp_names(t_scroll_name *relative, int *y, int *player) //TODO temp method
