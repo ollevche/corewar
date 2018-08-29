@@ -36,7 +36,7 @@
 # define W_WIDTH 251
 # define START_X 2
 # define GRAY 0
-# define GRAY_B 100
+# define GRAY_B 1234
 # define PLAYER_1 1
 # define PLAYER_2 2
 # define PLAYER_3 3
@@ -45,6 +45,10 @@
 # define CARRY_P2 20
 # define CARRY_P3 30
 # define CARRY_P4 40
+# define NEW_PLAYER_1 11
+# define NEW_PLAYER_2 12
+# define NEW_PLAYER_3 13
+# define NEW_PLAYER_4 14
 
 
 //COLORS
