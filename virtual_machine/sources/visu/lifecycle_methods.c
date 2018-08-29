@@ -64,6 +64,7 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 
 	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
 }
+
 int		get_total_champs(t_champ *champ)
 {
 	int players;
@@ -133,6 +134,7 @@ void    set_champs_for_visu(t_champ *champs, t_vdata *vdata)
 	color = 1;
 	while (champs != NULL)
 	{
+		// vdata->id_arr[color - 1] = tmp->id;
 		init_pair(color * 10, COLOR_BLACK, color);
 		init_pair(color + 10, 10 + color, COLOR_BLACK);
 		init_pair(color, color, COLOR_BLACK);
@@ -186,10 +188,10 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 {
 	if (!arg->is_visual)
 		return (1);
-	wattroff(vdata->right_window, COLOR_PAIR(GRAY));
-	// wattroff(vdata->left_window, COLOR_PAIR(GRAY));
-	(void)game;
+
 	(void)champs;
+	(void)game;
+
 	scrolling_finalizing(vdata);
 	live_bars_finalizing(vdata);
 	delwin(vdata->left_window);

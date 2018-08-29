@@ -16,7 +16,7 @@
 
 void	author_line_initializing(t_vdata *vdata)
 {
-	char *authors = "Sasha Levchenkov, Dariy Pozinenko, Fucking Vika and Serzh Ivasyshyn";
+	char *authors = "Sasha Levchenkov, Dariy Pozinenko, Vika Blokha and Serzh Ivasyshyn";
 	char *adv = "*** Your advertisement could be here! Call +380(93)416-66-51 *** ";
 
 	ft_bzero(vdata->adv_line, AUTHOR_LEN);

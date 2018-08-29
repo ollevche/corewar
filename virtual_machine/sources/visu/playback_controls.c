@@ -76,7 +76,7 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	noecho();
 	timeout(1000 / vdata->sec);
 	vdata->key = getch();
-	disclaimer(vdata, game, champs);
+	disclaimer_window(vdata, game, champs);
 	vdata->scrolling_controls->key = vdata->key;
 	music(vdata);
 	custom_cycle(vdata, game, champs);

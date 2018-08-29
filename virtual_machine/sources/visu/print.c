@@ -106,9 +106,6 @@ void print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map
 	i++;
 }
 
-
-
-
 void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	(void)champs;
@@ -124,15 +121,13 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 		wattroff(vdata->right_window, A_BOLD);
 	}
 	else
-		mvwprintw(vdata->right_window, 1, START_X, "%s", "** RUNNING **");
-	//mvwprintw(vdata->right_window, 1, START_X, "%s", vdata->paused ? "** PAUSED ** " : "** RUNNING **");	
+		mvwprintw(vdata->right_window, 1, 17, "%s", "-- RUNNING --");
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 2, START_X, "[Space] changes status");
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 2, START_X + 1, "Space");
-	
-	wattroff(vdata->right_window, A_BOLD);
-
-	mvwprintw(vdata->right_window, 4, START_X, "Cycles/second:\t%d     ", vdata->sec);
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
+	mvwprintw(vdata->right_window, 4, START_X, "Cycles/second:\t%d", vdata->sec);
 	mvwprintw(vdata->right_window, 5, START_X, "[Left] and [Right] arrows change speed");
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 5, START_X + 1, "Left");
@@ -150,17 +145,18 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	
 	//show_players(vdata->right_window, champs, &y);
 	mvwprintw(vdata->right_window, y += 3, START_X,"Carries:\t%d", game->carry_num);
-	mvwprintw(vdata->right_window, y += 2, START_X, "Cycle to die: %d\tLast change:  %d",
-		game->cycle_to_die, game->last_ctd);
+	mvwprintw(vdata->right_window, y += 2, START_X,"Cycle to die: %d", game->cycle_to_die);
+	mvwprintw(vdata->right_window, y += 2, START_X,"Last change:  %d", game->last_ctd);
 	mvwprintw(vdata->right_window, y += 2, START_X,  "LIVES:\t%d", game->period_lives);
 	mvwprintw(vdata->right_window, y += 2, START_X, "LAST ALIVE:");
 
 	
 	if (game->last_alive != NULL)
 	{
-		wattron(vdata->right_window, COLOR_PAIR(game->last_alive->id * (-1)));
+		wattroff(vdata->right_window, A_BOLD);	
+		wattron(vdata->right_window, COLOR_PAIR(get_color(champs, game->last_alive->id)));
 		mvwprintw(vdata->right_window, y, START_X + 11, "\t%s", game->last_alive->name);
-		wattroff(vdata->right_window, COLOR_PAIR(game->last_alive->id * (-1)));
+		wattroff(vdata->right_window,  COLOR_PAIR(get_color(champs, game->last_alive->id)));
 	}
 	else
 		mvwprintw(vdata->right_window, y, START_X + 11, "\tNO ONE");

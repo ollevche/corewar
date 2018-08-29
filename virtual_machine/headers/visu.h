@@ -54,6 +54,7 @@
 //COLORS
 # define COLOR_JA 4181
 
+// # define GET_COLOR(x[i]) (i) + 1
 //KEYS
 # define ESC 27
 # define LEFT 260
@@ -75,6 +76,7 @@
 # define CUSTOM_CYCLE 1
 # define GAME_OVER 2
 # define EXIT 3
+# define DISCLAIMER 4
 # define ACTIVE_ALERT(x) x == CUSTOM_CYCLE || x == GAME_OVER || x == GAME_OVER
 
 
@@ -156,7 +158,7 @@ typedef struct				s_vdata
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
-void print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map, int index, t_champ *champs);
+void						print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map, int index, t_champ *champs);
 int							visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs);
 void						set_champs_names_to_scrolling(t_vdata *vdata, t_champ *champs, int total_champs);
 int							visu_finalizing		(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg);
@@ -192,5 +194,5 @@ void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
 
 void                        set_champs_for_visu(t_champ *champs, t_vdata *vdata);
 int							get_color(t_champ *champs, int id);
-void						disclaimer(t_vdata *vdata, t_session *game, t_champ *champs);
+void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
 #endif
