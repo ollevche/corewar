@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-static int	set_arg_types(int coding_byte, int *args, int size) // gets bits
+int	set_arg_types(int coding_byte, int *args, int size) // gets bits
 {
 	int i;
 	int valid;
@@ -32,7 +32,7 @@ static int	set_arg_types(int coding_byte, int *args, int size) // gets bits
 	return (valid);
 }
 
-static int	get_pc_move(int arg, int label_size)
+int	get_pc_move(int arg, int label_size)
 {
 	if (arg == DIR_CODE)
 		return (2 + 2 * (1 - label_size));

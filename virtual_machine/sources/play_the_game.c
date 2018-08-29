@@ -132,14 +132,18 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
 	RET_CHECK(prepare(champs, &game), NULL);
+	int ctd = game->cycle_to_die;
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		log(game, false); // DEL
-		execute_carries(game, champs);
-		control_game_flow(game, champs);
 		visu_drawing(&vdata, game, champs, arg);
 		game->cycle++;
+		ft_printf("It is now cycle %d\n", game->cycle);
+		log(game, false); // DEL
+		execute_carries(game, champs);
+		ctd = game->cycle_to_die;
+		control_game_flow(game, champs);
+		get_log_str(game->carries, game, game->cycle_to_die == ctd ? false : true);
 	}
 
 	free_session(&game);

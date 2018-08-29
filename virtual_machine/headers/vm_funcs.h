@@ -93,6 +93,9 @@ bool	lld(t_session *game, t_carry *carry, t_champ *head);
 bool	lldi(t_session *game, t_carry *carry, t_champ *head);
 bool	op_lfork(t_session *game, t_carry *carry, t_champ *head);
 bool	aff(t_session *game, t_carry *carry, t_champ *head);
+int		set_arg_types(int coding_byte, int *args, int size);
+void	get_log_str(t_carry *carry, t_session *game, bool print_ctd); // tester-v.c
+
 
 /*
 **  base_ops.c ▽
