@@ -19,7 +19,7 @@ static int  appropriate_window(t_vdata *vdata)
 	{  
 		(void)vdata;
 		refresh();
-		system("printf \'\033[8;78;244t\'");
+		system("printf \'\033[8;78;245t\'");
 		//system("printf \'\033[8;68;251t\'");
 		//ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
 		//delwin(vdata->left_window);
@@ -37,7 +37,6 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 	vdata->right_window = newwin(20, 49, 2, 195);
 	vdata->alert_window = newwin(14 , 59, W_HEIGHT / 2 - 7, W_WIDTH / 2 - 30);
 	vdata->input_window = newwin(1, 12, 6, 219);
-	vdata->authors = newwin(2, 195, 0, 0);
 	vdata->key = 0;
 	vdata->paused = 1;
 	vdata->sec = 5;
@@ -63,6 +62,8 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
     ft_bzero(vdata->prev_spot_map, sizeof(int) * MEM_SIZE);
 
 	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
+
+	vdata->debug_window = newwin(5 , 33, 40, 196);
 }
 
 int		get_total_champs(t_champ *champ)
@@ -122,6 +123,8 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	
 	live_bars_initializing(vdata, champs, 67, 33);
 	author_line_initializing(vdata);
+	vdata->players_window = newwin(245, 1, 0, 244);
+
 	return (1);
 }
 
@@ -176,6 +179,7 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 	{
 		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
+		players_line_refresh(vdata);
 		refresh_live_bars(vdata, FALSE);		
 		playback_controls(vdata, game, champs);
 	}

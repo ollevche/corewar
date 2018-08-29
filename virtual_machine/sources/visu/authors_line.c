@@ -16,6 +16,7 @@
 
 void	author_line_initializing(t_vdata *vdata)
 {
+	vdata->authors = newwin(2, 195, 0, 0);	
 	char *authors = "Sasha Levchenkov, Dariy Pozinenko, Vika Blokha and Serzh Ivasyshyn";
 	char *adv = "*** Your advertisement could be here! Call +380(93)416-66-51 *** ";
 

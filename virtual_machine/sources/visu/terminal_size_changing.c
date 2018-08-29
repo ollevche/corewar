@@ -110,11 +110,15 @@ void static rerender_scrolling_names(t_vdata *vdata) //TODO Not finished
 	mvwin(vdata->scrolling_controls->window, 69, 197);
 	wrefresh(vdata->scrolling_controls->window);
 
-	wresize(vdata->authors, 2, 195);
+	wresize(vdata->authors, 2, 195);	
 	box(vdata->authors, 0 , 0);
 	mvwprintw(vdata->authors, 1, 3, "| ");
 	mvwprintw(vdata->authors, 1, 190, " |");
 	wrefresh(vdata->authors);
+
+	wresize(vdata->players_window, 245, 1);
+	mvwin(vdata->players_window, 0, 244);
+	players_line_refresh(vdata);
 }
 
 void static	rerender_live_bars(t_vdata *vdata, int x, int y)
@@ -136,7 +140,7 @@ void		terminal_size_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	refresh();
 	if (vdata->last_win_cols_size != COLS || vdata->last_win_lines_size != LINES)
 	{
-		system("printf \'\033[8;78;244t\'");
+		system("printf \'\033[8;78;245t\'");
 		vdata->last_win_cols_size = COLS;
 		vdata->last_win_lines_size = LINES;	
 		refresh();

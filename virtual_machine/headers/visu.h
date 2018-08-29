@@ -33,7 +33,7 @@
 
 
 # define W_HEIGHT 78
-# define W_WIDTH 251
+# define W_WIDTH 245
 # define START_X 2
 # define GRAY 0
 # define GRAY_B 1234
@@ -121,6 +121,7 @@ typedef struct				s_vdata
 	WINDOW					*alert_window;
 	WINDOW					*input_window;
 	WINDOW					*authors;
+	WINDOW					*players_window;
 	int						key;
 	int						paused;
 	unsigned long long		sec;
@@ -153,7 +154,10 @@ typedef struct				s_vdata
 
     t_uchar                 prev_map[MEM_SIZE];
 	int		                prev_spot_map[MEM_SIZE];
-	long long int						color_map_div[4];
+	long long int			color_map_div[4];
+
+	WINDOW					*debug_window;
+
 }							t_vdata;
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
@@ -195,4 +199,6 @@ void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
 void                        set_champs_for_visu(t_champ *champs, t_vdata *vdata);
 int							get_color(t_champ *champs, int id);
 void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
+
+void						players_line_refresh(t_vdata *vdata);
 #endif
