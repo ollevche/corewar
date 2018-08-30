@@ -45,7 +45,7 @@ int			move_pc(int pc, int val)
 	if (pc >= MEM_SIZE)
 		pc %= MEM_SIZE;
 	else if (pc < 0)
-		pc = MEM_SIZE + pc; // pc is neg so it has to be + // TODO: pc or val (< -4096)
+		pc = MEM_SIZE + pc % MEM_SIZE; // pc is neg so it has to be + // TODO: pc or val (< -4096)
 	return (pc);
 }
 
