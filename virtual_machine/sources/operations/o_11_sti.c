@@ -16,6 +16,7 @@ bool	sti(t_session *game, t_carry *carry, t_champ *head)
 {
 	int 	args[2][3 + 1];
 	int		lpc;
+	short	dmy; // dummy value for conversion
 
 	(void)head;
 	lpc = PC;
@@ -28,7 +29,8 @@ bool	sti(t_session *game, t_carry *carry, t_champ *head)
 			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
 		if (TYP3 == REG_CODE)
 			RET_CHECK(check_reg(&VAL3, game, carry, JMP), false);
-		write_to_map(game, PC + (VAL2 + VAL3) % IDX_MOD, REGS[VAL1 - 1], carry->champ);
+		dmy = VAL2 + VAL3;
+		write_to_map(game, PC + (dmy) % IDX_MOD, REGS[VAL1 - 1], carry->champ);
 	}
 	update_position(game, carry, JMP + 1);
 	return (true);
