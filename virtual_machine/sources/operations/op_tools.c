@@ -41,16 +41,19 @@ int	get_pc_move(int arg, int label_size)
 	return (1);
 }
 
-static int	get_idx_ind(t_session *game, int lpc, int op_code)
+static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 {
 	short ind_value;
 
 	ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
-	ind_value %= IDX_MOD;
+	if (g_optab[op_code].ind_idx)
+		ind_value %= IDX_MOD;
 	if (op_code == 3 || op_code == 11) // st or sti
 		return (ind_value);
-	lpc = move_pc(lpc, ind_value);
-	return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
+	lpc = move_pc(pc, ind_value);
+	if (op_code == 13) // NOTE: original vm is broken
+		return (ft_byte_to_uint(0, 0, MAPVAL(lpc, 0), MAPVAL(lpc, 1)));
+	return (ft_byte_to_uint(MAPVAL(lpc, 0), MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3)));
 }
 
 bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
@@ -59,9 +62,10 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	int		i;
 	int		n_args;
 	int		valid_args;
+	int		pc;
 
 	n_args = g_optab[op_code].nb_params;
-
+	pc = *lpc;
 	coding_byte = ft_byte_to_uint(0, 0, 0, MAPVAL(*lpc, 1));
 	*lpc = move_pc(*lpc, 1);
 	if (!(valid_args = set_arg_types(coding_byte, args[0], n_args)))
@@ -71,9 +75,9 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	while (i + 1 < n_args) // get value for every arg_type and move pc each time
 	{
 		i++;
-		if (args[0][i] == IND_CODE && g_optab[op_code].ind_idx)
-			args[1][i] = get_idx_ind(game, *lpc, op_code);
-		else if (args[0][i] == REG_CODE || args[0][i] == DIR_CODE || args[0][i] == IND_CODE)
+		if (args[0][i] == IND_CODE)// && g_optab[op_code].ind_idx)
+			args[1][i] = get_ind(game, *lpc, pc, op_code);
+		else if (args[0][i] == REG_CODE || args[0][i] == DIR_CODE)
 			args[1][i] = get_value_by_arg(game, args[0][i], *lpc, op_code);
 		else
 			continue ;
@@ -84,16 +88,6 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 
 int		get_value_by_arg(t_session *game, int arg, int lpc, int op_code)
 {
-	int ind_value;
-
-	if (arg == IND_CODE) // read value where to jump; jump to that value; read value after jump and return it
-	{
-		ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
-		if (op_code == 3 || op_code == 11) // st or sti
-			return (ind_value);
-		lpc = move_pc(lpc, ind_value);
-		return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
-	}
 	if (arg == REG_CODE)
 		return (ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, 1)));
 	if (arg == DIR_CODE)
