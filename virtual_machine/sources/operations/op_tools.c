@@ -48,7 +48,7 @@ static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 	ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
 	if (g_optab[op_code].ind_idx)
 		ind_value %= IDX_MOD;
-	if (op_code == 3 || op_code == 11) // st or sti
+	if (op_code == 3)// || op_code == 11) // st or sti
 		return (ind_value);
 	lpc = move_pc(pc, ind_value);
 	if (op_code == 13) // NOTE: original vm is broken
