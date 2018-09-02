@@ -250,8 +250,16 @@ void static	console_drawing(t_vdata *vdata)
 		vdata->console.stop_scrolling = 1;
 }
 
+int tempik = 1;
+
 void		console_refresh(t_vdata *vdata) //TODO
 {	
+	if (vdata->key == 'Q') // TEMP DEBUG
+	{
+		char *temp_char = ft_itoa(tempik++);
+		visu_print(vdata, ft_strjoin("incoming text #", temp_char));
+		ft_strdel(&temp_char);
+	}
 	if (KEY(C) && !vdata->console.active)
 	{
 		if (vdata->console.opened)
@@ -284,9 +292,10 @@ void		console_refresh(t_vdata *vdata) //TODO
 		}
 		wrefresh(vdata->console.box_window);		
 	}
+	if (vdata->console.opened)
+		console_navigation_keys(vdata);
 	if (vdata->console.active)
 	{
-		console_navigation_keys(vdata);
 		console_delete_keys(vdata);
 		console_input_keys(vdata);
 		if (KEY(DELETE) || KEY(BACKSPACE) || KEY(LEFT) || KEY(RIGHT))
