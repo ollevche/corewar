@@ -15,8 +15,8 @@
 
 static int  appropriate_window(t_vdata *vdata)
 {
-	if (COLS < W_WIDTH || LINES < W_HEIGHT)
-	{  
+	//if (COLS != W_WIDTH || LINES != W_HEIGHT)
+	//{  
 		(void)vdata;
 		refresh();
 		system("printf \'\033[8;78;245t\'");
@@ -27,14 +27,14 @@ static int  appropriate_window(t_vdata *vdata)
 		//endwin();
 		//exit(1);
 		//return (0);
-	}
+	//}
 	return (1);
 }
 
 static void		set_defaults(t_vdata *vdata, t_champ *champs)
 {
 	vdata->left_window = newwin(66 , 195, 2, 0);
-	vdata->right_window = newwin(20, 49, 2, 195);
+	vdata->right_window = newwin(33, 49, 2, 195);
 	vdata->alert_window = newwin(14 , 59, W_HEIGHT / 2 - 7, W_WIDTH / 2 - 30);
 	vdata->input_window = newwin(1, 12, 6, 219);
 	vdata->key = 0;
@@ -62,8 +62,6 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
     ft_bzero(vdata->prev_spot_map, sizeof(int) * MEM_SIZE);
 
 	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
-
-	vdata->debug_window = newwin(5 , 33, 40, 196);
 }
 
 int		get_total_champs(t_champ *champ)
@@ -91,25 +89,25 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	init_color(COLOR_WHITE, 400, 400, 400);
 
 
-	init_color(COLOR_RED, 880-280, 880-280, 480-280);
-	init_color(COLOR_GREEN, 450-180, 350-180, 490-180);
-	init_color(COLOR_YELLOW, 100-280, 600-280, 600-280);
-	init_color(COLOR_BLUE, 850 - 280, 0, 350-280);
+	// init_color(COLOR_RED, 880-280, 880-280, 480-280);
+	// init_color(COLOR_GREEN, 450-180, 350-180, 490-180);
+	// init_color(COLOR_YELLOW, 100-280, 600-280, 600-280);
+	// init_color(COLOR_BLUE, 850 - 280, 0, 350-280);
 
-	init_color(11, 880 + 120, 880+ 120, 480+ 120);
-	init_color(12, 450+ 100, 350+ 100, 490+ 100);
-	init_color(13, 100+ 200, 600+ 200, 600+ 200);
-	init_color(14, 850+ 120, 80+ 120, 350+ 120);
+	// init_color(11, 880 + 120, 880+ 120, 480+ 120);
+	// init_color(12, 450+ 100, 350+ 100, 490+ 100);
+	// init_color(13, 100+ 200, 600+ 200, 600+ 200);
+	// init_color(14, 850+ 120, 80+ 120, 350+ 120);
 	
-	// init_color(COLOR_RED, 168 * 3 + 200, 33 * 3 + 200, 107 * 3 + 200);
-	// init_color(COLOR_GREEN,   247 * 3 + 200, 219 * 3 + 200, 105 * 3 + 200);
-	// init_color(COLOR_YELLOW, 236 * 3 + 200, 27 * 3 + 200, 75 * 3 + 200); 
-	// init_color(COLOR_BLUE, 46 * 3 + 200, 149 * 3 + 200, 152 * 3 + 200);
+	init_color(COLOR_RED, 168 * 3 , 33 * 3 , 107 * 3 );
+	init_color(COLOR_GREEN,   247 * 3 , 219 * 3 , 105 * 3);
+	init_color(COLOR_YELLOW, 236 * 3 , 27 * 3 , 75 * 3 ); 
+	init_color(COLOR_BLUE, 46 * 3 , 149 * 3 , 152 * 3 );
 
-	// init_color(11,168 * 3 + 400, 33 * 3 + 400, 107 * 3 + 400);
-	// init_color(12,  247 * 3 + 400, 219 * 3 + 400, 105 * 3 + 400);
-	// init_color(13, 236 * 3 + 400, 27 * 3 + 400, 75 * 3 + 400); 
-	// init_color(14, 46 * 3 + 400, 149 * 3 + 400, 152 * 3 + 400);
+	init_color(11,168 * 3 + 200, 33 * 3 + 200, 107 * 3 + 200);
+	init_color(12,  247 * 3 + 200, 219 * 3 + 200, 105 * 3 + 200);
+	init_color(13, 236 * 3 + 200, 27 * 3 + 200, 75 * 3 + 200); 
+	init_color(14, 46 * 3 + 200, 149 * 3 + 200, 152 * 3 + 200);
 
 
 	init_pair(GRAY, COLOR_WHITE, COLOR_BLACK);
@@ -125,6 +123,11 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	author_line_initializing(vdata);
 	vdata->players_window = newwin(245, 1, 0, 244);
 
+	console_initializing(vdata);
+	visu_print(vdata, "Welcome to the Corewar console, version number 1.237487 :D");
+	visu_print(vdata, "Try all the features listed in the Console controls window");	
+	visu_print(vdata, "Hope you gonna love it! <3");
+	
 	return (1);
 }
 
@@ -196,6 +199,7 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 	(void)champs;
 	(void)game;
 
+	console_finalizing(vdata);
 	scrolling_finalizing(vdata);
 	live_bars_finalizing(vdata);
 	delwin(vdata->left_window);

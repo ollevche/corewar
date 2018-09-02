@@ -10,13 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-// new term || 
-// clean str
-
-
-
-
 #ifndef VISU_H
 # define VISU_H
 
@@ -30,7 +23,6 @@
 #define MAX_NAME_LEN 20
 #include <sys/time.h>
 // Scrolling names
-
 
 # define W_HEIGHT 78
 # define W_WIDTH 245
@@ -50,7 +42,6 @@
 # define NEW_PLAYER_3 13
 # define NEW_PLAYER_4 14
 
-
 //COLORS
 # define COLOR_JA 4181
 
@@ -65,11 +56,18 @@
 # define N 110
 # define S 115
 # define M 109
+# define TILDE 96
 # define SPACE 32
 # define BACKSPACE 127
+# define DELETE 330
 # define NUMBER_KEYS (vdata->key >= '0' && vdata->key <= '9')
 # define KEY(x) (vdata->key == x)
 # define ERASE_KEY (vdata->key = -1)
+# define UP 259
+# define DOWN 258
+# define BOTTOM 338
+# define TOP 339
+# define C 99
 //KEYS
 
 //ALERT WINDOWS
@@ -79,11 +77,14 @@
 # define DISCLAIMER 4
 # define ACTIVE_ALERT(x) x == CUSTOM_CYCLE || x == GAME_OVER || x == GAME_OVER
 
-
 //LIVE BAR
 # define BAR_LEN 150
-
 # define AUTHOR_LEN 186
+
+//CONSOLE
+# define PREFIX_LEN 9
+# define CONSOLE_INPUT_LEN 1000
+# define CONSOLE_INPUT_LINES 64
 
 typedef struct				s_scrolling_controls
 {
@@ -113,6 +114,37 @@ typedef struct 				s_live_bar
 	int						prev_line;
 	struct s_live_bar		*next;
 }							t_live_bar;
+
+typedef struct 				s_msg
+{
+	char					*text;
+	int						left_lines;
+	int						total_lines;
+	char					prefix[PREFIX_LEN];
+	struct s_msg			*next;
+}							t_msg;
+
+typedef struct 				s_console
+{
+	WINDOW					*window;
+	WINDOW					*box_window;
+	WINDOW					*clock_window;
+	WINDOW					*controls_window;
+	t_msg					*msgs;
+	int						msgs_lines;
+	char					input_line[CONSOLE_INPUT_LEN];
+	int						input_index;
+	int						carriage_index;
+	int						carriage_lines;
+	int						scroll_position;
+	int						stop_scrolling;
+	int						refresh;
+	int						opened;
+	int						active;
+	int						width;
+	char					clock[20];
+	int						clock_time;
+}							t_console;
 
 typedef struct				s_vdata
 {
@@ -152,11 +184,13 @@ typedef struct				s_vdata
 	int						first_run;
 
 
-    t_uchar                 prev_map[MEM_SIZE];
+	t_uchar                 prev_map[MEM_SIZE];
 	int		                prev_spot_map[MEM_SIZE];
 	long long int			color_map_div[4];
 
 	WINDOW					*debug_window;
+
+	t_console				console;
 
 }							t_vdata;
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
@@ -201,4 +235,12 @@ int							get_color(t_champ *champs, int id);
 void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						players_line_refresh(t_vdata *vdata);
+
+void						console_initializing(t_vdata *vdata);
+void						console_finalizing(t_vdata *vdata);
+void						visu_print(t_vdata *vdata, char *msg);
+void						console_refresh(t_vdata *vdata);
+void						reget_text_lines_duo_to_new_width(t_vdata *vdata);
+void						console_clock_refresh(t_vdata *vdata);
+void						console_controls_displaying(t_vdata *vdata);
 #endif

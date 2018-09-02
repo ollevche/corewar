@@ -162,11 +162,16 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 		mvwprintw(vdata->right_window, y, START_X + 11, "\tNO ONE");
 
 	mvwprintw(vdata->right_window, y += 2, START_X, "[S] Make one step forward");
+	mvwprintw(vdata->right_window, y += 2, START_X, "[C] Open\\Close Console");
 
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 8, START_X + 1, "E");
-	mvwprintw(vdata->right_window, y , START_X + 1, "S");
-	mvwprintw(vdata->right_window, y , START_X + 30, ">> NEW <<");
+	mvwprintw(vdata->right_window, y - 2 , START_X + 1, "S");
+	mvwprintw(vdata->right_window, y - 2 , START_X + 30, ">> NEW <<");
+
+
+	mvwprintw(vdata->right_window, y, START_X + 1, "C");
+	mvwprintw(vdata->right_window, y, START_X + 30, ">> NEW <<");
 
 	wattroff(vdata->right_window, A_BOLD);
 

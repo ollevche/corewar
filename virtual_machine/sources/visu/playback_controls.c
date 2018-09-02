@@ -71,12 +71,14 @@ static void		music(t_vdata *vdata)
 }
 
 static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
-{	
+{
 	terminal_size_listener(vdata, game, champs);
 	noecho();
 	timeout(1000 / vdata->sec);
 	vdata->key = getch();
 	disclaimer_window(vdata, game, champs);
+	console_clock_refresh(vdata);
+	console_refresh(vdata);
 	vdata->scrolling_controls->key = vdata->key;
 	music(vdata);
 	custom_cycle(vdata, game, champs);
