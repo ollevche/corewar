@@ -118,6 +118,7 @@ typedef struct 				s_live_bar
 typedef struct 				s_msg
 {
 	char					*text;
+	char					allocated;
 	int						left_lines;
 	int						total_lines;
 	char					prefix[PREFIX_LEN];
@@ -235,10 +236,10 @@ int							get_color(t_champ *champs, int id);
 void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						players_line_refresh(t_vdata *vdata);
-
+void						visu_print_static(t_vdata *vdata, char *text);
+void						visu_print_allocated(t_vdata *vdata, char *text);
 void						console_initializing(t_vdata *vdata);
 void						console_finalizing(t_vdata *vdata);
-void						visu_print(t_vdata *vdata, char *msg);
 void						console_refresh(t_vdata *vdata);
 void						reget_text_lines_duo_to_new_width(t_vdata *vdata);
 void						console_clock_refresh(t_vdata *vdata);

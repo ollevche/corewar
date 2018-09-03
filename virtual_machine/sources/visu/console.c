@@ -24,6 +24,9 @@ int static	get_text_lines(t_vdata *vdata, char *text)
 		text_length -= vdata->console.width;
 		text_lines++;
 	}
+	while(*text)
+		if(*text++ == '\n')
+			text_lines++;
 	return (text_lines);
 }
 
@@ -79,7 +82,7 @@ void static	restore_lines(t_vdata *vdata, int carriage)
 	vdata->console.scroll_position = 0;
 }
 
-void static		restore_last_line(t_vdata *vdata)
+void static	restore_last_line(t_vdata *vdata)
 {
 	t_msg	*msg;
 
@@ -242,8 +245,8 @@ void static	console_drawing(t_vdata *vdata)
 		console_drawing_logic(vdata, msg, y);
 		msg = msg->next;
 	}
-	if (msg && msg->total_lines > 1 && y > -(msg->total_lines - 1) )
-		mvwprintw(vdata->console.window, 1, 0, msg->text + vdata->console.width - PREFIX_LEN + vdata->console.width * (-y + 0));
+	if (msg && msg->total_lines > 1 && y > -(msg->total_lines - 0) )
+		mvwprintw(vdata->console.window, 0, 0, msg->text + vdata->console.width - PREFIX_LEN + vdata->console.width * (-y - 1));
 	if ((vdata->console.msgs_lines > CONSOLE_INPUT_LINES && msg))
 		vdata->console.stop_scrolling = 0;
 	else
@@ -252,12 +255,71 @@ void static	console_drawing(t_vdata *vdata)
 
 int tempik = 1;
 
+void console_delete_msg(t_msg *msg)
+{
+	if (msg->next)
+		console_delete_msg(msg->next);
+	if (msg->allocated)
+		ft_strdel(&msg->text);
+	ft_memdel((void*)&msg);
+}
+
+void static console_clear_command(t_vdata *vdata)
+{
+	if (vdata->console.msgs->next)
+	{
+		console_delete_msg(vdata->console.msgs->next);
+		vdata->console.msgs->next = NULL;
+		vdata->console.scroll_position = 0;
+	}
+}
+
+void static console_help_command(t_vdata *vdata)
+{
+	char *message;
+
+	message = "You can use these commands:\nclear\nexit";
+	visu_print_static(vdata, message);
+}
+
+void static	console_commands(t_vdata *vdata)
+{
+	char *command = vdata->console.msgs->text;
+	command[vdata->console.input_index] = '\0';
+	if (!ft_strcmp(command, "exit"))
+		exit(1);
+	if (!ft_strcmp(command, "-help"))
+		console_help_command(vdata);
+	else if (!ft_strcmp(command, "clear"))
+		console_clear_command(vdata);
+	else
+		visu_print_allocated(vdata, ft_strjoin("command not found: ", vdata->console.msgs->text));
+}
+
+
 void		console_refresh(t_vdata *vdata) //TODO
 {	
+	if (KEY(ENTER) && vdata->console.active)
+	{	
+		if (vdata->console.input_index)
+			visu_print_allocated(vdata, ft_strdup(vdata->console.msgs->text));
+		else
+			visu_print_static(vdata, "");
+		console_commands(vdata);
+		vdata->console.carriage_index = 0;
+		vdata->console.carriage_lines = 1;
+		vdata->console.msgs->left_lines = 1;
+		vdata->console.msgs->total_lines = 1;		
+		vdata->console.input_index = 0;
+		ft_bzero(vdata->console.msgs->text, CONSOLE_INPUT_LEN);
+		vdata->console.msgs->text[0] = ' ';
+		restore_lines(vdata, FALSE);
+	}
+
 	if (vdata->key == 'Q') // TEMP DEBUG
 	{
 		char *temp_char = ft_itoa(tempik++);
-		visu_print(vdata, ft_strjoin("incoming text #", temp_char));
+		visu_print_allocated(vdata, ft_strjoin("incoming text fdohgiodfhgildfjgiljdfligjldfkjgdjfklgjdflkgjlkdfjlkgjkdlfjgkjdfgjkldfjgkldfjkgdfjgdflkgjlkdfjglkdjflkgldfjgdfkjgfdg#", temp_char));
 		ft_strdel(&temp_char);
 	}
 	if (KEY(C) && !vdata->console.active)
@@ -274,6 +336,8 @@ void		console_refresh(t_vdata *vdata) //TODO
 			system("printf \'\033[8;78;316t\'");
 		}
 	}
+
+
 	if (KEY(TILDE) && vdata->console.opened && ERASE_KEY)
 	{
 		if (!vdata->console.active)
@@ -312,7 +376,7 @@ void		console_refresh(t_vdata *vdata) //TODO
 	}
 }
 
-void		visu_print(t_vdata *vdata, char *text)
+void static	visu_print(t_vdata *vdata, char *text, char allocated)
 {
 	t_msg			*new_msg;
 	struct tm*		ptm;
@@ -324,6 +388,7 @@ void		visu_print(t_vdata *vdata, char *text)
 	strftime(new_msg->prefix, 8, "%H:%M:%S", ptm);
 	new_msg->total_lines = get_text_lines(vdata, text);
 	new_msg->text = text;
+	new_msg->allocated = allocated;
 	if (vdata->console.scroll_position && (!vdata->console.msgs->left_lines))
 		vdata->console.scroll_position++;
 	else
@@ -336,6 +401,16 @@ void		visu_print(t_vdata *vdata, char *text)
 		vdata->console.msgs->next = new_msg;
 	}
 	vdata->console.refresh = 1;	
+}
+
+void		visu_print_static(t_vdata *vdata, char *text)
+{
+	visu_print(vdata, text, 0);
+}
+
+void		visu_print_allocated(t_vdata *vdata, char *text)
+{
+	visu_print(vdata, text, 'Y');
 }
 
 t_msg static	*create_console_input(t_vdata *vdata)
@@ -431,5 +506,9 @@ void		console_initializing(t_vdata *vdata)
 
 void		console_finalizing(t_vdata *vdata)
 {
-	(void)vdata;
+	console_delete_msg(vdata->console.msgs);
+	delwin(vdata->console.window);
+	delwin(vdata->console.box_window);
+	delwin(vdata->console.clock_window);
+	delwin(vdata->console.controls_window);
 }

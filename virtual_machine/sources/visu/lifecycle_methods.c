@@ -124,9 +124,9 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	vdata->players_window = newwin(245, 1, 0, 244);
 
 	console_initializing(vdata);
-	visu_print(vdata, "Welcome to the Corewar console, version number 1.237487 :D");
-	visu_print(vdata, "Try all the features listed in the Console controls window");	
-	visu_print(vdata, "Hope you gonna love it! <3");
+	visu_print_static(vdata, "Welcome to the Corewar console, version number 1.237487 :D");
+	visu_print_static(vdata, "Try all the features listed in the Console controls window");	
+	visu_print_static(vdata, "Hope you gonna love it! <3");
 	
 	return (1);
 }
