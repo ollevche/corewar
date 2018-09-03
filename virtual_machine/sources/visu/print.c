@@ -14,17 +14,17 @@
 
 int     get_color(t_champ *champs, int id)
 {
-    int i;
+	int i;
 
-    i = 1;
-    while (champs != NULL)
-    {
-        if (champs->id == id)
-            return (i);
-        i++;
-        champs = champs->next;
-    }
-    return (0);
+	i = 1;
+	while (champs != NULL)
+	{
+		if (champs->id == id)
+			return (i);
+		i++;
+		champs = champs->next;
+	}
+	return (0);
 }
 
 void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
@@ -37,6 +37,7 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 	y = 0;
 	x = 2;
 	(void)champs;
+	ft_bzero(vdata->color_map_div, sizeof(long long int) * 4);
 	while (index < MEM_SIZE)
 	{
 
@@ -45,11 +46,22 @@ void	show_left(t_vdata *vdata, t_session *game, t_champ *champs)
 			y++;
 			x = 2;
 		}
-			print_player_code(vdata->left_window, y, x, game->map[index], get_color(champs, game->spot_map[index]));
+		print_player_code(vdata, y, x, game->map, game->spot_map, index, champs);
+		vdata->prev_map[index] = game->map[index];
+		vdata->prev_spot_map[index] = game->spot_map[index];
 		x += 3;
 		index++;
 	}
 	show_carries(vdata, game, game->carries, champs);
+	
+	// y = 3;
+	// int i = 0; 
+	// while (i < vdata->total_champs)
+	// {
+	// 	mvwprintw(vdata->left_window, y, START_X, "[%d] = %lld", i,  vdata->color_map_div[i]);
+	// 	i++;
+	// 	y++;
+	// }
 	wrefresh(vdata->left_window);
 }
 
@@ -67,19 +79,32 @@ void	show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *ch
 		wattron(vdata->left_window, COLOR_PAIR(get_color(champs, carries->champ) * 10));
 		mvwprintw(vdata->left_window, y, x, "%02x", game->map[pc]);
 		wattroff(vdata->left_window, COLOR_PAIR(get_color(champs, carries->champ) * 10));
-        mvwprintw(vdata->left_window, y, x + 2, " ");
+		mvwprintw(vdata->left_window, y, x + 2, " ");
 		carries = carries->next;
 	}
 }
-void print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player)
+void print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map, int index, t_champ *champs)
 {
-	wattron(left_window, COLOR_PAIR(player));
-	mvwprintw(left_window, y, x, "%02x", n);
-	wattroff(left_window, COLOR_PAIR(player));
+	static int i = 0;
+	int color;
+
+	color = get_color(champs, spot_map[index]);
+	if (color != 0)
+		vdata->color_map_div[color - 1]++;
+	if ( i <= MEM_SIZE || (vdata->prev_map[index] == map[index] && vdata->prev_spot_map[index] == spot_map[index]))
+	{
+		wattron(vdata->left_window, COLOR_PAIR(color));
+		mvwprintw(vdata->left_window, y, x, "%02x", map[index]);
+		wattroff(vdata->left_window, COLOR_PAIR(color));
+	}
+	else
+	{
+		wattron(vdata->left_window, COLOR_PAIR(color + 10));
+		mvwprintw(vdata->left_window, y, x, "%02x", map[index]);
+		wattroff(vdata->left_window, COLOR_PAIR(color + 10));
+	}
+	i++;
 }
-
-
-
 
 void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 {
@@ -96,15 +121,13 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 		wattroff(vdata->right_window, A_BOLD);
 	}
 	else
-		mvwprintw(vdata->right_window, 1, START_X, "%s", "** RUNNING **");
-	//mvwprintw(vdata->right_window, 1, START_X, "%s", vdata->paused ? "** PAUSED ** " : "** RUNNING **");	
+		mvwprintw(vdata->right_window, 1, 17, "%s", "-- RUNNING --");
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 2, START_X, "[Space] changes status");
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 2, START_X + 1, "Space");
-	
-	wattroff(vdata->right_window, A_BOLD);
-
-	mvwprintw(vdata->right_window, 4, START_X, "Cycles/second:\t%d     ", vdata->sec);
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
+	mvwprintw(vdata->right_window, 4, START_X, "Cycles/second:\t%d", vdata->sec);
 	mvwprintw(vdata->right_window, 5, START_X, "[Left] and [Right] arrows change speed");
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 5, START_X + 1, "Left");
@@ -122,27 +145,33 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	
 	//show_players(vdata->right_window, champs, &y);
 	mvwprintw(vdata->right_window, y += 3, START_X,"Carries:\t%d", game->carry_num);
-	mvwprintw(vdata->right_window, y += 2, START_X, "Cycle to die: %d\tLast change:  %d",
-		game->cycle_to_die, game->last_ctd);
+	mvwprintw(vdata->right_window, y += 2, START_X,"Cycle to die: %d", game->cycle_to_die);
+	mvwprintw(vdata->right_window, y += 2, START_X,"Last change:  %d", game->last_ctd);
 	mvwprintw(vdata->right_window, y += 2, START_X,  "LIVES:\t%d", game->period_lives);
 	mvwprintw(vdata->right_window, y += 2, START_X, "LAST ALIVE:");
 
 	
 	if (game->last_alive != NULL)
 	{
-		wattron(vdata->right_window, COLOR_PAIR(game->last_alive->id * (-1)));
+		wattroff(vdata->right_window, A_BOLD);	
+		wattron(vdata->right_window, COLOR_PAIR(get_color(champs, game->last_alive->id)));
 		mvwprintw(vdata->right_window, y, START_X + 11, "\t%s", game->last_alive->name);
-		wattroff(vdata->right_window, COLOR_PAIR(game->last_alive->id * (-1)));
+		wattroff(vdata->right_window,  COLOR_PAIR(get_color(champs, game->last_alive->id)));
 	}
 	else
 		mvwprintw(vdata->right_window, y, START_X + 11, "\tNO ONE");
 
 	mvwprintw(vdata->right_window, y += 2, START_X, "[S] Make one step forward");
+	mvwprintw(vdata->right_window, y += 2, START_X, "[C] Open\\Close Console");
 
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 8, START_X + 1, "E");
-	mvwprintw(vdata->right_window, y , START_X + 1, "S");
-	mvwprintw(vdata->right_window, y , START_X + 30, ">> NEW <<");
+	mvwprintw(vdata->right_window, y - 2 , START_X + 1, "S");
+	mvwprintw(vdata->right_window, y - 2 , START_X + 30, ">> NEW <<");
+
+
+	mvwprintw(vdata->right_window, y, START_X + 1, "C");
+	mvwprintw(vdata->right_window, y, START_X + 30, ">> NEW <<");
 
 	wattroff(vdata->right_window, A_BOLD);
 

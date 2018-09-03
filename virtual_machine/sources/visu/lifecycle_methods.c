@@ -16,11 +16,11 @@
 
 static int  appropriate_window(t_vdata *vdata)
 {
-	if (COLS < W_WIDTH || LINES < W_HEIGHT)
-	{  
+	//if (COLS != W_WIDTH || LINES != W_HEIGHT)
+	//{  
 		(void)vdata;
 		refresh();
-		system("printf \'\033[8;76;244t\'");
+		system("printf \'\033[8;78;245t\'");
 		//system("printf \'\033[8;68;251t\'");
 		//ft_printf("Minimum window is %d columns and %d height.\n", W_WIDTH, W_HEIGHT); // test
 		//delwin(vdata->left_window);
@@ -28,14 +28,14 @@ static int  appropriate_window(t_vdata *vdata)
 		//endwin();
 		//exit(1);
 		//return (0);
-	}
+	//}
 	return (1);
 }
 
 static void		set_defaults(t_vdata *vdata, t_champ *champs)
 {
-	vdata->left_window = newwin(66 , 195, 0, 0);
-	vdata->right_window = newwin(20, 49, 0, 195);
+	vdata->left_window = newwin(66 , 195, 2, 0);
+	vdata->right_window = newwin(33, 49, 2, 195);
 	vdata->alert_window = newwin(14 , 59, W_HEIGHT / 2 - 7, W_WIDTH / 2 - 30);
 	vdata->input_window = newwin(1, 12, 6, 219);
 	vdata->key = 0;
@@ -54,6 +54,15 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 	vdata->last_win_lines_size = LINES;
 	vdata->active_alert = 0;
 	vdata->live_bars = NULL;
+
+	vdata->author_adv_switch = 1;
+	vdata->author_time = 0;
+	vdata->first_run = 1;
+
+    ft_bzero(vdata->prev_map, sizeof(t_uchar) * MEM_SIZE);
+    ft_bzero(vdata->prev_spot_map, sizeof(int) * MEM_SIZE);
+
+	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
 }
 
 int		get_total_champs(t_champ *champ)
@@ -79,10 +88,28 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	refresh();
 	start_color();
 	init_color(COLOR_WHITE, 400, 400, 400);
-	init_color(COLOR_GREEN, 880, 880, 480);
-	init_color(COLOR_RED, 450, 350, 490);
-	init_color(COLOR_YELLOW, 300, 800, 800);
-	init_color(COLOR_BLUE, 850, 80, 350);
+
+
+	// init_color(COLOR_RED, 880-280, 880-280, 480-280);
+	// init_color(COLOR_GREEN, 450-180, 350-180, 490-180);
+	// init_color(COLOR_YELLOW, 100-280, 600-280, 600-280);
+	// init_color(COLOR_BLUE, 850 - 280, 0, 350-280);
+
+	// init_color(11, 880 + 120, 880+ 120, 480+ 120);
+	// init_color(12, 450+ 100, 350+ 100, 490+ 100);
+	// init_color(13, 100+ 200, 600+ 200, 600+ 200);
+	// init_color(14, 850+ 120, 80+ 120, 350+ 120);
+	
+	init_color(COLOR_RED, 168 * 3 , 33 * 3 , 107 * 3 );
+	init_color(COLOR_GREEN,   247 * 3 , 219 * 3 , 105 * 3);
+	init_color(COLOR_YELLOW, 236 * 3 , 27 * 3 , 75 * 3 ); 
+	init_color(COLOR_BLUE, 46 * 3 , 149 * 3 , 152 * 3 );
+
+	init_color(11,168 * 3 + 200, 33 * 3 + 200, 107 * 3 + 200);
+	init_color(12,  247 * 3 + 200, 219 * 3 + 200, 105 * 3 + 200);
+	init_color(13, 236 * 3 + 200, 27 * 3 + 200, 75 * 3 + 200); 
+	init_color(14, 46 * 3 + 200, 149 * 3 + 200, 152 * 3 + 200);
+
 
 	init_pair(GRAY, COLOR_WHITE, COLOR_BLACK);
 	init_pair(GRAY_B, COLOR_BLACK, COLOR_WHITE);
@@ -91,9 +118,17 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
-	scrolling_controls(vdata, 67, 197);
-	live_bars_initializing(vdata, champs, 65, 33);
+	scrolling_controls(vdata, 69, 197);
+	
+	live_bars_initializing(vdata, champs, 67, 33);
+	author_line_initializing(vdata);
+	vdata->players_window = newwin(245, 1, 0, 244);
 
+	console_initializing(vdata);
+	visu_print(vdata, "Welcome to the Corewar console, version number 1.237487 :D");
+	visu_print(vdata, "Try all the features listed in the Console controls window");	
+	visu_print(vdata, "Hope you gonna love it! <3");
+	
 	return (1);
 }
 
@@ -102,11 +137,13 @@ void    set_champs_for_visu(t_champ *champs, t_vdata *vdata)
     int color;
 	int y;
 
-	y = 67;
+	y = 69;
 	color = 1;
 	while (champs != NULL)
 	{
+		// vdata->id_arr[color - 1] = tmp->id;
 		init_pair(color * 10, COLOR_BLACK, color);
+		init_pair(color + 10, 10 + color, COLOR_BLACK);
 		init_pair(color, color, COLOR_BLACK);
 		scrolling_name(vdata, champs->name, y, 2);
 		champs = champs->next;
@@ -139,7 +176,6 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 			ft_strdel(&cycles);
 		}
 	}
-
 	if (game->cycle == vdata->input_cycle)
 		vdata->input_cycle = 0;
 			
@@ -147,7 +183,8 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 	{
 		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
-		refresh_live_bars(vdata, FALSE);
+		players_line_refresh(vdata);
+		refresh_live_bars(vdata, FALSE);		
 		playback_controls(vdata, game, champs);
 	}
 	if (game->carry_num <= 0 || game->cycle_to_die < 0)
@@ -159,11 +196,13 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 {
 	if (!arg->is_visual)
 		return (1);
-	wattroff(vdata->right_window, COLOR_PAIR(GRAY));
-	// wattroff(vdata->left_window, COLOR_PAIR(GRAY));
-	(void)game;
+
 	(void)champs;
+	(void)game;
+
+	console_finalizing(vdata);
 	scrolling_finalizing(vdata);
+	live_bars_finalizing(vdata);
 	delwin(vdata->left_window);
 	delwin(vdata->right_window);
 	delwin(vdata->alert_window);

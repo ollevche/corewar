@@ -113,3 +113,36 @@ void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		vdata->scrolling_controls->key = vdata->key;
 	}
 }
+
+void		disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs)
+{
+	if (vdata->first_run)
+	{
+		vdata->first_run = 0;
+
+			show_alert_window(vdata, "  Are you over 18 years old to continue?", "[Y] Yes           No [N]");
+		
+			vdata->active_alert = DISCLAIMER;
+
+			while (!(KEY(Y) || KEY(N)))
+			{
+				terminal_size_listener(vdata, game, champs);
+				scrolling_of_the_names(vdata);
+				vdata->key = getch();
+			}
+			vdata->active_alert = 0;
+			if (KEY(N))
+			{
+				scrolling_finalizing(vdata);
+				delwin(vdata->left_window);
+				delwin(vdata->right_window);
+				delwin(vdata->alert_window);
+				delwin(vdata->input_window);
+				endwin();
+				exit(1); // TODO
+			}
+			show_left(vdata, game, champs);
+			ERASE_KEY;
+	}
+
+}

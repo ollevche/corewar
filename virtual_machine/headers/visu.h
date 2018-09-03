@@ -10,13 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-// new term || 
-// clean str
-
-
-
-
 #ifndef VISU_H
 # define VISU_H
 
@@ -31,12 +24,11 @@
 #include <sys/time.h>
 // Scrolling names
 
-
-# define W_HEIGHT 76
-# define W_WIDTH 251
+# define W_HEIGHT 78
+# define W_WIDTH 245
 # define START_X 2
 # define GRAY 0
-# define GRAY_B 100
+# define GRAY_B 1234
 # define PLAYER_1 1
 # define PLAYER_2 2
 # define PLAYER_3 3
@@ -45,11 +37,15 @@
 # define CARRY_P2 20
 # define CARRY_P3 30
 # define CARRY_P4 40
-
+# define NEW_PLAYER_1 11
+# define NEW_PLAYER_2 12
+# define NEW_PLAYER_3 13
+# define NEW_PLAYER_4 14
 
 //COLORS
 # define COLOR_JA 4181
 
+// # define GET_COLOR(x[i]) (i) + 1
 //KEYS
 # define ESC 27
 # define LEFT 260
@@ -59,22 +55,36 @@
 # define Y 121
 # define N 110
 # define S 115
+# define M 109
+# define TILDE 96
 # define SPACE 32
 # define BACKSPACE 127
+# define DELETE 330
 # define NUMBER_KEYS (vdata->key >= '0' && vdata->key <= '9')
 # define KEY(x) (vdata->key == x)
 # define ERASE_KEY (vdata->key = -1)
+# define UP 259
+# define DOWN 258
+# define BOTTOM 338
+# define TOP 339
+# define C 99
 //KEYS
 
 //ALERT WINDOWS
 # define CUSTOM_CYCLE 1
 # define GAME_OVER 2
 # define EXIT 3
+# define DISCLAIMER 4
 # define ACTIVE_ALERT(x) x == CUSTOM_CYCLE || x == GAME_OVER || x == GAME_OVER
 
-
 //LIVE BAR
-#define BAR_LEN 150
+# define BAR_LEN 150
+# define AUTHOR_LEN 186
+
+//CONSOLE
+# define PREFIX_LEN 9
+# define CONSOLE_INPUT_LEN 1000
+# define CONSOLE_INPUT_LINES 64
 
 typedef struct				s_scrolling_controls
 {
@@ -98,7 +108,6 @@ typedef struct 				s_scroll_name
 typedef struct 				s_live_bar
 {
 	WINDOW					*window;
-	WINDOW					*sub_window;
 	char					line[BAR_LEN];
 	int						*lives;
 	int						prev_lives;
@@ -106,8 +115,36 @@ typedef struct 				s_live_bar
 	struct s_live_bar		*next;
 }							t_live_bar;
 
+typedef struct 				s_msg
+{
+	char					*text;
+	int						left_lines;
+	int						total_lines;
+	char					prefix[PREFIX_LEN];
+	struct s_msg			*next;
+}							t_msg;
 
-
+typedef struct 				s_console
+{
+	WINDOW					*window;
+	WINDOW					*box_window;
+	WINDOW					*clock_window;
+	WINDOW					*controls_window;
+	t_msg					*msgs;
+	int						msgs_lines;
+	char					input_line[CONSOLE_INPUT_LEN];
+	int						input_index;
+	int						carriage_index;
+	int						carriage_lines;
+	int						scroll_position;
+	int						stop_scrolling;
+	int						refresh;
+	int						opened;
+	int						active;
+	int						width;
+	char					clock[20];
+	int						clock_time;
+}							t_console;
 
 typedef struct				s_vdata
 {
@@ -115,6 +152,8 @@ typedef struct				s_vdata
 	WINDOW					*right_window;
 	WINDOW					*alert_window;
 	WINDOW					*input_window;
+	WINDOW					*authors;
+	WINDOW					*players_window;
 	int						key;
 	int						paused;
 	unsigned long long		sec;
@@ -136,11 +175,28 @@ typedef struct				s_vdata
 	int						active_alert;
 
 	t_live_bar				*live_bars;
+
+	char					author_line[AUTHOR_LEN];
+	char					adv_line[AUTHOR_LEN];
+	int						author_adv_switch;
+	int						author_time;
+
+	int						first_run;
+
+
+	t_uchar                 prev_map[MEM_SIZE];
+	int		                prev_spot_map[MEM_SIZE];
+	long long int			color_map_div[4];
+
+	WINDOW					*debug_window;
+
+	t_console				console;
+
 }							t_vdata;
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
-void 						print_player_code(WINDOW *left_window, int y, int x, t_uchar n, int player);
+void						print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map, int index, t_champ *champs);
 int							visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs);
 void						set_champs_names_to_scrolling(t_vdata *vdata, t_champ *champs, int total_champs);
 int							visu_finalizing		(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg);
@@ -153,6 +209,8 @@ void						scrolling_of_the_names(t_vdata *vdata);
 void						scrolling_finalizing(t_vdata *vdata);
 void						music_player();
 
+int							get_total_champs(t_champ *champ);
+
 void						custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						show_alert_window(t_vdata *vdata, char *alert, char *options);
@@ -162,12 +220,27 @@ void						gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						terminal_size_listener(t_vdata *vdata, t_session *game, t_champ *champs);
 
+void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
+void						refresh_live_bars(t_vdata *vdata, int rerender);
+void						live_bars_finalizing(t_vdata *vdata);
 
-int							get_total_champs(t_champ *champ);
+void						author_line_initializing(t_vdata *vdata);
+void						author_line_scrolling();
 
 void						refresh_live_bars(t_vdata *vdata, int rerender);
 void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
 
 void                        set_champs_for_visu(t_champ *champs, t_vdata *vdata);
 int							get_color(t_champ *champs, int id);
+void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
+
+void						players_line_refresh(t_vdata *vdata);
+
+void						console_initializing(t_vdata *vdata);
+void						console_finalizing(t_vdata *vdata);
+void						visu_print(t_vdata *vdata, char *msg);
+void						console_refresh(t_vdata *vdata);
+void						reget_text_lines_duo_to_new_width(t_vdata *vdata);
+void						console_clock_refresh(t_vdata *vdata);
+void						console_controls_displaying(t_vdata *vdata);
 #endif

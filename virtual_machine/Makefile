@@ -35,7 +35,8 @@ OP		=	o_01_live.c o_02_ld.c o_03_st.c o_04_add.c o_05_sub.c o_06_and.c \
 			op_tools.c op_tools_more.c tester-v.c
 
 VISU	=	lifecycle_methods.c playback_controls.c print.c scrolling_names.c \
-			custom_cycle.c alert_windows.c terminal_size_changing.c lives_bar.c
+			custom_cycle.c alert_windows.c terminal_size_changing.c lives_bar.c \
+			authors_line.c players_line.c console.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
