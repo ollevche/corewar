@@ -81,6 +81,7 @@ static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	console_refresh(vdata);
 	vdata->scrolling_controls->key = vdata->key;
 	music(vdata);
+	change_design(vdata, game, champs);
 	custom_cycle(vdata, game, champs);
 	one_step_forward(vdata);
 	exit_window(vdata, game, champs);
@@ -96,8 +97,8 @@ void	playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 	if (vdata->paused == 1)
 	{
 		show_right(vdata, game, champs);
-		while (!KEY(SPACE))		
-			key_listener(vdata, game, champs);		
+		while (!KEY(SPACE))
+			key_listener(vdata, game, champs);
 	}
 	vdata->paused = (vdata->input_paused ? ((vdata->input_paused = 0) || 1) : 0);
 }

@@ -62,6 +62,8 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
     ft_bzero(vdata->prev_spot_map, sizeof(int) * MEM_SIZE);
 
 	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
+	vdata->design = 0;
+	ft_bzero(vdata->set_design, sizeof(bool) * 3);
 }
 
 int		get_total_champs(t_champ *champ)
@@ -83,7 +85,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
 	set_defaults(vdata, champs);
-	curs_set(0);	
+	curs_set(0);
 	refresh();
 	start_color();
 	init_color(COLOR_WHITE, 400, 400, 400);
@@ -99,22 +101,22 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	// init_color(13, 100+ 200, 600+ 200, 600+ 200);
 	// init_color(14, 850+ 120, 80+ 120, 350+ 120);
 	
-	init_color(COLOR_RED, 168 * 3 , 33 * 3 , 107 * 3 );
-	init_color(COLOR_GREEN,   247 * 3 , 219 * 3 , 105 * 3);
-	init_color(COLOR_YELLOW, 236 * 3 , 27 * 3 , 75 * 3 ); 
-	init_color(COLOR_BLUE, 46 * 3 , 149 * 3 , 152 * 3 );
+	// init_color(COLOR_RED, 168 * 3 , 33 * 3 , 107 * 3 );
+	// init_color(COLOR_GREEN,   247 * 3 , 219 * 3 , 105 * 3);
+	// init_color(COLOR_YELLOW, 236 * 3 , 27 * 3 , 75 * 3 ); 
+	// init_color(COLOR_BLUE, 46 * 3 , 149 * 3 , 152 * 3 );
 
-	init_color(11,168 * 3 + 200, 33 * 3 + 200, 107 * 3 + 200);
-	init_color(12,  247 * 3 + 200, 219 * 3 + 200, 105 * 3 + 200);
-	init_color(13, 236 * 3 + 200, 27 * 3 + 200, 75 * 3 + 200); 
-	init_color(14, 46 * 3 + 200, 149 * 3 + 200, 152 * 3 + 200);
-
+	// init_color(11,168 * 3 + 200, 33 * 3 + 200, 107 * 3 + 200);
+	// init_color(12,  247 * 3 + 200, 219 * 3 + 200, 105 * 3 + 200);
+	// init_color(13, 236 * 3 + 200, 27 * 3 + 200, 75 * 3 + 200); 
+	// init_color(14, 46 * 3 + 200, 149 * 3 + 200, 152 * 3 + 200);
 
 	init_pair(GRAY, COLOR_WHITE, COLOR_BLACK);
 	init_pair(GRAY_B, COLOR_BLACK, COLOR_WHITE);
 
+	wattron(vdata->left_window, COLOR_PAIR(GRAY));
     set_champs_for_visu(champs, vdata);
-
+	init_design(vdata->design, vdata->total_champs);
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
 	scrolling_controls(vdata, 69, 197);
@@ -142,7 +144,7 @@ void    set_champs_for_visu(t_champ *champs, t_vdata *vdata)
 	{
 		// vdata->id_arr[color - 1] = tmp->id;
 		init_pair(color * 10, COLOR_BLACK, color);
-		init_pair(color + 10, 10 + color, COLOR_BLACK);
+		init_pair(color + 10, color + 10, COLOR_BLACK);
 		init_pair(color, color, COLOR_BLACK);
 		scrolling_name(vdata, champs->name, y, 2);
 		champs = champs->next;
@@ -177,13 +179,12 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 	}
 	if (game->cycle == vdata->input_cycle)
 		vdata->input_cycle = 0;
-			
 	if (!vdata->input_cycle)
 	{
 		show_left(vdata, game, champs);
 		show_right(vdata, game, champs);
 		players_line_refresh(vdata);
-		refresh_live_bars(vdata, FALSE);		
+		refresh_live_bars(vdata, FALSE);
 		playback_controls(vdata, game, champs);
 	}
 	if (game->carry_num <= 0 || game->cycle_to_die < 0)
@@ -207,7 +208,7 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 	delwin(vdata->alert_window);
 	delwin(vdata->input_window);
 	endwin();
-	system("killall afplay");
+	// system("killall afplay");
 	exit(1);
 	return (0);
 }

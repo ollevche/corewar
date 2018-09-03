@@ -62,9 +62,9 @@ void	players_line_refresh(t_vdata *vdata)
 	werase(vdata->players_window);
 	while(player < vdata->total_champs)
 	{
-		wattron(vdata->players_window, COLOR_PAIR((player + 1) * 10));
+		wattron(vdata->players_window, COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
 		mvwprintw(vdata->players_window, total_ratio, 0, "%*s", ratio[player], "");	
-		wattroff(vdata->players_window, COLOR_PAIR((player + 1) * 10));
+		wattroff(vdata->players_window, COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
 		total_ratio += ratio[player];
 		player++;
 	}

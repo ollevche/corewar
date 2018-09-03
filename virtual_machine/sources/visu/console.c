@@ -216,17 +216,17 @@ void static	console_drawing_logic(t_vdata *vdata, t_msg	*msg, int incoming_y)
 			precision = vdata->console.width - PREFIX_LEN;
 		mvwprintw(vdata->console.window, y, x, "%s %.*s", msg->prefix, precision, msg->text);
 
-		wattron(vdata->console.window, COLOR_PAIR(1));
+		wattron(vdata->console.window, COLOR_PAIR(1 + vdata->design * 10));
 		mvwprintw(vdata->console.window, y, x, "%s", msg->prefix);
-		wattroff(vdata->console.window, COLOR_PAIR(1));
+		wattroff(vdata->console.window, COLOR_PAIR(1 + vdata->design * 10));
 	}
 	if (msg == vdata->console.msgs && msg->left_lines >= vdata->console.carriage_lines)
 	{
 		y = (incoming_y + vdata->console.carriage_lines - 1);
 		x = (vdata->console.carriage_index - (vdata->console.carriage_lines - 1) * vdata->console.width) + PREFIX_LEN;
-		wattron(vdata->console.window, COLOR_PAIR(10) | A_BOLD);
+		wattron(vdata->console.window, COLOR_PAIR(1 + vdata->design * 10) | A_REVERSE);
 		mvwprintw(vdata->console.window, y, x, "%.1s", &vdata->console.input_line[vdata->console.carriage_index]);
-		wattroff(vdata->console.window, COLOR_PAIR(10) | A_BOLD);
+		wattroff(vdata->console.window, COLOR_PAIR(1 + vdata->design * 10) | A_REVERSE);
 	}
 }
 
@@ -279,9 +279,9 @@ void		console_refresh(t_vdata *vdata) //TODO
 		if (!vdata->console.active)
 		{
 			vdata->console.active = 1;
-			wattron(vdata->console.box_window, COLOR_PAIR(1));
+			wattron(vdata->console.box_window, COLOR_PAIR(1 + vdata->design * 10));
 			box(vdata->console.box_window, 0, 0);
-			wattroff(vdata->console.box_window, COLOR_PAIR(1));
+			wattroff(vdata->console.box_window, COLOR_PAIR(1 + vdata->design * 10));
 			vdata->console.refresh = 1;
 		}
 		else
@@ -395,14 +395,14 @@ void		console_controls_displaying(t_vdata *vdata) //TODO
 	wattron(vdata->console.controls_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->console.controls_window, y, 2, "DEBUG");
 	mvwprintw(vdata->console.controls_window, ++y, 3, "~");
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Left");	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Left");
 	mvwprintw(vdata->console.controls_window, y, 14, "Right");
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Up");	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Up");
 	mvwprintw(vdata->console.controls_window, y, 12, "Down");
 	mvwprintw(vdata->console.controls_window, ++y, 3, "Backspace");
 	mvwprintw(vdata->console.controls_window, ++y, 3, "Delete");
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Enter");	
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Page Up");	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Enter");
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Page Up");
 	mvwprintw(vdata->console.controls_window, y, 16, "Page Down");
 	wattroff(vdata->console.controls_window, COLOR_PAIR(GRAY) | A_BOLD);
 	wrefresh(vdata->console.controls_window);

@@ -12,7 +12,8 @@
 
 #include "visu.h"
 
-void static	render_live_bar(t_live_bar *bar, int fill_size, int player)
+
+void static	render_live_bar(t_live_bar *bar, int fill_size, int player, int design)
 {	
 	int i;
 
@@ -23,16 +24,16 @@ void static	render_live_bar(t_live_bar *bar, int fill_size, int player)
 	if (!bar->line[0])
 		bar->line[0] = ' ';
 	werase(bar->window);
-	wattron(bar->window, COLOR_PAIR(player * 10));
+	wattron(bar->window, COLOR_PAIR(player + design * 10) | A_REVERSE);
 	mvwprintw(bar->window, 0, 0, "%s", bar->line);
-	wattroff(bar->window, COLOR_PAIR(player * 10));
-	wattron(bar->window, COLOR_PAIR(player));
+	wattroff(bar->window, COLOR_PAIR(player + design * 10) | A_REVERSE);
+	wattron(bar->window, COLOR_PAIR(player + design * 10));
 	mvwprintw(bar->window, 0, ft_strlen(bar->line) + 1, "%d", *bar->lives);
-	wattroff(bar->window, COLOR_PAIR(player));
+	wattroff(bar->window, COLOR_PAIR(player + design * 10));
 	wrefresh(bar->window);
 }
 
-void static	calculate_ratio(t_live_bar *bar, int biggest, int player, int rerender)
+void static	calculate_ratio(t_live_bar *bar, int biggest, int player, int rerender, int design)
 {
 	int fill_size;
 	int ratio;
@@ -50,7 +51,7 @@ void static	calculate_ratio(t_live_bar *bar, int biggest, int player, int rerend
 		{
 			bar->prev_line = fill_size;
 			bar->prev_lives = *bar->lives;
-			render_live_bar(bar, fill_size, player);
+			render_live_bar(bar, fill_size, player, design);
 		}
 	}
 }
@@ -76,7 +77,7 @@ void		refresh_live_bars(t_vdata *vdata, int rerender)
 	bar = vdata->live_bars;
 	while(bar)
 	{
-		calculate_ratio(bar, biggest, player, rerender);
+		calculate_ratio(bar, biggest, player, rerender, vdata->design);
 		bar = bar->next;
 		player++;
 	}

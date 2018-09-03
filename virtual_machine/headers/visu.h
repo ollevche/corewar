@@ -15,6 +15,7 @@
 
 # include <ncurses.h>
 # include <unistd.h>
+# include <stdbool.h>
 # include "vm.h"
 
 // Scrolling names
@@ -27,25 +28,25 @@
 # define W_HEIGHT 78
 # define W_WIDTH 245
 # define START_X 2
+# define N_DESIGNS 3
 # define GRAY 0
 # define GRAY_B 1234
 # define PLAYER_1 1
 # define PLAYER_2 2
 # define PLAYER_3 3
 # define PLAYER_4 4
-# define CARRY_P1 10
-# define CARRY_P2 20
-# define CARRY_P3 30
-# define CARRY_P4 40
-# define NEW_PLAYER_1 11
-# define NEW_PLAYER_2 12
-# define NEW_PLAYER_3 13
-# define NEW_PLAYER_4 14
+// # define CARRY_P1 10
+// # define CARRY_P2 20
+// # define CARRY_P3 30
+// # define CARRY_P4 40
+# define NEW_PLAYER_1 5
+# define NEW_PLAYER_2 6
+# define NEW_PLAYER_3 7
+# define NEW_PLAYER_4 8
 
 //COLORS
 # define COLOR_JA 4181
 
-// # define GET_COLOR(x[i]) (i) + 1
 //KEYS
 # define ESC 27
 # define LEFT 260
@@ -85,6 +86,8 @@
 # define PREFIX_LEN 9
 # define CONSOLE_INPUT_LEN 1000
 # define CONSOLE_INPUT_LINES 64
+
+// # define DESIGN vdata->design
 
 typedef struct				s_scrolling_controls
 {
@@ -191,8 +194,11 @@ typedef struct				s_vdata
 	WINDOW					*debug_window;
 
 	t_console				console;
+	int						design;
+	bool					set_design[N_DESIGNS];
 
 }							t_vdata;
+
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
@@ -243,4 +249,15 @@ void						console_refresh(t_vdata *vdata);
 void						reget_text_lines_duo_to_new_width(t_vdata *vdata);
 void						console_clock_refresh(t_vdata *vdata);
 void						console_controls_displaying(t_vdata *vdata);
+void						change_design(t_vdata *vdata, t_session *game, t_champ *champs);
+void						init_design(int design, int total_champs);
+void						refresh_scroll_names(t_vdata *vdata);
 #endif
+
+
+// SETTED (1)    | NOT SETTED (0)
+// |ON (1)|OFF(0)| OFF (0)
+
+//  00 NOT SETTED OFF 0
+//  10 SETTED OFF     2
+//  11 SETTED ON      3

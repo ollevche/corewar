@@ -53,18 +53,18 @@ void static	rerender_alert_window(t_vdata *vdata)
 		show_alert_window(vdata, "  Are you over 18 years old to continue?", "[Y] Yes           No [N]");
 }		
 
-void static temp_names(t_scroll_name *relative, int *y, int *player) //TODO temp method
+void static temp_names(t_vdata *vdata, t_scroll_name *relative, int *y, int *player) //TODO temp method
 {
 	t_scroll_name *child;
 	child = relative;
 
 	if (relative->next)
-		temp_names(relative->next, y, player);
+		temp_names(vdata, relative->next, y, player);
 	wresize(child->window, 1, MAX_NAME_LEN + 2 + 10);
 	mvwin(child->window, *y, 2);
-	wattron(child->window, COLOR_PAIR(*player));
-	mvwprintw(child->window, 0, 0, "Player %d: %s", *player, child->displayed_name);	
-	wattroff(child->window, COLOR_PAIR(*player));
+	wattron(child->window, COLOR_PAIR(*player + vdata->design * 10));
+	mvwprintw(child->window, 0, 0, "Player %d: %s", *player, child->displayed_name);
+	wattroff(child->window, COLOR_PAIR(*player + vdata->design * 10));
 	wrefresh(child->window);
 	*player += 1;
 	*y += 2;
@@ -74,7 +74,7 @@ void static rerender_scrolling_names(t_vdata *vdata) //TODO Not finished
 {
 	int y = 69;
 	int player = 1;
-	temp_names(vdata->scrolling_names, &y, &player);
+	temp_names(vdata, vdata->scrolling_names, &y, &player);
 
 	if (vdata->scrolling_controls->seconds)
 	{
@@ -152,7 +152,7 @@ void static	rerender_console(t_vdata *vdata)
 	if (vdata->console.opened && COLS <= 316)
 	{
 		system("printf \'\033[8;78;316t\'");
-		vdata->console.width = 68;			
+		vdata->console.width = 68;
 		wresize(vdata->console.window, 64, 68);
 		mvwin(vdata->console.window, 3, 247);
 
@@ -161,9 +161,9 @@ void static	rerender_console(t_vdata *vdata)
 
 		if (vdata->console.active)
 		{
-			wattron(vdata->console.box_window, COLOR_PAIR(1));
+			wattron(vdata->console.box_window, COLOR_PAIR(1 + vdata->design * 10));
 			box(vdata->console.box_window, 0, 0);
-			wattroff(vdata->console.box_window, COLOR_PAIR(1));
+			wattroff(vdata->console.box_window, COLOR_PAIR(1 + vdata->design * 10));
 		}
 		else
 			box(vdata->console.box_window, 0, 0);
@@ -173,7 +173,7 @@ void static	rerender_console(t_vdata *vdata)
 	}
 	else if (vdata->console.opened && (COLS < vdata->last_win_cols_size || COLS > 316))
 	{
-		vdata->console.width = COLS - 245 - 1 - 2;			
+		vdata->console.width = COLS - 245 - 1 - 2;
 		wresize(vdata->console.window, 64, vdata->console.width);
 		mvwin(vdata->console.window, 3, 247);
 
@@ -182,9 +182,9 @@ void static	rerender_console(t_vdata *vdata)
 
 		if (vdata->console.active)
 		{
-			wattron(vdata->console.box_window, COLOR_PAIR(1));
+			wattron(vdata->console.box_window, COLOR_PAIR(1 + vdata->design * 10));
 			box(vdata->console.box_window, 0, 0);
-			wattroff(vdata->console.box_window, COLOR_PAIR(1));
+			wattroff(vdata->console.box_window, COLOR_PAIR(1 + vdata->design * 10));
 		}
 		else
 			box(vdata->console.box_window, 0, 0);
