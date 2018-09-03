@@ -52,7 +52,7 @@ static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 		return (ind_value);
 	lpc = move_pc(pc, ind_value);
 	if (op_code == 13) // NOTE: original vm is broken
-		return (ft_byte_to_uint(0, 0, MAPVAL(lpc, 0), MAPVAL(lpc, 1)));
+		return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 0), MAPVAL(lpc, 1)));
 	return (ft_byte_to_uint(MAPVAL(lpc, 0), MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3)));
 }
 
@@ -89,11 +89,11 @@ bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 int		get_value_by_arg(t_session *game, int arg, int lpc, int op_code)
 {
 	if (arg == REG_CODE)
-		return (ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, 1)));
+		return ((short)ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, 1)));
 	if (arg == DIR_CODE)
 	{
 		if (g_optab[op_code].label_size == 1)
-			return (ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2)));
+			return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2)));
 		else
 			return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 	}

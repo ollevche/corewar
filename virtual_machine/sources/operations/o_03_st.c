@@ -17,7 +17,6 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 {
 	int 	args[2][3 + 1];
 	int		lpc;
-	short	dmy; // dummy value for conversion
 
 	(void)head;
 	lpc = PC;
@@ -26,9 +25,8 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 	CHK_MV(set_arg_values(args, &lpc, game, 3));
 	if (IS_REG(VAL1))
 	{
-		dmy = VAL2;
 		if (TYP2 == IND_CODE)
-			write_to_map(game, PC + (dmy % IDX_MOD), REGS[VAL1 - 1], carry->champ);
+			write_to_map(game, PC + (VAL2 % IDX_MOD), REGS[VAL1 - 1], carry->champ);
 		else if (IS_REG(VAL2))
 			REGS[VAL2 - 1] = REGS[VAL1 - 1];
 	}
