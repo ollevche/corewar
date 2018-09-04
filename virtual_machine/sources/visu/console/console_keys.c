@@ -163,6 +163,7 @@ void	console_keys(t_vdata *vdata)
 		console_input_keys(vdata);
 		if (KEY(DELETE) || KEY(BACKSPACE) || KEY(LEFT) || KEY(RIGHT))
 			restore_lines(vdata, true);
-		ERASE_KEY;
+		if (!vdata->input_paused)
+			ERASE_KEY;
 	}
 }

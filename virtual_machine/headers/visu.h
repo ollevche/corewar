@@ -198,6 +198,10 @@ typedef struct				s_vdata
 	int						design;
 	bool					set_design[N_DESIGNS];
 
+	t_arg					*arg;
+	t_champ					*champs;
+	t_session				*game;
+
 }							t_vdata;
 
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);

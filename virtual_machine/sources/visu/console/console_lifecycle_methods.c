@@ -14,7 +14,7 @@
 
 void	visu_print_static(t_vdata *vdata, char *text)
 {
-	visu_print(vdata, text, 0);
+		visu_print(vdata, text, 0);
 }
 
 void	visu_print_allocated(t_vdata *vdata, char *text)
@@ -43,7 +43,7 @@ void	console_initializing(t_vdata *vdata)
 	console_clock_initializing(vdata);
 }
 
-void	console_refresh(t_vdata *vdata) //TODO
+void	console_refresh(t_vdata *vdata)
 {
 	console_keys(vdata);
 	if (vdata->console.refresh)

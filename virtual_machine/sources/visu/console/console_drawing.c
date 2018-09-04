@@ -46,8 +46,7 @@ void		console_drawing(t_vdata *vdata)
 {
 	t_msg	*msg;
 	int		y;
-	char	*paragraph;
-
+	
 	y = (vdata->console.msgs_lines > CONSOLE_INPUT_LINES ? CONSOLE_INPUT_LINES : vdata->console.msgs_lines);
 	msg = vdata->console.msgs;
 	while(msg && (y -= msg->left_lines) >= 0)
@@ -56,16 +55,7 @@ void		console_drawing(t_vdata *vdata)
 		msg = msg->next;
 	}
 	if (msg && msg->total_lines > 1 && y > -(msg->total_lines - 0) )
-	{
-		if ((paragraph = ft_strchr(msg->text, '\n')))
-		{
-			while(-y && (paragraph = ft_strchr(paragraph, '\n') + 1))
-				y++;
-			mvwprintw(vdata->console.window, 0, 0, paragraph);
-		}
-		else
-			mvwprintw(vdata->console.window, 0, 0, msg->text + vdata->console.width - PREFIX_LEN + vdata->console.width * (-y - 1));
-	}
+		mvwprintw(vdata->console.window, 0, 0, msg->text + vdata->console.width - PREFIX_LEN + vdata->console.width * (-y - 1));
 	if ((vdata->console.msgs_lines > CONSOLE_INPUT_LINES && msg))
 		vdata->console.stop_scrolling = 0;
 	else
@@ -81,9 +71,9 @@ void		visu_print(t_vdata *vdata, char *text, char allocated)
 	gettimeofday(&tv, NULL);
 	ptm = localtime(&tv.tv_sec);
 	new_msg = (t_msg*)ft_memalloc(sizeof(t_msg));
-	strftime(new_msg->prefix, 8, "%H:%M:%S", ptm);
-	new_msg->total_lines = get_text_lines(vdata, text);
+	strftime(new_msg->prefix, 8, "%H:%M:%S", ptm);	
 	new_msg->text = text;
+	new_msg->total_lines = get_text_lines(vdata, text);
 	new_msg->allocated = allocated;
 	if (vdata->console.scroll_position && (!vdata->console.msgs->left_lines))
 		vdata->console.scroll_position++;

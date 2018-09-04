@@ -58,7 +58,7 @@ void			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 
 void			custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs)
 {
-
+	ERASE_KEY;
 	if (!vdata->paused)
 	{
 		mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED **");	

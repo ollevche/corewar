@@ -24,9 +24,6 @@ int			get_text_lines(t_vdata *vdata, char *text)
 		text_length -= vdata->console.width;
 		text_lines++;
 	}
-	while(*text)
-		if(*text++ == '\n')
-			text_lines++;
 	return (text_lines);
 }
 
@@ -57,7 +54,7 @@ void		reget_text_lines_duo_to_new_width(t_vdata *vdata)
 		if (msg == vdata->console.msgs)
 			get_carriage_lines(vdata, msg);
 		else
-		{			
+		{	
 			msg->total_lines = get_text_lines(vdata, msg->text);
 			msg->left_lines = msg->total_lines;
 		}		
