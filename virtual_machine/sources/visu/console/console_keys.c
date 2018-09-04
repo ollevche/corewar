@@ -137,7 +137,8 @@ void static	console_activation(t_vdata *vdata)
 			box(vdata->console.box_window, 0, 0);
 			vdata->console.refresh = 1;
 		}
-		wrefresh(vdata->console.box_window);
+		console_controls_displaying(vdata);
+		wrefresh(vdata->console.box_window);		
 	}
 }
 

@@ -55,7 +55,6 @@ void init_design(int design, int total_champs)
 	player = 1;
 	while (player <= total_champs)
 	{
-		// init_pair(player * 10 + design, COLOR_BLACK, player);
 		init_pair(player + (design * 10), player + (design * 10), COLOR_BLACK);
 		init_pair(player + (design + 1) * 10, player + (design + 1) * 10, COLOR_BLACK);
 		player++;

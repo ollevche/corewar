@@ -34,9 +34,11 @@ void		console_commands(t_vdata *vdata)
 {
 	char *command = vdata->console.msgs->text;
 	command[vdata->console.input_index] = '\0';
-	if (!ft_strcmp(command, "exit"))
+	if (!vdata->console.input_index)
+		return ;
+	else if (!ft_strcmp(command, "exit"))
 		exit(1);
-	if (!ft_strcmp(command, "-help"))
+	else if (!ft_strcmp(command, "-help"))
 		console_help_command(vdata);
 	else if (!ft_strcmp(command, "clear"))
 		console_clear_command(vdata);

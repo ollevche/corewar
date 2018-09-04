@@ -14,7 +14,7 @@
 
 
 void static	render_live_bar(t_live_bar *bar, int fill_size, int player, int design)
-{	
+{
 	int i;
 
 	ft_bzero(bar->line, BAR_LEN);
@@ -24,6 +24,8 @@ void static	render_live_bar(t_live_bar *bar, int fill_size, int player, int desi
 	if (!bar->line[0])
 		bar->line[0] = ' ';
 	werase(bar->window);
+	// (void)player;
+	// (void)design;
 	wattron(bar->window, COLOR_PAIR(player + design * 10) | A_REVERSE);
 	mvwprintw(bar->window, 0, 0, "%s", bar->line);
 	wattroff(bar->window, COLOR_PAIR(player + design * 10) | A_REVERSE);
@@ -84,7 +86,7 @@ void		refresh_live_bars(t_vdata *vdata, int rerender)
 }
 
 void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
-{	
+{
 	static int	player = 1;
 	t_live_bar	*bar;
 	t_live_bar	*temp_bar;
@@ -96,6 +98,8 @@ void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
 	bar->prev_line = -1;
 	ft_bzero(bar->line, BAR_LEN);
 	champ = champs;
+	(void)temp_bar;
+	(void)vdata;
 	while (champ)
 	{
 		if (get_color(champs, champ->id) == player)
@@ -107,7 +111,7 @@ void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
 		temp_bar = vdata->live_bars;
 		while(temp_bar->next)
 			temp_bar = temp_bar->next;
-		temp_bar->next = bar;
+		temp_bar->next = bar; // segmentation fault in this line with ./corewar  -v ../defaults/champs/examples/helltrain.cor -n 0 ../defaults/champs/examples/helltrain.cor  ../defaults/champs/examples/helltrain.cor
 	}
 	else
 		vdata->live_bars = bar;
