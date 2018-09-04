@@ -76,9 +76,11 @@ void	change_design(t_vdata *vdata, t_session *game, t_champ *champs)
 			vdata->set_design[vdata->design/2] = 1;
 		}
 		tmp_console->refresh = 1;
+		console_refresh(vdata);
 		refresh_scroll_names(vdata);
 		players_line_refresh(vdata);
 		show_left(vdata, game, champs);
+		show_right(vdata, game, champs);
 		refresh_live_bars(vdata, TRUE);
 		wrefresh(vdata->scrolling_names->window);
 	}
@@ -182,12 +184,12 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	int y;
 
 	y = 3;
-	werase(vdata->right_window); //TODO delets box	
+	werase(vdata->right_window); //TODO delets box
 	wattron(vdata->right_window, COLOR_PAIR(GRAY));
 	if (vdata->paused)
 	{
 		wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
-		mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED ** ");	
+		mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED ** ");
 		wattroff(vdata->right_window, A_BOLD);
 	}
 	else
@@ -202,17 +204,15 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, 5, START_X + 1, "Left");
 	mvwprintw(vdata->right_window, 5, START_X + 12, "Right");
-	
 	wattroff(vdata->right_window, A_BOLD);
-	
 
 	wattron(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 
 	mvwprintw(vdata->right_window, y += 4, START_X, "Current cycle:\t%d", game->cycle);
 
-	wattroff(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);	
+	wattroff(vdata->right_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->right_window, y += 1, START_X, "[E] Enter a cycle");
-	
+
 	//show_players(vdata->right_window, champs, &y);
 	mvwprintw(vdata->right_window, y += 3, START_X,"Carries:\t%d", game->carry_num);
 	mvwprintw(vdata->right_window, y += 2, START_X,"Cycle to die: %d", game->cycle_to_die);
@@ -220,7 +220,7 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 	mvwprintw(vdata->right_window, y += 2, START_X,  "LIVES:\t%d", game->period_lives);
 	mvwprintw(vdata->right_window, y += 2, START_X, "LAST ALIVE:");
 
-	
+
 	if (game->last_alive != NULL)
 	{
 		wattroff(vdata->right_window, A_BOLD);
@@ -254,10 +254,10 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 		mvwprintw(vdata->input_window, 0, 0, "%s", "_________");
 		if (vdata->input_index)
 			mvwprintw(vdata->input_window, 0, 0, "%s", vdata->input_line);
-		wattroff(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);	
+		wattroff(vdata->input_window, COLOR_PAIR(GRAY) | A_BOLD);
 		wrefresh(vdata->input_window);
 	}
-	
+
 }
 
 // void show_players(WINDOW *right_window, t_champ *champs, int *y)

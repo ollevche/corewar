@@ -36,7 +36,17 @@ OP		=	o_01_live.c o_02_ld.c o_03_st.c o_04_add.c o_05_sub.c o_06_and.c \
 
 VISU	=	lifecycle_methods.c playback_controls.c print.c scrolling_names.c \
 			custom_cycle.c alert_windows.c terminal_size_changing.c lives_bar.c \
-			authors_line.c players_line.c console.c
+			authors_line.c players_line.c \
+			console/console_commands.c \
+			console/console_clock.c \
+			console/console_controls.c \
+			console/console_drawing.c \
+			console/console_input.c \
+			console/console_keys.c \
+			console/console_lifecycle_methods.c \
+			console/console_management_1.c \
+			console/console_management_2.c \
+			console/console_rerender.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
@@ -59,7 +69,8 @@ $(LIBDIR)$(LIB):
 $(OBJDIR):
 	@mkdir $(OBJDIR)
 	@mkdir $(OBJDIR)$(OPDIR)
-	@mkdir $(OBJDIR)$(VISUDIR)
+	@mkdir $(OBJDIR)$(VISUDIR)	
+	@mkdir $(OBJDIR)$(VISUDIR)console
 
 clean:
 	@make -C $(LIBDIR) clean

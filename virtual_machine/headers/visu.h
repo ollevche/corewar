@@ -121,6 +121,7 @@ typedef struct 				s_live_bar
 typedef struct 				s_msg
 {
 	char					*text;
+	char					allocated;
 	int						left_lines;
 	int						total_lines;
 	char					prefix[PREFIX_LEN];
@@ -242,16 +243,29 @@ void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						players_line_refresh(t_vdata *vdata);
 
+void						visu_print_static(t_vdata *vdata, char *text);
+void						visu_print_allocated(t_vdata *vdata, char *text);
 void						console_initializing(t_vdata *vdata);
 void						console_finalizing(t_vdata *vdata);
-void						visu_print(t_vdata *vdata, char *msg);
 void						console_refresh(t_vdata *vdata);
 void						reget_text_lines_duo_to_new_width(t_vdata *vdata);
+void						console_clock_initializing(t_vdata *vdata);
 void						console_clock_refresh(t_vdata *vdata);
 void						console_controls_displaying(t_vdata *vdata);
 void						change_design(t_vdata *vdata, t_session *game, t_champ *champs);
 void						init_design(int design, int total_champs);
 void						refresh_scroll_names(t_vdata *vdata);
+void						console_commands(t_vdata *vdata);
+void						console_drawing(t_vdata *vdata);
+void						console_keys(t_vdata *vdata);
+int							get_text_lines(t_vdata *vdata, char *text);
+void						restore_lines(t_vdata *vdata, int carriage);
+void						subtract_lines(t_vdata *vdata, int lines_to_subtract);
+void						restore_last_line(t_vdata *vdata);
+int							get_total_text_lines(t_vdata *vdata);
+t_msg						*create_console_input(t_vdata *vdata);
+void						visu_print(t_vdata *vdata, char *text, char allocated);
+void						console_delete_msg(t_msg *msg);
 #endif
 
 
