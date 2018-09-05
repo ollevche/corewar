@@ -52,6 +52,19 @@ void init_design(int design, int total_champs)
 		init_color(53, 250 + 200, 186 + 200, 166 + 200);
 		init_color(54, 746 + 200, 560 + 200, 510 + 200);
 	}
+	else if (design == 6)
+	{
+		init_color(61, 826, 590, 496);
+		init_color(62, 820, 380, 426);
+		init_color(63, 640, 360, 440);
+		init_color(64, 360, 303, 410);
+
+		init_color(71, 1000, 590 + 200, 496 + 200);
+		init_color(72, 1000, 380 + 200, 426 + 200);
+		init_color(73, 640 + 200, 360 + 200, 440 + 200);
+		init_color(74, 360 + 200, 303 + 200, 410 + 200);
+	}
+
 	player = 1;
 	while (player <= total_champs)
 	{
@@ -68,7 +81,7 @@ void	change_design(t_vdata *vdata, t_session *game, t_champ *champs)
 	tmp_console = &vdata->console;
 	if (KEY('d') || KEY('D'))
 	{
-		vdata->design = (vdata->design + 2) % 6;
+		vdata->design = (vdata->design + 2) % (N_DESIGNS * 2);
 		if (vdata->set_design[vdata->design/2] == 0)
 		{
 			init_design(vdata->design,  vdata->total_champs);
