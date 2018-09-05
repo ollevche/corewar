@@ -111,7 +111,7 @@ void		execute_carries(t_session *game, t_champ *champs, t_vdata *vdata, t_arg *a
 			if (icarry->inactive == 0)
 			{
 				int pc_before_ex = icarry->pc; // DEL
-				bool is_print = icarry->op_code != 9 || icarry->carry; // DEL
+				bool is_print = icarry->op_code != 9 || !icarry->carry; // DEL
 				bool opsuc = // DEL
 				operations[icarry->op_code](game, icarry, champs);
 				if (opsuc && is_print) //&& icarry->last_live >= game->cycle - game->cycle_to_die) // DEL

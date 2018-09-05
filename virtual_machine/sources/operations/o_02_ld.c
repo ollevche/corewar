@@ -18,6 +18,8 @@ bool	ld(t_session *game, t_carry *carry, t_champ *head)
 	int 	args[2][3 + 1];
 	int		lpc;
 
+	if (game->cycle == 22748)
+		game->cycle = 22748;
 	(void)head;
 	lpc = PC;
 	ft_bzero(args, 8 * sizeof(int));
@@ -25,7 +27,7 @@ bool	ld(t_session *game, t_carry *carry, t_champ *head)
 	CHK_MV(set_arg_values(args, &lpc, game, 2));
 	update_position(game, carry, JMP + 1);
 	if (!IS_REG(VAL2))
-		return (false);
+		return (true);
 	REGS[VAL2 - 1] = VAL1;
 	CARRY = (REGS[VAL2 - 1] == 0 ? true : false);
 	return (true);

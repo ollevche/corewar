@@ -26,5 +26,5 @@ bool	zjmp(t_session *game, t_carry *carry, t_champ *head)
 		update_position(game, carry, dir % IDX_MOD);
 	else
 		update_position(game, carry, JMP + 1);
-	return (CARRY);
+	return (true);
 }
