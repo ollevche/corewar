@@ -81,7 +81,7 @@ static bool	place_code(t_champ *champs, t_session *game)
 		ft_intset(game->spot_map + champ_mark, champs->id, champs->code_len);
 		RET_CHECK(new_carry(&(game->carries), champs->id), false);
 		game->carries->pc = champ_mark;
-		update_position(game, game->carries, 0);
+		update_opcode(game, game->carries);
 		champ_mark += gap;
 		champs = champs->next;
 	}

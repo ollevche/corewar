@@ -51,8 +51,11 @@ t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 **  execution.c
 */
 
-void	execute_carries(t_session *game, t_champ *champs);
+#include "visu.h"
+
+void	execute_carries(t_session *game, t_champ *champs, t_vdata *vdata, t_arg *arg);
 void	update_position(t_session *game, t_carry *carry, int val);
+void	update_opcode(t_session *game, t_carry *carry);
 int		move_pc(int pc, int val);
 
 /*
