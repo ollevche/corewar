@@ -26,7 +26,7 @@ void static console_help_command(t_vdata *vdata)
 {
 	char *message;
 
-	message = "You can use these commands:\nclear\nexit";
+	message = "You can use these commands: clear, cycle and exit";
 	visu_print_static(vdata, message);
 }
 
