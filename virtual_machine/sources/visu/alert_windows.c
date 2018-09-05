@@ -43,11 +43,14 @@ void			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		vdata->active_alert = 0;
 		if (KEY(Y))
 		{
+			if (vdata->music == 1)
+				system("killall afplay");
 			scrolling_finalizing(vdata);
 			delwin(vdata->left_window);
 			delwin(vdata->right_window);
 			delwin(vdata->alert_window);
 			delwin(vdata->input_window);
+			
 			endwin();
 			exit(1); // TODO
 		}
@@ -99,6 +102,8 @@ void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		delwin(vdata->right_window);
 		delwin(vdata->alert_window);
 		delwin(vdata->input_window);
+		if (vdata->music == 1)
+			system("killall afplay");
 		endwin();
 		exit(1); // TODO
 	}

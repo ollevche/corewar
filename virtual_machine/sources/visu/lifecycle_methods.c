@@ -64,6 +64,7 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
 	vdata->design = 0;
 	ft_bzero(vdata->set_design, sizeof(bool) * 3);
+	vdata->music = 0;
 }
 
 int		get_total_champs(t_champ *champ)
@@ -82,6 +83,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 		return (1);
 	if (!initscr() || !appropriate_window(vdata))
 		return (0);
+	raw();
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
 	set_defaults(vdata, champs);
@@ -177,7 +179,8 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 
 	(void)champs;
 	(void)game;
-
+	// if (vdata->music == 1)
+		system("killall afplay");
 	console_finalizing(vdata);
 	scrolling_finalizing(vdata);
 	live_bars_finalizing(vdata);
@@ -186,23 +189,22 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 	delwin(vdata->alert_window);
 	delwin(vdata->input_window);
 	endwin();
-	// system("killall afplay");
+	
 	exit(1);
 	return (0);
 }
 
-void	music_player()
+void	music_player(t_vdata *vdata)
 {
-	static int stop = 1;
 	static int i = 0;
 
 	noecho();
-	if (stop == 0 && i <= 3)
+	if (vdata->music == 1 && i <= 3)
 	{
 		system("killall afplay");
-		stop = 1;
+		vdata->music = 0;
 	}
-	else if (stop == 1)
+	else if (vdata->music == 0)
 	{
 		if (i == 0)
 			system("afplay media/La_Valse_OST_Ameli.mp3 &");
@@ -212,7 +214,7 @@ void	music_player()
 			system("afplay media/Game_of_Thrones.mp3 &");
 		else
 			timeout(0);
-		stop = 0;
+		vdata->music = 1;
 		i++;
 	}
 }

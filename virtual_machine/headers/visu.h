@@ -201,7 +201,7 @@ typedef struct				s_vdata
 	t_arg					*arg;
 	t_champ					*champs;
 	t_session				*game;
-
+	bool					music;
 }							t_vdata;
 
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
