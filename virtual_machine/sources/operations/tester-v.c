@@ -23,7 +23,7 @@ void	print_carry_info(t_carry *carry, t_session *game)
 	int		atypes[3];
 	int		adv = 1;
 
-	ft_printf("ADV ");
+	printf("ADV ");
 	if (OP.codage)
 	{
 		int coding_byte = ft_byte_to_uint(0, 0, 0, MAPVAL(PC, 1));
@@ -34,21 +34,21 @@ void	print_carry_info(t_carry *carry, t_session *game)
 	}
 	else
 		adv += get_pc_move(OP.params_type[0], OP.label_size);
-	ft_printf("%d ", adv);
-	ft_printf("(0x%04x -> 0x%04x) ", carry->pc, carry->pc + adv);
+	printf("%d ", adv);
+	printf("(0x%04x -> 0x%04x) ", carry->pc, carry->pc + adv);
 	int i = 0;
 	while (i < adv)
 	{
-		ft_printf("%02x ", MAP[move_pc(PC,i)]);
+		printf("%02x ", MAP[move_pc(PC,i)]);
 		i++;
 	}
-	ft_printf("\n");
+	printf("\n");
 }
 
 void	get_log_str(t_carry *carry, t_session *game, bool print_ctd)
 {
 	if (print_ctd)
-		ft_printf("Cycle to die is now %d\n", game->cycle_to_die);
+		printf("Cycle to die is now %d\n", game->cycle_to_die);
 	while (carry)
 	{
 		if (carry->inactive == 0 && (carry->op_code != 9 || !carry->carry))

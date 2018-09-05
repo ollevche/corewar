@@ -25,7 +25,7 @@ static int	kill_carries(t_carry **carries, int period_start)
 	killed = 0;
 	while (current)
 	{
-		if (current->last_live < period_start)
+		if (current->last_live <= period_start)
 		{
 			del_carry(carries, prev, current);
 			if (prev)
@@ -131,19 +131,20 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
 	RET_CHECK(prepare(champs, &game), NULL);
 	int ctd = game->cycle_to_die;
-	// ft_printf("It is now cycle %d\n", 1);
+	visu_drawing(&vdata, game, champs, arg);
+	game->cycle++;
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		visu_drawing(&vdata, game, champs, arg);
 		ctd = game->cycle_to_die;
 		control_game_flow(game, champs);
+		if (ctd != game->cycle_to_die)
+			printf("Cycle to die is now %d\n", game->cycle_to_die);
 		game->cycle++;
-		// ft_printf("It is now cycle %d\n", game->cycle + 1);
-		execute_carries(game, champs);
-		// get_log_str(game->carries, game, false);
+		printf("It is now cycle %d\n", game->cycle);
+		execute_carries(game, champs, &vdata, arg);
+		visu_drawing(&vdata, game, champs, arg);
 	}
-
 	free_session(&game);
 	winner = game->last_alive;
 	visu_finalizing(&vdata, game, champs, arg);

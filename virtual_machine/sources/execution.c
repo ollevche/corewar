@@ -77,8 +77,10 @@ void		print_log(t_session *game, int new_pc, int old_pc, bool is_ok) // DEL
 		return ;
 	printf("ADV ");
 	int adv = new_pc - old_pc; // error with new_pc < old_pc
+	if (adv < 0)
+		adv += MEM_SIZE;
 	printf("%d ", adv);
-	printf("(0x%04x -> 0x%04x) ", old_pc, new_pc);
+	printf("(0x%04x -> 0x%04x) ", old_pc, old_pc + adv);
 	int i = 0;
 	while (i < adv)
 	{
@@ -109,10 +111,10 @@ void		execute_carries(t_session *game, t_champ *champs, t_vdata *vdata, t_arg *a
 			if (icarry->inactive == 0)
 			{
 				int pc_before_ex = icarry->pc; // DEL
-				bool is_print = icarry->op_code != 9 || !icarry->carry; // DEL
+				bool is_print = icarry->op_code != 9 || icarry->carry; // DEL
 				bool opsuc = // DEL
 				operations[icarry->op_code](game, icarry, champs);
-				if (opsuc && is_print) // DEL
+				if (opsuc && is_print) //&& icarry->last_live >= game->cycle - game->cycle_to_die) // DEL
 					print_log(game, icarry->pc, pc_before_ex, true); // DEL
 				icarry->op_code = DEF_OPCODE;
 			}
