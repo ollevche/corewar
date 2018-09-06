@@ -34,9 +34,19 @@
 
 static void	print_file(t_item *item)
 {
+	int index;
 	while (item)
 	{
-		ft_printf("%.3d\t%s\n", item->line_num, item->line);
+		ft_printf("#%.3d\nline \"%s\"\n", item->line_num, item->line);
+		index = 0;
+		while(index < 5)
+		{	
+			if (item->colums && item->colums[index])
+				ft_printf("   %d \"%s\"\n", index, item->colums[index]);
+			index++;
+		}
+
+	ft_printf("\n");
 		item = item->next;
 	}
 }

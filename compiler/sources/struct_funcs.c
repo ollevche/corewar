@@ -16,14 +16,12 @@ t_item	*new_item(char *line, int line_num, int type)
 {
 	t_item	*item;
 
-	item = (t_item*)malloc(sizeof(t_item));
+	item = (t_item*)ft_memalloc(sizeof(t_item));
 	if (!item)
 		return (NULL);
 	item->type = type;
 	item->line = line;
 	item->line_num = line_num;
-	item->bytecode = NULL;
-	item->next = NULL;
 	return (item);
 }
 
