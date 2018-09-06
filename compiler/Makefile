@@ -21,7 +21,8 @@ OBJDIR	=	objects/
 LIBDIR	=	../libft/
 
 SRC		=	main.c read_sfile.c extract_header.c \
-			struct_funcs.c util.c
+			struct_funcs.c util.c \
+			extract_instructions.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

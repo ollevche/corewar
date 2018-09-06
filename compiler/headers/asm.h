@@ -54,6 +54,7 @@ typedef struct			s_item
 	t_uchar			*bytecode; // bytecode representation of line
 	int				starts_at; // index of first byte in the whole code
 	bool			label_required; // is label used in line // improve it
+	char			colums[5];
 	struct s_item	*next;
 }						t_item;
 
@@ -91,5 +92,11 @@ t_item					*new_item(char *line, int line_num, int type);
 t_item					*add_item(t_item **head, char *ln, int nm, int tp);
 void					free_items(t_item **head);
 bool					has_item(int target_type, t_item *head);
+
+/*
+** extract_instructions.c
+*/
+
+void					extract_instructions(int fd, t_item *head);
 
 #endif
