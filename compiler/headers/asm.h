@@ -54,7 +54,7 @@ typedef struct			s_item
 	t_uchar			*bytecode; // bytecode representation of line
 	int				starts_at; // index of first byte in the whole code
 	bool			label_required; // is label used in line // improve it
-	char			colums[5];
+	char			**colums;
 	struct s_item	*next;
 }						t_item;
 
