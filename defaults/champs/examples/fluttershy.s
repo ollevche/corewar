@@ -40,7 +40,7 @@ ardefl1:
 	sti		r4, %:ardeftgt, r2
 	add		r2, r3, r2
 ardefchk:
-	live	%3940641
+	live	%:39468767854096784957698457689579865476897456987458967458969845768974586754980641
 	xor		r2, r5, r15
 	zjmp	%:ardefinit
 ardefloop:	
