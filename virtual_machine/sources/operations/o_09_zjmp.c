@@ -15,8 +15,8 @@
 
 bool	zjmp(t_session *game, t_carry *carry, t_champ *head)
 {
-	short	dir;
 	int		lpc;
+	short	dir;
 
 	(void)head;
 	lpc = PC;

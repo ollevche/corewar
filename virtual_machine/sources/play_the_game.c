@@ -130,19 +130,19 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
 	RET_CHECK(prepare(champs, &game), NULL);
-	int ctd = game->cycle_to_die;
+	// int ctd = game->cycle_to_die; // DEL
 	visu_drawing(&vdata, game, champs, arg);
 	game->cycle++;
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		ctd = game->cycle_to_die;
+		// ctd = game->cycle_to_die;
 		control_game_flow(game, champs);
-		if (ctd != game->cycle_to_die)
-			printf("Cycle to die is now %d\n", game->cycle_to_die);
+		// if (ctd != game->cycle_to_die) // DEL
+			// printf("Cycle to die is now %d\n", game->cycle_to_die); // DEL
 		game->cycle++;
-		printf("It is now cycle %d\n", game->cycle);
-		execute_carries(game, champs, &vdata, arg);
+		// printf("It is now cycle %d\n", game->cycle); // DEL
+		execute_carries(game, champs);
 		visu_drawing(&vdata, game, champs, arg);
 	}
 	free_session(&game);

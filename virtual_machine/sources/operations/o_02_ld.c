@@ -15,11 +15,9 @@
 
 bool	ld(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][3 + 1];
+	int		args[2][3 + 1];
 	int		lpc;
 
-	if (game->cycle == 22748)
-		game->cycle = 22748;
 	(void)head;
 	lpc = PC;
 	ft_bzero(args, 8 * sizeof(int));

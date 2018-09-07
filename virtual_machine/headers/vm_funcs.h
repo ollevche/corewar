@@ -16,50 +16,48 @@
 # include "vm.h"
 
 /*
-**	main.c
+**	main.c ▽
 */
 
 void	terminate();
 void	display_usage(char *usage_txt);
 
 /*
-**	read_input.c
+**	read_input.c ▽
 */
 
 t_champ	*read_input(int argc, char **args, t_arg *arg);
 int		count_champs(t_champ *champs);
 
 /*
-**	read_champ.c
+**	read_champ.c ▽
 */
 
 t_champ	*read_champ(t_champ **champs, int fd, char *filename);
 
 /*
-**  prepare.c
+**  prepare.c ▽
 */
 
 bool	prepare(t_champ *champs, t_session **game);
 
 /*
-**	play_the_game.c
+**	play_the_game.c ▽
 */
 
 t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 
 /*
-**  execution.c
+**  execution.c ▽
 */
 
-#include "visu.h"
-
-void	execute_carries(t_session *game, t_champ *champs, t_vdata *vdata, t_arg *arg);
+void	execute_carries(t_session *game, t_champ *champs);
 void	update_position(t_session *game, t_carry *carry, int val);
 void	update_opcode(t_session *game, t_carry *carry);
 int		move_pc(int pc, int val);
 
 /*
-**	struct_funcs.c
+**	struct_funcs.c ▽
 */
 
 t_champ	*new_champ(t_champ **champs);
@@ -68,7 +66,7 @@ t_champ	*get_champ_by_id(t_champ *head, int id);
 void	del_carry(t_carry **head, t_carry *prev, t_carry *target);
 
 /*
-**	free_funcs.c
+**	free_funcs.c ▽
 */
 
 void	free_session(t_session **game);
@@ -99,7 +97,6 @@ bool	aff(t_session *game, t_carry *carry, t_champ *head);
 int		set_arg_types(int coding_byte, int *args, int size);
 void	get_log_str(t_carry *carry, t_session *game, bool print_ctd); // tester-v.c
 
-
 /*
 **  base_ops.c ▽
 */
@@ -120,6 +117,5 @@ bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);
 
 bool	check_cbyte(int args[2][4], int op_code, int size);
 void    write_to_map(t_session *game, int pos, int value, int champ_id);
-
 
 #endif

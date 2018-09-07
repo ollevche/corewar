@@ -15,7 +15,7 @@
 
 bool	sub(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][3 + 1];
+	int		args[2][3 + 1];
 	int		lpc;
 
 	(void)head;

@@ -14,7 +14,7 @@
 #include "vm_funcs.h"
 
 /*
-**	inits an array of functions which represents possible operations
+**	inits an array of functions which represents possible operations ▽
 */
 
 static void	init_operations(t_operation operations[OP_COUNT + 2])
@@ -50,9 +50,8 @@ int			move_pc(int pc, int val)
 }
 
 /*
-**	moves a pc of the carry to specified position (to right/left from the pc by val bytes)
-**	sets op_code to pc internal value (op_code of the new position)
-**	sets inactive counter to operation execution time (in cycles)
+**  moves a pc of the carry to specified position ▽
+**  (to right/left from the pc by val bytes)
 */
 
 void		update_position(t_session *game, t_carry *carry, int val)
@@ -61,6 +60,11 @@ void		update_position(t_session *game, t_carry *carry, int val)
 	(void)carry;
 	carry->pc = move_pc(carry->pc, val);
 }
+
+/*
+**	sets op_code to pc internal value (op_code of the new position) ▽
+**	sets inactive counter to operation execution time (in cycles)
+*/
 
 void		update_opcode(t_session *game, t_carry *carry)
 {
@@ -91,17 +95,15 @@ void		print_log(t_session *game, int new_pc, int old_pc, bool is_ok) // DEL
 }
 
 /*
-**	executes all of the carries, which is active
+**	executes all of the carries, which is active ▽
 **	or decrease inactive counter (if inactive)
 */
 
-void		execute_carries(t_session *game, t_champ *champs, t_vdata *vdata, t_arg *arg)
+void		execute_carries(t_session *game, t_champ *champs)
 {
 	t_carry	*icarry;
 	t_operation operations[OP_COUNT + 2]; // static?
 
-	(void)vdata;
-	(void)arg;
 	init_operations(operations);
 	icarry = game->carries;
 	while (icarry)
@@ -110,12 +112,12 @@ void		execute_carries(t_session *game, t_champ *champs, t_vdata *vdata, t_arg *a
 		{
 			if (icarry->inactive == 0)
 			{
-				int pc_before_ex = icarry->pc; // DEL
-				bool is_print = icarry->op_code != 9 || !icarry->carry; // DEL
-				bool opsuc = // DEL
+				// int pc_before_ex = icarry->pc; // DEL
+				// bool is_print = icarry->op_code != 9 || !icarry->carry; // DEL
+				// bool opsuc = // DEL
 				operations[icarry->op_code](game, icarry, champs);
-				if ((opsuc || !opsuc) && is_print) //&& icarry->last_live >= game->cycle - game->cycle_to_die) // DEL
-					print_log(game, icarry->pc, pc_before_ex, false); // DEL
+				// if ((opsuc || !opsuc) && is_print) //&& icarry->last_live >= game->cycle - game->cycle_to_die) // DEL
+					// print_log(game, icarry->pc, pc_before_ex, false); // DEL
 				icarry->op_code = DEF_OPCODE;
 			}
 			else
@@ -130,34 +132,3 @@ void		execute_carries(t_session *game, t_champ *champs, t_vdata *vdata, t_arg *a
 		icarry = icarry->next;
 	}
 }
-
-/*
-	t_carry	*icarry;
-	t_operation operations[OP_COUNT + 2]; // static?
-
-	init_operations(operations);
-	icarry = game->carries;
-	while (icarry)
-	{
-		// if (icarry->inactive == 0)
-		// {
-			if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT)
-			{
-				// int pc_before_ex = icarry->pc;
-				// bool is_print = icarry->op_code != 9 || !icarry->carry;
-				// bool opsuc =
-				operations[icarry->op_code](game, icarry, champs);
-				// if (opsuc && is_print)
-				// 	print_log(game, icarry->pc, pc_before_ex);
-				visu_drawing(vdata, game, champs, arg); // DEL
-				if (game->cycle ==8910)
-					usleep(1000000);
-			}
-			else
-				update_position(game, icarry, 1);
-		}
-		else
-			icarry->inactive--;
-		icarry = icarry->next;
-	}
-*/
