@@ -106,7 +106,7 @@ void		execute_carries(t_session *game, t_champ *champs)
 	icarry = game->carries;
 	while (icarry)
 	{
-		if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT)
+		if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT) // TODO: log
 		{
 			if (icarry->inactive == 0)
 			{
