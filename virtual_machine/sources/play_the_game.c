@@ -133,6 +133,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	// int ctd = game->cycle_to_die; // DEL
 	visu_drawing(&vdata, game, champs, arg);
 	game->cycle++;
+	winner = get_last_champ(champs);
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
@@ -146,7 +147,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		visu_drawing(&vdata, game, champs, arg);
 	}
 	free_session(&game);
-	winner = game->last_alive;
+	winner = game->last_alive ? game->last_alive : winner;
 	visu_finalizing(&vdata, game, champs, arg);
 	return (winner);
 }

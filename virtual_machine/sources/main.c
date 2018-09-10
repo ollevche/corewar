@@ -53,12 +53,6 @@ void	terminate(t_champ **champs)
 	exit(EXIT_FAILURE);
 }
 
-void		display_usage(char *usage_txt)
-{
-	ft_printf("%s\n", usage_txt);
-	terminate(NULL);
-}
-
 static void	init_arg(t_arg *arg)
 {
 	arg->is_visual = false;
@@ -75,11 +69,12 @@ int			main(int argc, char **args)
 	init_arg(&arg);
 	champs = read_input(argc, args, &arg);
 	if (!champs)
-		display_usage(USAGE_STR);
+		display_usage(USAGE_FILE);
+	display_contestants(champs);
 	winner = play_the_game(champs, &arg);
 	if (!winner)
 		terminate(&champs);
-	// TODO: print_result(winner);
+	display_winner(winner);
 	free_champs(&champs);
 	return (0);
 }

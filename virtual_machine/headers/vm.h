@@ -19,9 +19,6 @@
 # include <fcntl.h>
 # include <errno.h>
 
-
-# define USAGE_STR		"we've not created usage text yet" // TODO: this
-
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
 # define OP_COUNT		16

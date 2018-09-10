@@ -20,7 +20,14 @@
 */
 
 void	terminate();
-void	display_usage(char *usage_txt);
+
+/*
+**  display.c ▽
+*/
+
+void	display_contestants(t_champ *champs);
+void    display_winner(t_champ *winner);
+void	display_usage();
 
 /*
 **	read_input.c ▽
@@ -52,7 +59,7 @@ t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 */
 
 void	execute_carries(t_session *game, t_champ *champs);
-void	update_position(t_session *game, t_carry *carry, int val);
+void	update_position(t_session *game, t_carry *carry, int val); // REFACTOR: this
 void	update_opcode(t_session *game, t_carry *carry);
 int		move_pc(int pc, int val);
 
@@ -64,6 +71,7 @@ t_champ	*new_champ(t_champ **champs);
 t_carry *new_carry(t_carry **all_carries, int first_reg);
 t_champ	*get_champ_by_id(t_champ *head, int id);
 void	del_carry(t_carry **head, t_carry *prev, t_carry *target);
+t_champ	*get_last_champ(t_champ *head);
 
 /*
 **	free_funcs.c ▽
@@ -75,7 +83,7 @@ void    free_carries(t_carry *carries);
 
 /*
 **  operations ▽
-**  return values are random
+**  return values are not so random
 */
 
 bool	live(t_session *game, t_carry *carry, t_champ *head);
@@ -95,7 +103,6 @@ bool	lldi(t_session *game, t_carry *carry, t_champ *head);
 bool	op_lfork(t_session *game, t_carry *carry, t_champ *head);
 bool	aff(t_session *game, t_carry *carry, t_champ *head);
 int		set_arg_types(int coding_byte, int *args, int size);
-void	get_log_str(t_carry *carry, t_session *game, bool print_ctd); // tester-v.c
 
 /*
 **  base_ops.c ▽
