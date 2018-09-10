@@ -60,7 +60,7 @@ t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 */
 
 void	execute_carries(t_session *game, t_champ *champs);
-void	update_position(t_session *game, t_carry *carry, int val); // REFACTOR: this
+void	update_position(t_carry *carry, int val);
 void	update_opcode(t_session *game, t_carry *carry);
 int		move_pc(int pc, int val);
 
@@ -117,7 +117,7 @@ bool    base_fork(t_session *game, t_carry *carry, bool idx);
 
 bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code);
 int 	get_value_by_arg(t_session *game, int arg, int lpc, int op_code);
-bool	check_reg(int *value, t_session *game, t_carry *carry, int lpc);
+bool	check_reg(int *value, t_carry *carry, int jmp);
 
 /*
 **	op_tools_more.c ▽

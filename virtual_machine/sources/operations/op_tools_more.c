@@ -58,14 +58,14 @@ bool	check_cbyte(int args[2][4], int op_code, int size)
 	return (true);
 }
 
-bool	check_reg(int *value, t_session *game, t_carry *carry, int jmp)
+bool	check_reg(int *value, t_carry *carry, int jmp)
 {
 	if (IS_REG(*value))
 	{
 		*value = REGS[*value - 1];
 		return (true);
 	}
-	update_position(game, carry, jmp + 1);
+	update_position(carry, jmp + 1);
 	return (false);
 }
 

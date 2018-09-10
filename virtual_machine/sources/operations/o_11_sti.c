@@ -28,11 +28,11 @@ bool	sti(t_session *game, t_carry *carry, t_champ *head)
 	if (IS_REG(VAL1))
 	{
 		if (TYP2 == REG_CODE)
-			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL2, carry, JMP), false);
 		if (TYP3 == REG_CODE)
-			RET_CHECK(check_reg(&VAL3, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL3, carry, JMP), false);
 		write_to_map(game, p, REGS[VAL1 - 1], carry->champ);
 	}
-	update_position(game, carry, JMP + 1);
+	update_position(carry, JMP + 1);
 	return (true);
 }

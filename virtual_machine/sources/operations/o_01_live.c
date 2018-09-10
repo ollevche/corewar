@@ -32,6 +32,6 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 		//printf("A process shows that player %s is alive\n",LAST_ALIVE->name);
 		// TODO: hide this
 	}
-	update_position(game, carry, 5);
+	update_position(carry, 5);
 	return (true);
 }

@@ -27,15 +27,15 @@ bool	lldi(t_session *game, t_carry *carry, t_champ *head)
 	if (IS_REG(VAL3))
 	{
 		if (TYP1 == REG_CODE)
-			RET_CHECK(check_reg(&VAL1, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL1, carry, JMP), false);
 		if (TYP2 == REG_CODE)
-			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL2, carry, JMP), false);
 		p = VAL1 + VAL2 + PC;
 		REGS[VAL3 - 1] = // 3 lines for one operation. the fuck is this. TODO: Rewrite ft_byte_to_int? (81 character)
 		ft_byte_to_uint(MAPVAL(p, 0), MAPVAL(p, 1), MAPVAL(p, 2),
 																MAPVAL(p, 3));
 		CARRY = (REGS[VAL3 - 1] == 0 ? true : false); // NOTE: it can be incorrect; test it
 	}
-	update_position(game, carry, JMP + 1);
+	update_position(carry, JMP + 1);
 	return (IS_REG(VAL3));
 }

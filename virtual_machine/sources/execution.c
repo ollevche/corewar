@@ -45,7 +45,7 @@ int			move_pc(int pc, int val)
 	if (pc >= MEM_SIZE)
 		pc %= MEM_SIZE;
 	else if (pc < 0)
-		pc = MEM_SIZE + pc % MEM_SIZE; // pc is neg so it has to be + // TODO: pc or val (< -4096)
+		pc = MEM_SIZE + pc % MEM_SIZE; // pc is neg so it has to be +
 	return (pc);
 }
 
@@ -54,10 +54,8 @@ int			move_pc(int pc, int val)
 **  (to right/left from the pc by val bytes)
 */
 
-void		update_position(t_session *game, t_carry *carry, int val)
+void		update_position(t_carry *carry, int val)
 {
-	(void)game;
-	(void)carry;
 	carry->pc = move_pc(carry->pc, val);
 }
 
@@ -127,7 +125,7 @@ void		execute_carries(t_session *game, t_champ *champs)
 		{
 			update_opcode(game, icarry);
 			if (icarry->op_code == DEF_OPCODE)
-				update_position(game, icarry, 1);
+				update_position(icarry, 1);
 		}
 		icarry = icarry->next;
 	}

@@ -32,6 +32,6 @@ bool	st(t_session *game, t_carry *carry, t_champ *head)
 		else if (IS_REG(VAL2))
 			REGS[VAL2 - 1] = REGS[VAL1 - 1];
 	}
-	update_position(game, carry, JMP + 1);
+	update_position(carry, JMP + 1);
 	return (true);
 }

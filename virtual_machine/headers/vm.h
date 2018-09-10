@@ -31,7 +31,7 @@
 # define RET_CHECK(X, R) if (!(X)) return (R);
 # define IS_REG(r) (r > 0 && r <= REG_NUMBER)
 # define JMP (lpc - PC)
-# define CHK_MV(x) if (!x) {update_position(game, carry, JMP + 1); return (1);} // OG 0
+# define CHK_MV(x) if (!x) {update_position(carry, JMP + 1); return (1);} // OG 0
 # define MAPVAL(p, n) MAP[move_pc(p, n)]
 # define OP_ATYP(c, i)	g_optab[c].params_type[i]
 
