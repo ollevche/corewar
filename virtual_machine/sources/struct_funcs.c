@@ -74,3 +74,10 @@ t_champ		*get_champ_by_id(t_champ *head, int id)
 		head = head->next;
 	return (head);
 }
+
+t_champ		*get_last_champ(t_champ *head)
+{
+	while (head->next)
+		head = head->next;
+	return (head);
+}
