@@ -31,7 +31,13 @@ void    display_winner(t_champ *winner)
 
 void    display_usage()
 {
-	ft_printf("TODO: usage text\n");
+	ft_printf("USAGE:\n\
+\t./corewar [-log] [-dump CYCLE] [-n CHAMP_ID] CHAMP_NAMES [-v]\n\
+FLAGS:\n\
+\t[-log]\t\tshows log (cycles + PC movements)\n\
+\t[-dump N]\tdumps memory after N cycles\n\
+\t[-n N]\t\tsets N as the next champ id\n\
+\t[-v]\t\tenables visualization mode\n");
 	terminate(NULL);
 }
 
