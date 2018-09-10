@@ -25,7 +25,7 @@ OPDIR	=	operations/
 VISUDIR =	visu/
 
 SRC		=	main.c play_the_game.c read_input.c read_champ.c prepare.c \
-			execution.c struct_funcs.c free_funcs.c display.c \
+			execution.c struct_funcs.c free_funcs.c display_and_log.c \
 			$(addprefix $(OPDIR), $(OP)) \
 			$(addprefix $(VISUDIR), $(VISU))
 

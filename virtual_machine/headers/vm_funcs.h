@@ -22,12 +22,13 @@
 void	terminate();
 
 /*
-**  display.c ▽
+**  display_and_log.c ▽
 */
 
 void	display_contestants(t_champ *champs);
 void    display_winner(t_champ *winner);
 void	display_usage();
+void	log_cycles(t_session *game, t_arg *arg);
 
 /*
 **	read_input.c ▽

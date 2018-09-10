@@ -129,20 +129,16 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	t_vdata		vdata;
 
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
-	RET_CHECK(prepare(champs, &game), NULL);
-	// int ctd = game->cycle_to_die; // DEL
-	visu_drawing(&vdata, game, champs, arg);
-	game->cycle++;
+	RET_CHECK(prepare(champs, &game), NULL); // TODO: data should be prepared before visu_init call
+	visu_drawing(&vdata, game, champs, arg); // TODO: visu_init should call visu_drawing on prepared data
+	game->cycle++; // TODO: remove this line
 	winner = get_last_champ(champs);
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		// ctd = game->cycle_to_die;
 		control_game_flow(game, champs);
-		// if (ctd != game->cycle_to_die) // DEL
-			// printf("Cycle to die is now %d\n", game->cycle_to_die); // DEL
 		game->cycle++;
-		// printf("It is now cycle %d\n", game->cycle); // DEL
+		log_cycles(game, arg);
 		execute_carries(game, champs);
 		visu_drawing(&vdata, game, champs, arg);
 	}

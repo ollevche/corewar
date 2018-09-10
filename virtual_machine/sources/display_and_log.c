@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display.c                                          :+:      :+:    :+:   */
+/*   display_and_log.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -33,4 +33,13 @@ void    display_usage()
 {
 	ft_printf("TODO: usage text\n");
 	terminate(NULL);
+}
+
+void	log_cycles(t_session *game, t_arg *arg)
+{
+	if (!arg->log)
+		return ;
+	if (game->last_ctd == game->cycle - 1)
+		ft_printf("Cycle to die is now %d\n", game->cycle_to_die);
+	ft_printf("It is now cycle %d\n", game->cycle);
 }
