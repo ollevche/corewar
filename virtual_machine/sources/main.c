@@ -56,6 +56,7 @@ void	terminate(t_champ **champs)
 static void	init_arg(t_arg *arg)
 {
 	arg->is_visual = false;
+	arg->log = false;
 	arg->dump = -1;
 	arg->champ_id = -1;
 }
@@ -69,7 +70,7 @@ int			main(int argc, char **args)
 	init_arg(&arg);
 	champs = read_input(argc, args, &arg);
 	if (!champs)
-		display_usage(USAGE_FILE);
+		display_usage();
 	display_contestants(champs);
 	winner = play_the_game(champs, &arg);
 	if (!winner)

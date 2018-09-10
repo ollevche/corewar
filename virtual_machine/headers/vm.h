@@ -123,6 +123,7 @@ extern const t_op		g_optab[18];
 typedef struct			s_arg
 {
 	bool	is_visual;
+	bool	log;
 	int		dump;
 	int		champ_id;
 }						t_arg;

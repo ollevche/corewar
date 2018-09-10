@@ -17,28 +17,39 @@
 #define INVALID_FLAG -1
 #define VALID_FLAG 1
 
+/*
+**	what: true - dump; false - n
+*/
+
+static int		set_numerical(char **args, int *i, t_arg *arg, bool what)
+{
+	if (what)
+		arg->dump = ft_atoi(args[++(*i)]);
+	else
+		arg->champ_id = ft_atoi(args[++(*i)]);
+	if (!ft_isnumber(args[*i]))
+	{
+		ft_printf("Flag %s has invalid number\n", what ? "-dump" : "-n");
+		return (INVALID_FLAG);
+	}
+	return (VALID_FLAG);
+}
+
 static int		set_flag(char **args, int *i, t_arg *arg, t_champ *head)
 {
 	if (!ft_strcmp(args[*i], "-dump"))
-	{
-		arg->dump = ft_atoi(args[++(*i)]);
-		if (!ft_isnumber(args[*i]))
-		{
-			ft_printf("Flag -dump has invalid number\n");
-			return (INVALID_FLAG);
-		}
-	}
+		return (set_numerical(args, i, arg, true));
 	else if (!ft_strcmp(args[*i], "-n"))
 	{
-		arg->champ_id = ft_atoi(args[++(*i)]);
-		if (!ft_isnumber(args[*i]) || get_champ_by_id(head, arg->champ_id))
-		{
-			ft_printf("Flag -n has invalid number\n");
-			return (INVALID_FLAG);
-		}
+		if (set_numerical(args, i, arg, false) == VALID_FLAG)
+			if (!get_champ_by_id(head, arg->champ_id))
+				return (VALID_FLAG);
+		return (INVALID_FLAG);
 	}
 	else if (!ft_strcmp(args[*i], "-v"))
 		arg->is_visual = true;
+	else if (!ft_strcmp(args[*i], "-log"))
+		arg->log = true;
 	else
 		return (NOT_FLAG);
 	return (VALID_FLAG);
