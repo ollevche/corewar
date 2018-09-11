@@ -131,6 +131,6 @@ bool	check_reg(int *value, t_carry *carry, int jmp);
 
 bool	check_cbyte(int args[2][4], int op_code, int size);
 void    write_to_map(t_session *game, int pos, int value, int champ_id);
-unsigned int	read_int(t_session *game, int lpc, int n_bytes, bool plus_one);
+t_uint	read_int(t_session *game, int lpc, int n_bytes, bool plus_one);
 
 #endif

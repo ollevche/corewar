@@ -13,6 +13,12 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+#define BTI ft_byte_to_uint
+#define MVAL1 MAPVAL(lpc, n)
+#define MVAL2 MAPVAL(lpc, n + 1)
+#define MVAL3 MAPVAL(lpc, n + 2)
+#define MVAL4 MAPVAL(lpc, n + 3)
+
 /*
 ** T_REG(1) = 1, 3, 5, 7
 ** T_DIR(2) = 2, 3, 6, 7
@@ -74,12 +80,10 @@ unsigned int	read_int(t_session *game, int lpc, int n_bytes, bool plus_one)
 	if (plus_one)
 		n = 1;
 	if (n_bytes == 1)
-		return (ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, n)));
+		return (BTI(0, 0, 0, MVAL1));
 	if (n_bytes == 2)
-		return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, n),
-												MAPVAL(lpc, n + 1)));
+		return ((short)BTI(0, 0, MVAL1, MVAL2));
 	if (n_bytes == 4)
-		return (ft_byte_to_uint(MAPVAL(lpc, n),
-		MAPVAL(lpc, n + 1), MAPVAL(lpc, n + 2), MAPVAL(lpc, n + 3)));
+		return (BTI(MVAL1, MVAL2, MVAL3, MVAL4));
 	return (0);
 }
