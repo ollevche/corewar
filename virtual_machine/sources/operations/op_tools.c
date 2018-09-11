@@ -47,15 +47,18 @@ static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 {
 	short ind_value;
 
-	ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
+	// ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
+	ind_value = read_int(game, lpc, 2, true);
 	if (OPTAB.ind_idx)
 		ind_value %= IDX_MOD;
-	if (op_code == 3)// || op_code == 11) // st or sti
+	if (op_code == 3) // || op_code == 11) // st or sti
 		return (ind_value);
 	lpc = move_pc(pc, ind_value);
 	if (op_code == 13) // NOTE: original vm is broken
-		return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 0), MAPVAL(lpc, 1)));
-	return (ft_byte_to_uint(MAPVAL(lpc, 0), MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3)));
+		return (read_int(game, lpc, 2, false));
+		// return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 0), MAPVAL(lpc, 1)));
+	// return (ft_byte_to_uint(MAPVAL(lpc, 0), MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3)));
+	return(read_int(game, lpc, 4, false));
 }
 
 bool		set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
@@ -68,7 +71,8 @@ bool		set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 
 	n_args = OPTAB.nb_params;
 	pc = *lpc;
-	coding_byte = ft_byte_to_uint(0, 0, 0, MAPVAL(*lpc, 1));
+	coding_byte = read_int(game, *lpc, 1, true);
+	// coding_byte = ft_byte_to_uint(0, 0, 0, MAPVAL(*lpc, 1));
 	*lpc = move_pc(*lpc, 1);
 	if (!(valid_args = set_arg_types(coding_byte, args[0], n_args)))
 		return (false);
@@ -90,13 +94,16 @@ bool		set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 int			get_value_by_arg(t_session *game, int arg, int lpc, int op_code)
 {
 	if (arg == REG_CODE)
-		return ((short)ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, 1)));
+		return (read_int(game, lpc, 1, true));
+		// return ((short)ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, 1)));
 	if (arg == DIR_CODE)
 	{
 		if (g_optab[op_code].label_size == 1)
-			return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2)));
+			return (read_int(game, lpc, 2, true));
+			// return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2)));
 		else
-			return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
+			return (read_int(game, lpc, 4, true));
+			// return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 	}
 	return (0);
 }

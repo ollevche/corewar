@@ -19,22 +19,7 @@
 ** T_IND(4) = 4, 5, 6, 7
 */
 
-// unsigned int	ft_byte_to_uint(int start, int n, )
-// {
-// 	unsigned int	num;
-// 	int				i;
-
-// 	i = 0;
-// 	while (i < n)
-// 	{
-// 		num 
-// 	}
-
-// 	num = b1 << 24 | b2 << 16 | b3 << 8 | b4;
-// 	return (num);
-// }
-
-bool	check_cbyte(int args[2][4], int op_code, int size)
+bool			check_cbyte(int args[2][4], int op_code, int size)
 {
 	int i;
 
@@ -58,7 +43,7 @@ bool	check_cbyte(int args[2][4], int op_code, int size)
 	return (true);
 }
 
-bool	check_reg(int *value, t_carry *carry, int jmp)
+bool			check_reg(int *value, t_carry *carry, int jmp)
 {
 	if (IS_REG(*value))
 	{
@@ -69,7 +54,7 @@ bool	check_reg(int *value, t_carry *carry, int jmp)
 	return (false);
 }
 
-void	write_to_map(t_session *game, int pos, int value, int champ_id)
+void			write_to_map(t_session *game, int pos, int value, int champ_id)
 {
 	MAPVAL(pos, 0) = (value & -16777216) >> 24;
 	MAPVAL(pos, 1) = (value & 16711680) >> 16;
@@ -79,4 +64,22 @@ void	write_to_map(t_session *game, int pos, int value, int champ_id)
 	game->spot_map[move_pc(pos, 1)] = champ_id;
 	game->spot_map[move_pc(pos, 2)] = champ_id;
 	game->spot_map[move_pc(pos, 3)] = champ_id;
+}
+
+unsigned int	read_int(t_session *game, int lpc, int n_bytes, bool plus_one)
+{
+	int	n;
+
+	n = 0;
+	if (plus_one)
+		n = 1;
+	if (n_bytes == 1)
+		return (ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, n)));
+	if (n_bytes == 2)
+		return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, n),
+												MAPVAL(lpc, n + 1)));
+	if (n_bytes == 4)
+		return (ft_byte_to_uint(MAPVAL(lpc, n),
+		MAPVAL(lpc, n + 1), MAPVAL(lpc, n + 2), MAPVAL(lpc, n + 3)));
+	return (0);
 }
