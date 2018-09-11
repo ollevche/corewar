@@ -81,6 +81,14 @@ typedef struct			s_champ
 	struct s_champ	*next;
 }						t_champ;
 
+typedef struct			s_arg
+{
+	bool	is_visual;
+	bool	log;
+	int		dump;
+	int		champ_id;
+}						t_arg;
+
 /*
 **	game state info
 */
@@ -97,6 +105,7 @@ typedef struct			s_session
 	t_carry	*carries; // all of the carries
 	int		carry_num; // number of carries in a session
 	int		total_champs;
+	t_arg	*arg;
 }						t_session;
 
 /*
@@ -119,13 +128,5 @@ typedef struct			s_op
 }						t_op;
 
 extern const t_op		g_optab[18];
-
-typedef struct			s_arg
-{
-	bool	is_visual;
-	bool	log;
-	int		dump;
-	int		champ_id;
-}						t_arg;
 
 #endif

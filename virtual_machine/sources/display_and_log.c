@@ -43,9 +43,28 @@ FLAGS:\n\
 
 void	log_cycles(t_session *game, t_arg *arg)
 {
-	if (!arg->log)
+	if (!arg->log || arg->is_visual)
 		return ;
 	if (game->last_ctd == game->cycle - 1)
 		ft_printf("Cycle to die is now %d\n", game->cycle_to_die);
 	ft_printf("It is now cycle %d\n", game->cycle);
+}
+
+void		log_operation(t_session *game, int new_pc, int old_pc)
+{
+	if (!game->arg->log || game->arg->is_visual)
+		return ;
+	ft_printf("ADV \0");
+	int adv = new_pc - old_pc;
+	if (adv < 0)
+		adv += MEM_SIZE;
+	ft_printf("%d \0", adv);
+	ft_printf("(0x%04x -> 0x%04x) \0", old_pc, old_pc + adv);
+	int i = 0;
+	while (i < adv)
+	{
+		ft_printf("%02x \0", MAP[move_pc(old_pc, i)]);
+		i++;
+	}
+	ft_printf("\n\0");
 }

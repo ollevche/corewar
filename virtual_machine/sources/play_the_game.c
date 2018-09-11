@@ -74,30 +74,6 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	}
 }
 
-// static void	log(t_session *game, bool is_log)
-// {
-// 	t_carry	*icarry;
-
-// 	if (!is_log)
-// 		return ;
-// 	ft_printf("--- --- --- --- --- --- --- --- ---\n");
-// 	ft_printf("cycle: %d\n", game->cycle);
-// 	ft_printf("period lives: %d\n", game->period_lives);
-// 	ft_printf("cycle to die: %d\n", game->cycle_to_die);
-// 	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
-// 	ft_printf("total carries: %d\n", game->carry_num);
-// 	ft_printf("carries positions (champ - pos - last_live - inactive - map bytes):\n");
-// 	icarry = game->carries;
-// 	while (icarry)
-// 	{
-// 		ft_printf("%d\t%d\t%d\t%d\t%02x %02x %02x %02x\n", icarry->regs[0], icarry->pc, icarry->last_live, icarry->inactive,
-// 			game->map[move_pc(icarry->pc, -1)], game->map[icarry->pc], game->map[move_pc(icarry->pc, 1)], game->map[move_pc(icarry->pc, 2)]);
-// 		icarry = icarry->next;
-// 	}
-// 	if (game->last_alive)
-// 		ft_printf("last alive champ: %d\n", game->last_alive->id);
-// }
-
 static bool	is_dump(t_session *game, t_arg *arg)
 {
 	int		iter;
@@ -129,7 +105,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	t_vdata		vdata;
 
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
-	RET_CHECK(prepare(champs, &game), NULL); // TODO: data should be prepared before visu_init call
+	RET_CHECK(prepare(champs, &game, arg), NULL); // TODO: data should be prepared before visu_init call
 	visu_drawing(&vdata, game, champs, arg); // TODO: visu_init should call visu_drawing on prepared data
 	game->cycle++; // TODO: remove this line
 	winner = get_last_champ(champs);

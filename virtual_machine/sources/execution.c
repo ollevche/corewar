@@ -39,57 +39,18 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 	operations[17] = NULL;
 }
 
-int			move_pc(int pc, int val)
+static void	perform_operation(t_session *game, t_champ *champs, t_carry *carry,
+									t_operation operations[OP_COUNT + 2]) // TODO: game has arg pointer now (refactor old code)
 {
-	pc += val;
-	if (pc >= MEM_SIZE)
-		pc %= MEM_SIZE;
-	else if (pc < 0)
-		pc = MEM_SIZE + pc % MEM_SIZE; // pc is neg so it has to be +
-	return (pc);
-}
+	int		prev_pc;
+	bool	is_valid;
 
-/*
-**  moves a pc of the carry to specified position ▽
-**  (to right/left from the pc by val bytes)
-*/
-
-void		update_position(t_carry *carry, int val)
-{
-	carry->pc = move_pc(carry->pc, val);
-}
-
-/*
-**	sets op_code to pc internal value (op_code of the new position) ▽
-**	sets inactive counter to operation execution time (in cycles)
-*/
-
-void		update_opcode(t_session *game, t_carry *carry)
-{
-	carry->op_code = game->map[carry->pc];
-	if (carry->op_code >= 1 && carry->op_code <= OP_COUNT)
-		carry->inactive = g_optab[carry->op_code].cycles - 2;
-	else
-		carry->op_code = DEF_OPCODE;
-}
-
-void		print_log(t_session *game, int new_pc, int old_pc, bool is_ok) // DEL
-{
-	if (!is_ok)
-		return ;
-	ft_printf("ADV \0");
-	int adv = new_pc - old_pc;
-	if (adv < 0)
-		adv += MEM_SIZE;
-	ft_printf("%d \0", adv);
-	ft_printf("(0x%04x -> 0x%04x) \0", old_pc, old_pc + adv);
-	int i = 0;
-	while (i < adv)
-	{
-		ft_printf("%02x \0", MAP[move_pc(old_pc, i)]);
-		i++;
-	}
-	ft_printf("\n\0");
+	prev_pc = carry->pc;
+	is_valid = carry->op_code != 9 || !carry->carry;
+	operations[carry->op_code](game, carry, champs);
+	if (is_valid && game->arg->log)
+		log_operation(game, carry->pc, prev_pc);
+	carry->op_code = DEF_OPCODE;
 }
 
 /*
@@ -100,24 +61,16 @@ void		print_log(t_session *game, int new_pc, int old_pc, bool is_ok) // DEL
 void		execute_carries(t_session *game, t_champ *champs)
 {
 	t_carry	*icarry;
-	t_operation operations[OP_COUNT + 2]; // static?
+	t_operation operations[OP_COUNT + 2];
 
 	init_operations(operations);
 	icarry = game->carries;
 	while (icarry)
 	{
-		if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT) // TODO: log
+		if (icarry->op_code >= 1 && icarry->op_code <= OP_COUNT)
 		{
 			if (icarry->inactive == 0)
-			{
-				// int pc_before_ex = icarry->pc; // DEL
-				// bool is_print = icarry->op_code != 9 || !icarry->carry; // DEL
-				// bool opsuc = // DEL
-				operations[icarry->op_code](game, icarry, champs);
-				// if ((opsuc || !opsuc) && is_print) //&& icarry->last_live >= game->cycle - game->cycle_to_die) // DEL
-					// print_log(game, icarry->pc, pc_before_ex, false); // DEL
-				icarry->op_code = DEF_OPCODE;
-			}
+				perform_operation(game, champs, icarry, operations);
 			else
 				icarry->inactive--;
 		}

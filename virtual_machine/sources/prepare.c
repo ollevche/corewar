@@ -43,7 +43,7 @@ static void	prepare_spot_map(t_champ *champs, t_session *game)
 **	allocates mem for t_session and sets def values
 */
 
-static bool	prepare_session(t_session **gameptr, int n)
+static bool	prepare_session(t_session **gameptr, int n, t_arg *arg)
 {
 	t_session	*game;
 
@@ -59,6 +59,7 @@ static bool	prepare_session(t_session **gameptr, int n)
 	game->carries = NULL;
 	game->total_champs = n;
 	game->carry_num = n;
+	game->arg = arg;
 	return (true);
 }
 
@@ -88,12 +89,12 @@ static bool	place_code(t_champ *champs, t_session *game)
 	return (true);
 }
 
-bool		prepare(t_champ *champs, t_session **game)
+bool		prepare(t_champ *champs, t_session **game, t_arg *arg)
 {
 	int	champs_n;
 
 	champs_n = count_champs(champs);
-	RET_CHECK(prepare_session(game, champs_n), NULL);
+	RET_CHECK(prepare_session(game, champs_n, arg), NULL);
 	prepare_spot_map(champs, *game);
 	place_code(champs, *game);
 	return (true);

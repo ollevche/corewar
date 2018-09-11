@@ -29,6 +29,7 @@ void	display_contestants(t_champ *champs);
 void    display_winner(t_champ *winner);
 void	display_usage();
 void	log_cycles(t_session *game, t_arg *arg);
+void	log_operation(t_session *game, int new_pc, int old_pc);
 
 /*
 **	read_input.c ▽
@@ -47,7 +48,7 @@ t_champ	*read_champ(t_champ **champs, int fd, char *filename);
 **  prepare.c ▽
 */
 
-bool	prepare(t_champ *champs, t_session **game);
+bool	prepare(t_champ *champs, t_session **game, t_arg *arg);
 
 /*
 **	play_the_game.c ▽
@@ -60,6 +61,11 @@ t_champ	*play_the_game(t_champ *champs, t_arg *arg);
 */
 
 void	execute_carries(t_session *game, t_champ *champs);
+
+/*
+**  util.c
+*/
+
 void	update_position(t_carry *carry, int val);
 void	update_opcode(t_session *game, t_carry *carry);
 int		move_pc(int pc, int val);
