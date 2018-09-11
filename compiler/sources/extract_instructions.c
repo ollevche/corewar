@@ -42,8 +42,8 @@ int			check_arguments(int index, t_item *item, char *start)
 		while(*arg != ' ' && *arg)
 			arg++;
 		arg += skip_wspaces(arg);
-		if (*arg != '\0')
-			return (error(2, item->line_num, arg + 1 - start, arg));
+		//if (*arg != '\0')
+		//	return (error(2, item->line_num, arg + 1 - start, arg));
 		index--;
 	}
 
