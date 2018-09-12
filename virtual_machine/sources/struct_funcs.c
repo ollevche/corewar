@@ -68,14 +68,14 @@ void	del_carry(t_carry **head, t_carry *prev, t_carry *target)
 	free_carries(target);
 }
 
-t_champ		*get_champ_by_id(t_champ *head, int id)
+t_champ	*get_champ_by_id(t_champ *head, int id)
 {
 	while (head && head->id != id)
 		head = head->next;
 	return (head);
 }
 
-t_champ		*get_last_champ(t_champ *head)
+t_champ	*get_last_champ(t_champ *head)
 {
 	while (head->next)
 		head = head->next;

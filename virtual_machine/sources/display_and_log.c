@@ -24,12 +24,12 @@ void	display_contestants(t_champ *champs)
 	}
 }
 
-void    display_winner(t_champ *winner)
+void	display_winner(t_champ *winner)
 {
 	ft_printf("Contestant %d, \"%s\", has won !\n", winner->id, winner->name);
 }
 
-void    display_usage()
+void	display_usage(void)
 {
 	ft_printf("USAGE:\n\
 \t./corewar [-log] [-dump CYCLE] [-n CHAMP_ID] CHAMP_NAMES [-v]\n\
@@ -50,21 +50,24 @@ void	log_cycles(t_session *game, t_arg *arg)
 	ft_printf("It is now cycle %d\n", game->cycle);
 }
 
-void		log_operation(t_session *game, int new_pc, int old_pc)
+void	log_operation(t_session *game, int new_pc, int old_pc)
 {
+	int adv;
+	int i;
+
 	if (!game->arg->log || game->arg->is_visual)
 		return ;
-	ft_printf("ADV \0");
-	int adv = new_pc - old_pc;
+	ft_printf("ADV ");
+	adv = new_pc - old_pc;
 	if (adv < 0)
 		adv += MEM_SIZE;
-	ft_printf("%d \0", adv);
-	ft_printf("(0x%04x -> 0x%04x) \0", old_pc, old_pc + adv);
-	int i = 0;
+	ft_printf("%d ", adv);
+	ft_printf("(0x%04x -> 0x%04x) ", old_pc, old_pc + adv);
+	i = 0;
 	while (i < adv)
 	{
-		ft_printf("%02x \0", MAP[move_pc(old_pc, i)]);
+		ft_printf("%02x ", MAP[move_pc(old_pc, i)]);
 		i++;
 	}
-	ft_printf("\n\0");
+	ft_printf("\n");
 }

@@ -71,7 +71,7 @@ static t_champ	*read_file(t_champ **champs, char *filename)
 	return (champ);
 }
 
-int			count_champs(t_champ *champs)
+int				count_champs(t_champ *champs)
 {
 	int champs_count;
 

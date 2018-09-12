@@ -53,12 +53,14 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	int	periods; // since last cycle_to_die change
 	int	cycles; // in current period
 	int	killed;
+	int	period_start;
 
 	periods = (game->cycle - game->last_ctd) / game->cycle_to_die;
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
 	if (cycles == 0) // it's start of the period
 	{
-		killed = kill_carries(&(game->carries), game->cycle - game->cycle_to_die);
+		period_start = game->cycle - game->cycle_to_die;
+		killed = kill_carries(&(game->carries), period_start);
 		game->carry_num -= killed;
 		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
