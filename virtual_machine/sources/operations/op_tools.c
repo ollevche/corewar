@@ -99,7 +99,7 @@ int			get_value_by_arg(t_session *game, int arg, int lpc, int op_code)
 	if (arg == DIR_CODE)
 	{
 		if (g_optab[op_code].label_size == 1)
-			return (read_int(game, lpc, 2, true));
+			return (read_int(game, lpc, 2, true)); // cast to short again?
 			// return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2)));
 		else
 			return (read_int(game, lpc, 4, true));

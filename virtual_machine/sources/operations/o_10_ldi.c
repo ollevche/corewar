@@ -31,7 +31,7 @@ bool	ldi(t_session *game, t_carry *carry, t_champ *head)
 		if (TYP2 == REG_CODE)
 			RET_CHECK(check_reg(&VAL2, carry, JMP), false);
 		p = ((VAL1 + VAL2) % IDX_MOD) + PC;
-		REGS[VAL3 - 1] = read_int(game, lpc, 4, false);
+		REGS[VAL3 - 1] = read_int(game, p, 4, false);
 		// ft_byte_to_uint(MAPVAL(p, 0), MAPVAL(p, 1), MAPVAL(p, 2), MAPVAL(p, 3));
 	}
 	update_position(carry, JMP + 1);
