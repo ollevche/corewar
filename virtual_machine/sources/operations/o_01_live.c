@@ -29,7 +29,7 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 		LAST_ALIVE = arg_champ;
 		LAST_ALIVE->period_lives++;
 		PERIOD_LIVES++;
-		if (!game->arg->is_visual)
+		if (!game->arg->is_visual && !game->arg->log)
 			printf("A process shows that player %s is alive\n",LAST_ALIVE->name);
 	}
 	update_position(carry, 5);

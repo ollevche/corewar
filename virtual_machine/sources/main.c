@@ -69,14 +69,14 @@ int			main_og(int argc, char **args)
 	t_arg	arg;
 
 	init_arg(&arg);
-	champs = read_input(argc, args, &arg);
+	champs = read_input(argc, args, &arg); // exits
 	if (!champs)
-		display_usage();
-	display_contestants(champs);
+		display_usage(); // exits
+	display_contestants(champs, &arg);
 	winner = play_the_game(champs, &arg);
 	if (!winner)
-		terminate(&champs);
-	display_winner(winner);
+		terminate(&champs); // exits
+	display_winner(winner, &arg);
 	free_champs(&champs);
 	return (0);
 }
