@@ -101,7 +101,7 @@ t_champ			*read_input(int argc, char **args, t_arg *arg)
 		if (flag_res == INVALID_FLAG || (flag_res == NOT_FLAG && !ichamp))
 			terminate(&champs);
 		if (flag_res == NOT_FLAG)
-			ichamp->id = (arg->champ_id)--;
+			ichamp->id = (arg->champ_id)--; // TODO: fix id collisions
 		i++;
 	}
 	if (count_champs(champs) > MAX_PLAYERS)
