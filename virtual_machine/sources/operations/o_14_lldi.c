@@ -32,7 +32,6 @@ bool	lldi(t_session *game, t_carry *carry, t_champ *head)
 			RET_CHECK(check_reg(&VAL2, carry, JMP), false);
 		p = VAL1 + VAL2 + PC;
 		REGS[VAL3 - 1] = read_int(game, p, 4, false);
-		// ft_byte_to_uint(MAPVAL(p, 0), MAPVAL(p, 1), MAPVAL(p, 2), MAPVAL(p, 3));
 		// CARRY = (REGS[VAL3 - 1] == 0 ? true : false); // NOTE: it can be incorrect; test it
 	}
 	update_position(carry, JMP + 1);

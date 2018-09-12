@@ -24,14 +24,14 @@ bool	sti(t_session *game, t_carry *carry, t_champ *head)
 	ft_bzero(args, 8 * sizeof(int));
 	args[0][3] = -1;
 	CHK_MV(set_arg_values(args, &lpc, game, 11));
-	p = PC + (VAL2 + VAL3) % IDX_MOD;
 	if (IS_REG(VAL1))
 	{
 		if (TYP2 == REG_CODE)
 			RET_CHECK(check_reg(&VAL2, carry, JMP), false);
 		if (TYP3 == REG_CODE)
 			RET_CHECK(check_reg(&VAL3, carry, JMP), false);
-		write_to_map(game, PC + (VAL2 + VAL3) % IDX_MOD, REGS[VAL1 - 1], carry->champ);
+		p = PC + (VAL2 + VAL3) % IDX_MOD;
+		write_to_map(game, p, REGS[VAL1 - 1], carry->champ);
 	}
 	update_position(carry, JMP + 1);
 	return (true);

@@ -15,7 +15,7 @@
 
 #define OPTAB g_optab[op_code]
 
-int			set_arg_types(int coding_byte, int *args, int size) // gets bits
+int			set_arg_types(int coding_byte, int *args, int size)
 {
 	int i;
 	int valid;
@@ -47,7 +47,6 @@ static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 {
 	short ind_value;
 
-	// ind_value = ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2));
 	ind_value = read_int(game, lpc, 2, true);
 	if (OPTAB.ind_idx)
 		ind_value %= IDX_MOD;
@@ -56,12 +55,11 @@ static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 	lpc = move_pc(pc, ind_value);
 	if (op_code == 13) // NOTE: original vm is broken
 		return (read_int(game, lpc, 2, false));
-		// return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 0), MAPVAL(lpc, 1)));
-	// return (ft_byte_to_uint(MAPVAL(lpc, 0), MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3)));
 	return(read_int(game, lpc, 4, false));
 }
 
-bool		set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
+bool		set_arg_values(int args[2][4], int *lpc, t_session *game,
+																int op_code)
 {
 	int		coding_byte;
 	int		i;
@@ -72,15 +70,14 @@ bool		set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code)
 	n_args = OPTAB.nb_params;
 	pc = *lpc;
 	coding_byte = read_int(game, *lpc, 1, true);
-	// coding_byte = ft_byte_to_uint(0, 0, 0, MAPVAL(*lpc, 1));
 	*lpc = move_pc(*lpc, 1);
 	if (!(valid_args = set_arg_types(coding_byte, args[0], n_args)))
 		return (false);
 	i = -1;
-	while (i + 1 < n_args) // get value for every arg_type and move pc each time
+	while (i + 1 < n_args)
 	{
 		i++;
-		if (args[0][i] == IND_CODE)// && OPTAB.ind_idx)
+		if (args[0][i] == IND_CODE)
 			args[1][i] = get_ind(game, *lpc, pc, op_code);
 		else if (args[0][i] == REG_CODE || args[0][i] == DIR_CODE)
 			args[1][i] = get_value_by_arg(game, args[0][i], *lpc, op_code);
@@ -95,15 +92,12 @@ int			get_value_by_arg(t_session *game, int arg, int lpc, int op_code)
 {
 	if (arg == REG_CODE)
 		return (read_int(game, lpc, 1, true));
-		// return ((short)ft_byte_to_uint(0, 0, 0, MAPVAL(lpc, 1)));
 	if (arg == DIR_CODE)
 	{
 		if (g_optab[op_code].label_size == 1)
-			return (read_int(game, lpc, 2, true)); // cast to short again?
-			// return ((short)ft_byte_to_uint(0, 0, MAPVAL(lpc, 1), MAPVAL(lpc, 2)));
+			return (read_int(game, lpc, 2, true));
 		else
 			return (read_int(game, lpc, 4, true));
-			// return (ft_byte_to_uint(MAPVAL(lpc, 1), MAPVAL(lpc, 2), MAPVAL(lpc, 3), MAPVAL(lpc, 4)));
 	}
 	return (0);
 }

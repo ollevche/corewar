@@ -12,7 +12,7 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
-// TODO: base func for add/sub/etc
+
 static void	copy_carry(t_carry *to, t_carry *from)
 {
 	int	i;
