@@ -13,8 +13,10 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-void	display_contestants(t_champ *champs)
+void	display_contestants(t_champ *champs, t_arg *arg)
 {
+	if (arg->is_visual)
+		return ;
 	ft_printf("Introducing contestants...\n");
 	while (champs)
 	{
@@ -24,8 +26,10 @@ void	display_contestants(t_champ *champs)
 	}
 }
 
-void	display_winner(t_champ *winner)
+void	display_winner(t_champ *winner, t_arg *arg)
 {
+	if (arg->is_visual)
+		return ;
 	ft_printf("Contestant %d, \"%s\", has won !\n", winner->id, winner->name);
 }
 
