@@ -15,10 +15,9 @@
 
 void	free_session(t_session **game)
 {
-	(void)game;
 	t_carry *carries;
 
-	if (!*game)
+	if (!game || !*game)
 		return ;
 	carries = (*game)->carries;
 	free_carries(&carries);
@@ -31,6 +30,8 @@ void	free_champs(t_champ **champs)
 	t_champ *trash;
 	t_champ *iter;
 
+	if (!champs || !*champs)
+		return ;
 	iter = *champs;
 	while (iter)
 	{
@@ -49,6 +50,8 @@ void	free_carries(t_carry **carries)
 	t_carry *trash;
 	t_carry *iter;
 
+	if (!carries || !*carries)
+		return ;
 	iter = *carries;
 	while (iter)
 	{

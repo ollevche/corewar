@@ -50,7 +50,7 @@ void		terminate(t_champ **champs)
 	free_champs(champs);
 	if (errno)
 		perror("Default error");
-	system("leaks corewar"); // hidden leaks
+	system("leaks corewar"); // DEL
 	exit(EXIT_FAILURE);
 }
 
@@ -81,7 +81,7 @@ int			main_og(int argc, char **args)
 	return (0);
 }
 
-int main(int argc, char **args)
+int main(int argc, char **args) // DEL
 {
 	main_og(argc, args);
 	system("leaks corewar");
