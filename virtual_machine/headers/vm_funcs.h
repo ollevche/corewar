@@ -86,7 +86,7 @@ t_champ	*get_last_champ(t_champ *head);
 
 void	free_session(t_session **game);
 void	free_champs(t_champ **champs);
-void    free_carries(t_carry *carries);
+void    free_carries(t_carry **carries);
 
 /*
 **  operations ▽

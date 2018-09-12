@@ -120,8 +120,8 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		execute_carries(game, champs);
 		visu_drawing(&vdata, game, champs, arg);
 	}
-	free_session(&game);
 	winner = game->last_alive ? game->last_alive : winner;
+	free_session(&game);
 	visu_finalizing(&vdata, game, champs, arg);
 	return (winner);
 }

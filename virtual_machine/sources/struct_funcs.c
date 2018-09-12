@@ -65,7 +65,7 @@ void	del_carry(t_carry **head, t_carry *prev, t_carry *target)
 	else
 		prev->next = target->next;
 	target->next = NULL;
-	free_carries(target);
+	free_carries(&target);
 }
 
 t_champ	*get_champ_by_id(t_champ *head, int id)
