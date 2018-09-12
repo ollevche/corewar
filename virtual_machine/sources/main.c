@@ -45,7 +45,7 @@ const t_op	g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0, false}
 };
 
-void	terminate(t_champ **champs)
+void		terminate(t_champ **champs)
 {
 	free_champs(champs);
 	if (errno)

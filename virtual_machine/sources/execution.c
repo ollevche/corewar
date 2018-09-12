@@ -60,8 +60,8 @@ static void	perform_operation(t_session *game, t_champ *champs, t_carry *carry,
 
 void		execute_carries(t_session *game, t_champ *champs)
 {
-	t_carry	*icarry;
-	t_operation operations[OP_COUNT + 2];
+	t_carry		*icarry;
+	t_operation	operations[OP_COUNT + 2];
 
 	init_operations(operations);
 	icarry = game->carries;
