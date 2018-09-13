@@ -12,7 +12,7 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
-// TODO: base func for add/sub/etc
+
 static void	copy_carry(t_carry *to, t_carry *from)
 {
 	int	i;
@@ -23,6 +23,7 @@ static void	copy_carry(t_carry *to, t_carry *from)
 	to->pc = from->pc;
 	to->carry = from->carry;
 	to->last_live = from->last_live;
+	to->champ = from->champ;
 }
 
 bool		base_fork(t_session *game, t_carry *carry, bool idx)
@@ -36,8 +37,8 @@ bool		base_fork(t_session *game, t_carry *carry, bool idx)
 	fork = new_carry(&game->carries, carry->regs[0]);
 	RET_CHECK(fork, false);
 	copy_carry(fork, carry);
-	update_position(game, fork, pos);
-	update_position(game, carry, 3);
+	update_position(fork, pos);
+	update_position(carry, 3);
 	game->carry_num++;
 	return (true);
 }

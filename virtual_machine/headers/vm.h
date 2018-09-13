@@ -19,12 +19,10 @@
 # include <fcntl.h>
 # include <errno.h>
 
-
-# define USAGE_STR		"we've not created usage text yet" // TODO: this
-
 # define HEADER_SIZE	4
 # define CODELEN_SIZE	4
 # define OP_COUNT		16
+# define DEF_OPCODE		17
 
 /*
 ** FUNCTIONAL DEFINES ▽
@@ -33,7 +31,7 @@
 # define RET_CHECK(X, R) if (!(X)) return (R);
 # define IS_REG(r) (r > 0 && r <= REG_NUMBER)
 # define JMP (lpc - PC)
-# define CHK_MV(x) if (!x) {update_position(game, carry, JMP + 1); return (0);}
+# define CHK_MV(x) if (!x) {update_position(carry, JMP + 1); return (1);} // OG 0
 # define MAPVAL(p, n) MAP[move_pc(p, n)]
 # define OP_ATYP(c, i)	g_optab[c].params_type[i]
 
@@ -83,6 +81,14 @@ typedef struct			s_champ
 	struct s_champ	*next;
 }						t_champ;
 
+typedef struct			s_arg
+{
+	bool	is_visual;
+	bool	log;
+	int		dump;
+	int		champ_id;
+}						t_arg;
+
 /*
 **	game state info
 */
@@ -99,6 +105,7 @@ typedef struct			s_session
 	t_carry	*carries; // all of the carries
 	int		carry_num; // number of carries in a session
 	int		total_champs;
+	t_arg	*arg;
 }						t_session;
 
 /*
@@ -121,12 +128,5 @@ typedef struct			s_op
 }						t_op;
 
 extern const t_op		g_optab[18];
-
-typedef struct			s_arg
-{
-	bool	is_visual;
-	int		dump;
-	int		champ_id;
-}						t_arg;
 
 #endif

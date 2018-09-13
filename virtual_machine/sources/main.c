@@ -45,41 +45,44 @@ const t_op	g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0, false}
 };
 
-void	terminate(t_champ **champs)
+void		terminate(t_champ **champs)
 {
 	free_champs(champs);
 	if (errno)
 		perror("Default error");
+	system("leaks corewar"); // DEL
 	exit(EXIT_FAILURE);
-}
-
-void		display_usage(char *usage_txt)
-{
-	ft_printf("%s\n", usage_txt);
-	terminate(NULL);
 }
 
 static void	init_arg(t_arg *arg)
 {
 	arg->is_visual = false;
+	arg->log = false;
 	arg->dump = -1;
 	arg->champ_id = -1;
 }
 
-int			main(int argc, char **args)
+int			main_og(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
 	t_arg	arg;
 
 	init_arg(&arg);
-	champs = read_input(argc, args, &arg);
+	champs = read_input(argc, args, &arg); // exits
 	if (!champs)
-		display_usage(USAGE_STR);
+		display_usage(); // exits
+	display_contestants(champs, &arg);
 	winner = play_the_game(champs, &arg);
 	if (!winner)
-		terminate(&champs);
-	// TODO: print_result(winner);
+		terminate(&champs); // exits
+	display_winner(winner, &arg);
 	free_champs(&champs);
 	return (0);
+}
+
+int main(int argc, char **args) // DEL
+{
+	main_og(argc, args);
+	system("leaks corewar");
 }

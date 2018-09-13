@@ -16,24 +16,27 @@
 
 static int	kill_carries(t_carry **carries, int period_start)
 {
-	t_carry	*icarry;
+	t_carry	*current;
 	t_carry	*prev;
 	int		killed;
 
-	icarry = *carries;
+	current = *carries;
 	prev = NULL;
 	killed = 0;
-	while (icarry)
+	while (current)
 	{
-		if (icarry->last_live < period_start)
+		if (current->last_live <= period_start)
 		{
-			del_carry(carries, &prev, icarry); // TODO: prev == NULL
-			icarry = prev;
+			del_carry(carries, prev, current);
+			if (prev)
+				current = prev->next;
+			else
+				current = *carries;
 			killed++;
+			continue ;
 		}
-		prev = icarry;
-		if (icarry)
-			icarry = icarry->next;
+		prev = current;
+		current = current->next;
 	}
 	return (killed);
 }
@@ -50,12 +53,14 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	int	periods; // since last cycle_to_die change
 	int	cycles; // in current period
 	int	killed;
+	int	period_start;
 
 	periods = (game->cycle - game->last_ctd) / game->cycle_to_die;
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
 	if (cycles == 0) // it's start of the period
 	{
-		killed = kill_carries(&(game->carries), game->cycle - game->cycle_to_die);
+		period_start = game->cycle - game->cycle_to_die;
+		killed = kill_carries(&(game->carries), period_start);
 		game->carry_num -= killed;
 		if (game->period_lives >= NBR_LIVE || periods == MAX_CHECKS)
 		{
@@ -71,30 +76,6 @@ static void	control_game_flow(t_session *game, t_champ *champs)
 	}
 }
 
-static void	log(t_session *game, bool is_log)
-{
-	t_carry	*icarry;
-
-	if (!is_log)
-		return ;
-	ft_printf("--- --- --- --- --- --- --- --- ---\n");
-	ft_printf("cycle: %d\n", game->cycle);
-	ft_printf("period lives: %d\n", game->period_lives);
-	ft_printf("cycle to die: %d\n", game->cycle_to_die);
-	ft_printf("last 'cycle to die' change: %d\n", game->last_ctd);
-	ft_printf("total carries: %d\n", game->carry_num);
-	ft_printf("carries positions (champ - pos - last_live - inactive - map bytes):\n");
-	icarry = game->carries;
-	while (icarry)
-	{
-		ft_printf("%d\t%d\t%d\t%d\t%02x %02x %02x %02x\n", icarry->regs[0], icarry->pc, icarry->last_live, icarry->inactive,
-			game->map[move_pc(icarry->pc, -1)], game->map[icarry->pc], game->map[move_pc(icarry->pc, 1)], game->map[move_pc(icarry->pc, 2)]);
-		icarry = icarry->next;
-	}
-	if (game->last_alive)
-		ft_printf("last alive champ: %d\n", game->last_alive->id);
-}
-
 static bool	is_dump(t_session *game, t_arg *arg)
 {
 	int		iter;
@@ -104,13 +85,11 @@ static bool	is_dump(t_session *game, t_arg *arg)
 		return (false);
 	iter = 0;
 	map = game->map;
-	int *spot_map = game->spot_map; // DEL // TODO: func is broken
 	while (iter < MEM_SIZE)
 	{
 		if (iter % 64 == 0)
 			ft_printf("\n0x%04x : ", iter);
-		ft_printf("%x", map[iter]);
-		ft_printf("(%d) ", spot_map[iter]); // DEL
+		ft_printf("%02x ", map[iter]);
 		iter++;
 	}
 	ft_printf("\n");
@@ -128,20 +107,21 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	t_vdata		vdata;
 
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
-	RET_CHECK(prepare(champs, &game), NULL);
+	RET_CHECK(prepare(champs, &game, arg), NULL); // TODO: data should be prepared before visu_init call
+	visu_drawing(&vdata, game, champs, arg); // TODO: visu_init should call visu_drawing on prepared data
+	game->cycle++; // TODO: remove this line
+	winner = get_last_champ(champs);
 	while (game->carry_num > 0 && game->cycle_to_die >= 0
 			&& !is_dump(game, arg))
 	{
-		if (game->cycle == 4400 || game->cycle == 4405) // TODO: 4400 - two carries at the same pos so we cannot be sure there is the same pos in our corewar and original; 4405 - diff
-			log(game, false); // DEL
-		execute_carries(game, champs);
-		game->cycle++;
 		control_game_flow(game, champs);
+		game->cycle++;
+		log_cycles(game, arg);
+		execute_carries(game, champs);
 		visu_drawing(&vdata, game, champs, arg);
 	}
-
+	winner = game->last_alive ? game->last_alive : winner;
 	free_session(&game);
-	winner = game->last_alive;
 	visu_finalizing(&vdata, game, champs, arg);
 	return (winner);
 }

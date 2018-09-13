@@ -11,21 +11,53 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "vm_funcs.h"
 
 void	free_session(t_session **game)
 {
-	(void)game;
-	//	TODO: this
+	t_carry *carries;
+
+	if (!game || !*game)
+		return ;
+	carries = (*game)->carries;
+	free_carries(&carries);
+	free(*game);
+	*game = NULL;
 }
 
 void	free_champs(t_champ **champs)
 {
-	(void)champs;
-	//	TODO: this
+	t_champ *trash;
+	t_champ *iter;
+
+	if (!champs || !*champs)
+		return ;
+	iter = *champs;
+	while (iter)
+	{
+		trash = iter;
+		iter = iter->next;
+		free(trash->name);
+		free(trash->comment);
+		free(trash->code);
+		free(trash);
+	}
+	*champs = NULL;
 }
 
-void	free_carries(t_carry *carries)
+void	free_carries(t_carry **carries)
 {
-	(void)carries;
-	//	TODO: this
+	t_carry *trash;
+	t_carry *iter;
+
+	if (!carries || !*carries)
+		return ;
+	iter = *carries;
+	while (iter)
+	{
+		trash = iter;
+		iter = iter->next;
+		free(trash);
+	}
+	*carries = NULL;
 }

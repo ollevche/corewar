@@ -13,23 +13,6 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
-/*
-**	returns total number of champs
-*/
-
-static int	count_champs(t_champ *champs)
-{
-	int champs_count;
-
-	champs_count = 0;
-	while (champs)
-	{
-		champs_count++;
-		champs = champs->next;
-	}
-	return (champs_count);
-}
-
 static void	prepare_spot_map(t_champ *champs, t_session *game)
 {
 	int		def_value;
@@ -60,7 +43,7 @@ static void	prepare_spot_map(t_champ *champs, t_session *game)
 **	allocates mem for t_session and sets def values
 */
 
-static bool	prepare_session(t_session **gameptr, int n)
+static bool	prepare_session(t_session **gameptr, int n, t_arg *arg)
 {
 	t_session	*game;
 
@@ -76,6 +59,7 @@ static bool	prepare_session(t_session **gameptr, int n)
 	game->carries = NULL;
 	game->total_champs = n;
 	game->carry_num = n;
+	game->arg = arg;
 	return (true);
 }
 
@@ -98,24 +82,19 @@ static bool	place_code(t_champ *champs, t_session *game)
 		ft_intset(game->spot_map + champ_mark, champs->id, champs->code_len);
 		RET_CHECK(new_carry(&(game->carries), champs->id), false);
 		game->carries->pc = champ_mark;
-		update_position(game, game->carries, 0);
+		update_opcode(game, game->carries);
 		champ_mark += gap;
 		champs = champs->next;
 	}
 	return (true);
 }
 
-bool		prepare(t_champ *champs, t_session **game)
+bool		prepare(t_champ *champs, t_session **game, t_arg *arg)
 {
 	int	champs_n;
 
 	champs_n = count_champs(champs);
-	if (champs_n > MAX_PLAYERS)
-	{
-		ft_printf("Too many champions\n"); // TODO: print this before visualization
-		return (false);
-	}
-	RET_CHECK(prepare_session(game, champs_n), NULL);
+	RET_CHECK(prepare_session(game, champs_n, arg), NULL);
 	prepare_spot_map(champs, *game);
 	place_code(champs, *game);
 	return (true);

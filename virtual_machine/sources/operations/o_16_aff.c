@@ -15,7 +15,7 @@
 
 bool	aff(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][3 + 1];
+	int		args[2][3 + 1];
 	int		lpc;
 
 	(void)head;
@@ -25,6 +25,6 @@ bool	aff(t_session *game, t_carry *carry, t_champ *head)
 	CHK_MV(set_arg_values(args, &lpc, game, 16));
 	if (IS_REG(VAL1))
 		ft_printf("%c", REGS[VAL1 - 1] % 256);
-	update_position(game, carry, JMP + 1);
+	update_position(carry, JMP + 1);
 	return (IS_REG(VAL1));
 }

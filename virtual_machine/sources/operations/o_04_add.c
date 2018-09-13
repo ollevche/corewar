@@ -15,7 +15,7 @@
 
 bool	add(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][3 + 1];
+	int		args[2][3 + 1];
 	int		lpc;
 
 	(void)head;
@@ -25,11 +25,11 @@ bool	add(t_session *game, t_carry *carry, t_champ *head)
 	CHK_MV(set_arg_values(args, &lpc, game, 4));
 	if (!IS_REG(VAL1) || !IS_REG(VAL2) || !IS_REG(VAL3))
 	{
-		update_position(game, carry, JMP + 1);
+		update_position(carry, JMP + 1);
 		return (false);
 	}
 	REGS[VAL3 - 1] = REGS[VAL1 - 1] + REGS[VAL2 - 1];
 	CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
-	update_position(game, carry, JMP + 1);
+	update_position(carry, JMP + 1);
 	return (true);
 }

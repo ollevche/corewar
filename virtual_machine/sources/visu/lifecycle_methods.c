@@ -12,6 +12,7 @@
 
 #include "visu.h"
 #include "vm.h"
+#include "vm_funcs.h"
 
 static int  appropriate_window(t_vdata *vdata)
 {

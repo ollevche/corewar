@@ -15,7 +15,7 @@
 
 bool	lldi(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][3 + 1];
+	int		args[2][3 + 1];
 	int		lpc;
 	int		p;
 
@@ -27,14 +27,13 @@ bool	lldi(t_session *game, t_carry *carry, t_champ *head)
 	if (IS_REG(VAL3))
 	{
 		if (TYP1 == REG_CODE)
-			RET_CHECK(check_reg(&VAL1, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL1, carry, JMP), false);
 		if (TYP2 == REG_CODE)
-			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL2, carry, JMP), false);
 		p = VAL1 + VAL2 + PC;
-		REGS[VAL3 - 1] =
-		ft_byte_to_uint(MAPVAL(p, 1), MAPVAL(p, 2), MAPVAL(p, 3), MAPVAL(p, 4));
-		CARRY = (REGS[VAL3 - 1] == 0 ? true : false); // NOTE: it can be incorrect; test it
+		REGS[VAL3 - 1] = read_int(game, p, 4, false);
+		// CARRY = (REGS[VAL3 - 1] == 0 ? true : false); // NOTE: it can be incorrect; test it
 	}
-	update_position(game, carry, JMP + 1);
+	update_position(carry, JMP + 1);
 	return (IS_REG(VAL3));
 }

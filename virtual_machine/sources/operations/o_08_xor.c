@@ -15,7 +15,7 @@
 
 bool	xor(t_session *game, t_carry *carry, t_champ *head)
 {
-	int 	args[2][3 + 1];
+	int		args[2][3 + 1];
 	int		lpc;
 
 	(void)head;
@@ -26,12 +26,12 @@ bool	xor(t_session *game, t_carry *carry, t_champ *head)
 	if (IS_REG(VAL3))
 	{
 		if (TYP1 == REG_CODE)
-			RET_CHECK(check_reg(&VAL1, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL1, carry, JMP), false);
 		if (TYP2 == REG_CODE)
-			RET_CHECK(check_reg(&VAL2, game, carry, JMP), false);
+			RET_CHECK(check_reg(&VAL2, carry, JMP), false);
 		REGS[VAL3 - 1] = VAL1 ^ VAL2;
 		CARRY = (REGS[VAL3 - 1] == 0 ? true : false);
 	}
-	update_position(game, carry, JMP + 1);
+	update_position(carry, JMP + 1);
 	return (IS_REG(VAL3));
 }
