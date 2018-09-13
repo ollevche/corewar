@@ -17,19 +17,19 @@ void static console_bold_activated(t_vdata *vdata, int y)
 	wattron(vdata->console.controls_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->console.controls_window, 0, (vdata->console.width / 2 - 8), "Console controls");
 	mvwprintw(vdata->console.controls_window, ++y, 3, "~");
-	wattron(vdata->console.controls_window, COLOR_PAIR(2));	
+	wattron(vdata->console.controls_window, COLOR_PAIR(2));
 	mvwprintw(vdata->console.controls_window, y, 23, "activated");
 	wattroff(vdata->console.controls_window, COLOR_PAIR(2));
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Left");	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Left");
 	mvwprintw(vdata->console.controls_window, y, 14, "Right");
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Up");	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Up");
 	mvwprintw(vdata->console.controls_window, y, 12, "Down");
 	mvwprintw(vdata->console.controls_window, ++y, 3, "Backspace");
 	mvwprintw(vdata->console.controls_window, ++y, 3, "Delete");
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Enter");	
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Page Up");	
-	mvwprintw(vdata->console.controls_window, y, 16, "Page Down");	
-	wattroff(vdata->console.controls_window, COLOR_PAIR(GRAY) | A_BOLD);	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Enter");
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Page Up");
+	mvwprintw(vdata->console.controls_window, y, 16, "Page Down");
+	wattroff(vdata->console.controls_window, COLOR_PAIR(GRAY) | A_BOLD);
 }
 
 void static console_bold_deactivated(t_vdata *vdata, int y)
@@ -37,23 +37,23 @@ void static console_bold_deactivated(t_vdata *vdata, int y)
 	wattron(vdata->console.controls_window, COLOR_PAIR(GRAY) | A_BOLD);
 	mvwprintw(vdata->console.controls_window, 0, (vdata->console.width / 2 - 8), "Console controls");
 	mvwprintw(vdata->console.controls_window, ++y, 3, "~");
-	wattron(vdata->console.controls_window, COLOR_PAIR(1));	
+	wattron(vdata->console.controls_window, COLOR_PAIR(1));
 	mvwprintw(vdata->console.controls_window, y, 23, "deactivated");
 	wattroff(vdata->console.controls_window, COLOR_PAIR(1));
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Up");	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Up");
 	mvwprintw(vdata->console.controls_window, y, 12, "Down");
-	mvwprintw(vdata->console.controls_window, ++y, 3, "Page Up");	
+	mvwprintw(vdata->console.controls_window, ++y, 3, "Page Up");
 	mvwprintw(vdata->console.controls_window, y, 16, "Page Down");
 	wattroff(vdata->console.controls_window, COLOR_PAIR(GRAY) | A_BOLD);
 }
 
 void		console_controls_displaying(t_vdata *vdata)
-{	
+{
 	int y;
 
 	y = 1;
 	werase(vdata->console.controls_window);
-	box(vdata->console.controls_window, 0, ' ');	
+	box(vdata->console.controls_window, 0, ' ');
 	if (vdata->console.active)
 	{
 		mvwprintw(vdata->console.controls_window, ++y, 2, "[~] Corewar console: activated");

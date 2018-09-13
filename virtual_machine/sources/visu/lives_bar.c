@@ -92,7 +92,7 @@ void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
 	t_live_bar	*temp_bar;
 	t_champ		*champ;
 
-	bar = (t_live_bar*)ft_memalloc(sizeof(t_live_bar));	
+	bar = (t_live_bar*)ft_memalloc(sizeof(t_live_bar));
 	bar->window = newwin(1, BAR_LEN + 11, x, y);
 	bar->prev_lives = -1;
 	bar->prev_line = -1;
@@ -111,7 +111,7 @@ void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
 		temp_bar = vdata->live_bars;
 		while(temp_bar->next)
 			temp_bar = temp_bar->next;
-		
+
 		if (temp_bar->next)
 			temp_bar->next = bar; // segmentation fault in this line with ./corewar  -v ../defaults/champs/examples/helltrain.cor -n 0 ../defaults/champs/examples/helltrain.cor  ../defaults/champs/examples/helltrain.cor
 	}

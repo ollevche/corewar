@@ -31,7 +31,7 @@ void	restore_last_line(t_vdata *vdata)
 void	subtract_lines(t_vdata *vdata, int lines_to_subtract)
 {
 	t_msg	*msg;
-	
+
 	msg = vdata->console.msgs;
 	while(lines_to_subtract && msg)
 	{

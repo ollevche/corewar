@@ -19,7 +19,7 @@ t_msg	*create_console_input(t_vdata *vdata)
 	input_line = (t_msg*)ft_memalloc(sizeof(t_msg));
 	ft_strcpy(input_line->prefix, "Corewar:");
 	input_line->total_lines = 1;
-	input_line->left_lines = 1;	
+	input_line->left_lines = 1;
 	ft_bzero(vdata->console.input_line, CONSOLE_INPUT_LEN);
 	input_line->text = vdata->console.input_line;
 	input_line->text[0] = ' ';

@@ -138,7 +138,7 @@ void static	console_activation(t_vdata *vdata)
 			vdata->console.refresh = 1;
 		}
 		console_controls_displaying(vdata);
-		wrefresh(vdata->console.box_window);		
+		wrefresh(vdata->console.box_window);
 	}
 }
 

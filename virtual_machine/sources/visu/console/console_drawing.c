@@ -46,7 +46,7 @@ void		console_drawing(t_vdata *vdata)
 {
 	t_msg	*msg;
 	int		y;
-	
+
 	y = (vdata->console.msgs_lines > CONSOLE_INPUT_LINES ? CONSOLE_INPUT_LINES : vdata->console.msgs_lines);
 	msg = vdata->console.msgs;
 	while(msg && (y -= msg->left_lines) >= 0)
@@ -71,7 +71,7 @@ void		visu_print(t_vdata *vdata, char *text, char allocated)
 	gettimeofday(&tv, NULL);
 	ptm = localtime(&tv.tv_sec);
 	new_msg = (t_msg*)ft_memalloc(sizeof(t_msg));
-	strftime(new_msg->prefix, 8, "%H:%M:%S", ptm);	
+	strftime(new_msg->prefix, 8, "%H:%M:%S", ptm);
 	new_msg->text = text;
 	new_msg->total_lines = get_text_lines(vdata, text);
 	new_msg->allocated = allocated;

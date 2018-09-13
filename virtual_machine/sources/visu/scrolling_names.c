@@ -90,7 +90,7 @@ static void		create_window_for_the_name(t_scroll_name *name, int x, int y)
 // 	if (*scrolling_name == NULL)
 // 		*scrolling_name = name;
 // 	else
-// 	{		
+// 	{
 // 		while ((*scrolling_name)->next != NULL)
 // 			*scrolling_name = (*scrolling_name)->next;
 // 		(*scrolling_name)->next = name;
@@ -218,7 +218,7 @@ static void		pause_key_listener(t_vdata *vdata)
 			mvwprintw(vdata->scrolling_controls->window, 3, 22, "auto  ");
 			wattroff(vdata->scrolling_controls->window, A_BOLD);
 			wrefresh(vdata->scrolling_controls->window);
-		}		
+		}
 	}
 }
 

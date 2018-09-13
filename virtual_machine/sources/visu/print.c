@@ -284,12 +284,12 @@ void    show_right(t_vdata *vdata, t_session *game, t_champ *champs)
 // 	{
 // 		wattron(right_window, COLOR_PAIR(player));
 // 		mvwprintw(right_window, *y, START_X, "Player %d:",  champs->id);
-		
+
 // 		//mvwprintw(right_window, *y, START_X, "Player %d:   %s",  champs->id, champs->name);
 // 		wattroff(right_window, COLOR_PAIR(player));
-// 		// mvwprintw(right_window, *y += 1, START_X, "Last live: %d", 0);		
+// 		// mvwprintw(right_window, *y += 1, START_X, "Last live: %d", 0);
 // 		// mvwprintw(right_window, *y += 1, START_X, "Lives in current period: %d", 0);
-		
+
 // 		(*y) += 2;
 // 		player++;
 // 		champs = champs->next;

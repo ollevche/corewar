@@ -16,7 +16,7 @@
 static int  appropriate_window(t_vdata *vdata)
 {
 	//if (COLS != W_WIDTH || LINES != W_HEIGHT)
-	//{  
+	//{
 		(void)vdata;
 		refresh();
 		system("printf \'\033[8;78;245t\'");
@@ -102,7 +102,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
 	scrolling_controls(vdata, 69, 197);
-	
+
 	live_bars_initializing(vdata, champs, 67, 33);
 	author_line_initializing(vdata);
 	vdata->players_window = newwin(245, 1, 0, 244);
@@ -110,7 +110,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 	console_initializing(vdata);
 	visu_print_static(vdata, "Welcome to Corewar console!");
 	visu_print_static(vdata, "See the available commands by typing -help");
-	
+
 	return (1);
 }
 
@@ -189,7 +189,7 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 	delwin(vdata->alert_window);
 	delwin(vdata->input_window);
 	endwin();
-	
+
 	exit(1);
 	return (0);
 }

@@ -48,7 +48,7 @@ void static		calculate_ratio(t_vdata *vdata, int *ratio, int ratio_sum)
 void	players_line_refresh(t_vdata *vdata)
 {
 	int				player;
-	int				ratio[4];	
+	int				ratio[4];
 	int				total_ratio;
 	long long int	ratio_sum;
 
@@ -63,7 +63,7 @@ void	players_line_refresh(t_vdata *vdata)
 	while(player < vdata->total_champs)
 	{
 		wattron(vdata->players_window, COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
-		mvwprintw(vdata->players_window, total_ratio, 0, "%*s", ratio[player], "");	
+		mvwprintw(vdata->players_window, total_ratio, 0, "%*s", ratio[player], "");
 		wattroff(vdata->players_window, COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
 		total_ratio += ratio[player];
 		player++;
@@ -75,8 +75,8 @@ void	players_line_refresh(t_vdata *vdata)
 // player = 0;
 // while(player < vdata->total_champs)
 // {
-// 	wprintw(vdata->debug_window, "Player %d: %d\n", player + 1, ratio[player]);	
+// 	wprintw(vdata->debug_window, "Player %d: %d\n", player + 1, ratio[player]);
 // 	player++;
-// } 	
-// wprintw(vdata->debug_window, "ratio_sum: %d\n", ratio_sum);	
+// }
+// wprintw(vdata->debug_window, "ratio_sum: %d\n", ratio_sum);
 // wrefresh(vdata->debug_window);

@@ -40,7 +40,7 @@ void static get_carriage_lines(t_vdata *vdata, t_msg *msg)
 	{
 		carriage_length -= vdata->console.width;
 		carriage_lines++;
-	}	
+	}
 	vdata->console.carriage_lines = carriage_lines;
 }
 
@@ -50,14 +50,14 @@ void		reget_text_lines_duo_to_new_width(t_vdata *vdata)
 
 	msg = vdata->console.msgs;
 	while(msg)
-	{	
+	{
 		if (msg == vdata->console.msgs)
 			get_carriage_lines(vdata, msg);
 		else
-		{	
+		{
 			msg->total_lines = get_text_lines(vdata, msg->text);
 			msg->left_lines = msg->total_lines;
-		}		
+		}
 		msg = msg->next;
 	}
 }
