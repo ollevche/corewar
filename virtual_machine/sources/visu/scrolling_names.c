@@ -13,7 +13,26 @@
 #include "visu.h"
 #include "vm.h"
 
-void		scroll_to_left(t_scroll_name *name, int color)
+
+void	refresh_scroll_names(t_vdata *vdata)
+{
+	t_scroll_name *name;
+	int color;
+
+	color = vdata->total_champs;
+	name = vdata->scrolling_names;
+	while (color >= 1)
+	{
+		wattron(name->window, COLOR_PAIR(color + vdata->design * 10));
+		mvwprintw(name->window, 0, 0, "Player %d: %s", color, name->displayed_name);
+		wattroff(name->window, COLOR_PAIR(color + vdata->design * 10));
+		wrefresh(name->window);
+		name = name->next;
+		color--;
+	}
+}
+
+void		scroll_to_left(t_scroll_name *name, int color, int design)
 {
 	char sign_1;
 	char sign_2;
@@ -24,13 +43,13 @@ void		scroll_to_left(t_scroll_name *name, int color)
 	ft_strcpy(name->hidden_name, name->hidden_name + 1);
 	name->displayed_name[MAX_NAME_LEN - 1] = sign_2;
 	name->hidden_name[name->hidden_len - 1] = sign_1;
-	wattron(name->window, COLOR_PAIR(color));
+	wattron(name->window, COLOR_PAIR(color + design * 10));
 	mvwprintw(name->window, 0, 0, "Player %d: %s", color, name->displayed_name);
-	wattroff(name->window, COLOR_PAIR(color));
+	wattroff(name->window, COLOR_PAIR(color + design * 10));
 	wrefresh(name->window);
 }
 
-static void		scroll_to_right(t_scroll_name *name, int color)
+static void		scroll_to_right(t_scroll_name *name, int color, int design)
 {
 	char sign_1;
 	char sign_2;
@@ -41,9 +60,9 @@ static void		scroll_to_right(t_scroll_name *name, int color)
 	ft_memmove(name->hidden_name + 1, name->hidden_name, name->hidden_len - 1);
 	name->displayed_name[0] = sign_2;
 	name->hidden_name[0] = sign_1;
-	wattron(name->window, COLOR_PAIR(color));
+	wattron(name->window, COLOR_PAIR(color + design * 10));
 	mvwprintw(name->window, 0, 0, "Player %d: %s", color, name->displayed_name);
-	wattroff(name->window, COLOR_PAIR(color));
+	wattroff(name->window, COLOR_PAIR(color + design * 10));
 	wrefresh(name->window);
 }
 
@@ -71,7 +90,7 @@ static void		create_window_for_the_name(t_scroll_name *name, int x, int y)
 // 	if (*scrolling_name == NULL)
 // 		*scrolling_name = name;
 // 	else
-// 	{		
+// 	{
 // 		while ((*scrolling_name)->next != NULL)
 // 			*scrolling_name = (*scrolling_name)->next;
 // 		(*scrolling_name)->next = name;
@@ -147,7 +166,7 @@ static void		direction_key_listener(t_scrolling_controls *sc)
 	}
 }
 
-static void		scroll_manually_keys_listener(t_scrolling_controls *sc, t_scroll_name *scrolling_names, int total_champs)
+static void		scroll_manually_keys_listener(t_scrolling_controls *sc, t_scroll_name *scrolling_names, int total_champs, int design)
 {
 	int color;
 
@@ -158,7 +177,7 @@ static void		scroll_manually_keys_listener(t_scrolling_controls *sc, t_scroll_na
 		name = scrolling_names;
 		while (name)
 		{
-			sc->key == 46 ? scroll_to_right(name, color) : scroll_to_left(name, color);
+			sc->key == 46 ? scroll_to_right(name, color, design) : scroll_to_left(name, color, design);
 			name = name->next;
 			color--;
 		}
@@ -199,7 +218,7 @@ static void		pause_key_listener(t_vdata *vdata)
 			mvwprintw(vdata->scrolling_controls->window, 3, 22, "auto  ");
 			wattroff(vdata->scrolling_controls->window, A_BOLD);
 			wrefresh(vdata->scrolling_controls->window);
-		}		
+		}
 	}
 }
 
@@ -226,9 +245,9 @@ static void		pause_key_listener(t_vdata *vdata)
 			while (name)
 			{
 				if (vdata->scrolling_controls->direction)
-					scroll_to_left(name, color);
+					scroll_to_left(name, color, vdata->design);
 				else
-					scroll_to_right(name, color);
+					scroll_to_right(name, color, vdata->design);
 				name = name->next;
 				color--;
 			}
@@ -241,7 +260,7 @@ static void		pause_key_listener(t_vdata *vdata)
 	direction_key_listener(vdata->scrolling_controls);
 	pause_key_listener(vdata);
 
-	scroll_manually_keys_listener(vdata->scrolling_controls, vdata->scrolling_names, vdata->total_champs);
+	scroll_manually_keys_listener(vdata->scrolling_controls, vdata->scrolling_names, vdata->total_champs, vdata->design);
 }
 
 void			scrolling_finalizing(t_vdata *vdata)

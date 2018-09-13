@@ -12,8 +12,9 @@
 
 #include "visu.h"
 
-void static	render_live_bar(t_live_bar *bar, int fill_size, int player)
-{	
+
+void static	render_live_bar(t_live_bar *bar, int fill_size, int player, int design)
+{
 	int i;
 
 	ft_bzero(bar->line, BAR_LEN);
@@ -23,16 +24,18 @@ void static	render_live_bar(t_live_bar *bar, int fill_size, int player)
 	if (!bar->line[0])
 		bar->line[0] = ' ';
 	werase(bar->window);
-	wattron(bar->window, COLOR_PAIR(player * 10));
+	// (void)player;
+	// (void)design;
+	wattron(bar->window, COLOR_PAIR(player + design * 10) | A_REVERSE);
 	mvwprintw(bar->window, 0, 0, "%s", bar->line);
-	wattroff(bar->window, COLOR_PAIR(player * 10));
-	wattron(bar->window, COLOR_PAIR(player));
+	wattroff(bar->window, COLOR_PAIR(player + design * 10) | A_REVERSE);
+	wattron(bar->window, COLOR_PAIR(player + design * 10));
 	mvwprintw(bar->window, 0, ft_strlen(bar->line) + 1, "%d", *bar->lives);
-	wattroff(bar->window, COLOR_PAIR(player));
+	wattroff(bar->window, COLOR_PAIR(player + design * 10));
 	wrefresh(bar->window);
 }
 
-void static	calculate_ratio(t_live_bar *bar, int biggest, int player, int rerender)
+void static	calculate_ratio(t_live_bar *bar, int biggest, int player, int rerender, int design)
 {
 	int fill_size;
 	int ratio;
@@ -50,7 +53,7 @@ void static	calculate_ratio(t_live_bar *bar, int biggest, int player, int rerend
 		{
 			bar->prev_line = fill_size;
 			bar->prev_lives = *bar->lives;
-			render_live_bar(bar, fill_size, player);
+			render_live_bar(bar, fill_size, player, design);
 		}
 	}
 }
@@ -76,25 +79,27 @@ void		refresh_live_bars(t_vdata *vdata, int rerender)
 	bar = vdata->live_bars;
 	while(bar)
 	{
-		calculate_ratio(bar, biggest, player, rerender);
+		calculate_ratio(bar, biggest, player, rerender, vdata->design);
 		bar = bar->next;
 		player++;
 	}
 }
 
 void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
-{	
+{
 	static int	player = 1;
 	t_live_bar	*bar;
 	t_live_bar	*temp_bar;
 	t_champ		*champ;
 
-	bar = (t_live_bar*)ft_memalloc(sizeof(t_live_bar));	
+	bar = (t_live_bar*)ft_memalloc(sizeof(t_live_bar));
 	bar->window = newwin(1, BAR_LEN + 11, x, y);
 	bar->prev_lives = -1;
 	bar->prev_line = -1;
 	ft_bzero(bar->line, BAR_LEN);
 	champ = champs;
+	(void)temp_bar;
+	(void)vdata;
 	while (champ)
 	{
 		if (get_color(champs, champ->id) == player)
@@ -106,7 +111,9 @@ void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
 		temp_bar = vdata->live_bars;
 		while(temp_bar->next)
 			temp_bar = temp_bar->next;
-		temp_bar->next = bar;
+
+		if (temp_bar->next)
+			temp_bar->next = bar; // segmentation fault in this line with ./corewar  -v ../defaults/champs/examples/helltrain.cor -n 0 ../defaults/champs/examples/helltrain.cor  ../defaults/champs/examples/helltrain.cor
 	}
 	else
 		vdata->live_bars = bar;

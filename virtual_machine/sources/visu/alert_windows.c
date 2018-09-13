@@ -19,7 +19,7 @@ void		show_alert_window(t_vdata *vdata, char *alert, char *options)
 	mvwprintw(vdata->alert_window, 9, 8, "%s", alert);
 	mvwprintw(vdata->alert_window, 11, 17, "%s", options);
 	box(vdata->alert_window, 0, 0);
-	wattroff(vdata->alert_window, COLOR_PAIR(GRAY) | A_BOLD);			
+	wattroff(vdata->alert_window, COLOR_PAIR(GRAY) | A_BOLD);
 	wrefresh(vdata->alert_window);
 }
 
@@ -29,7 +29,7 @@ void			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 	{
 		if (!vdata->paused)
 		{
-			mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED **");	
+			mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED **");
 			wrefresh(vdata->right_window);
 		}
 		show_alert_window(vdata, "      Are you sure you want to exit?", "[Y] Yes           No [N]");
@@ -43,11 +43,14 @@ void			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		vdata->active_alert = 0;
 		if (KEY(Y))
 		{
+			if (vdata->music == 1)
+				system("killall afplay");
 			scrolling_finalizing(vdata);
 			delwin(vdata->left_window);
 			delwin(vdata->right_window);
 			delwin(vdata->alert_window);
 			delwin(vdata->input_window);
+
 			endwin();
 			exit(1); // TODO
 		}
@@ -58,10 +61,10 @@ void			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 
 void			custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs)
 {
-
+	ERASE_KEY;
 	if (!vdata->paused)
 	{
-		mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED **");	
+		mvwprintw(vdata->right_window, 1, START_X, "%s", "** PAUSED **");
 		wrefresh(vdata->right_window);
 	}
 	show_alert_window(vdata, "  Unfortunately, you can't go back in time!", "Press [Enter] to continue.");
@@ -78,11 +81,11 @@ void			custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs)
 }
 
 void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
-{	
+{
 	vdata->paused = 1;
 	show_left(vdata, game, champs);
 	show_right(vdata, game, champs);
-	mvwprintw(vdata->right_window, 1, START_X, "%s", "** GAME IS OVER **");	
+	mvwprintw(vdata->right_window, 1, START_X, "%s", "** GAME IS OVER **");
 	wrefresh(vdata->right_window);
 	show_alert_window(vdata, "   Game is over, would you like to exit?", "[Y] Yes           No [N]");
 	vdata->active_alert = GAME_OVER;
@@ -99,6 +102,8 @@ void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		delwin(vdata->right_window);
 		delwin(vdata->alert_window);
 		delwin(vdata->input_window);
+		if (vdata->music == 1)
+			system("killall afplay");
 		endwin();
 		exit(1); // TODO
 	}
@@ -121,7 +126,7 @@ void		disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		vdata->first_run = 0;
 
 			show_alert_window(vdata, "  Are you over 18 years old to continue?", "[Y] Yes           No [N]");
-		
+
 			vdata->active_alert = DISCLAIMER;
 
 			while (!(KEY(Y) || KEY(N)))

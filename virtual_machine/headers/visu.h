@@ -15,6 +15,7 @@
 
 # include <ncurses.h>
 # include <unistd.h>
+# include <stdbool.h>
 # include "vm.h"
 
 // Scrolling names
@@ -27,25 +28,25 @@
 # define W_HEIGHT 78
 # define W_WIDTH 245
 # define START_X 2
+# define N_DESIGNS 4
 # define GRAY 0
 # define GRAY_B 1234
 # define PLAYER_1 1
 # define PLAYER_2 2
 # define PLAYER_3 3
 # define PLAYER_4 4
-# define CARRY_P1 10
-# define CARRY_P2 20
-# define CARRY_P3 30
-# define CARRY_P4 40
-# define NEW_PLAYER_1 11
-# define NEW_PLAYER_2 12
-# define NEW_PLAYER_3 13
-# define NEW_PLAYER_4 14
+// # define CARRY_P1 10
+// # define CARRY_P2 20
+// # define CARRY_P3 30
+// # define CARRY_P4 40
+# define NEW_PLAYER_1 5
+# define NEW_PLAYER_2 6
+# define NEW_PLAYER_3 7
+# define NEW_PLAYER_4 8
 
 //COLORS
 # define COLOR_JA 4181
 
-// # define GET_COLOR(x[i]) (i) + 1
 //KEYS
 # define ESC 27
 # define LEFT 260
@@ -86,6 +87,8 @@
 # define CONSOLE_INPUT_LEN 1000
 # define CONSOLE_INPUT_LINES 64
 
+// # define DESIGN vdata->design
+
 typedef struct				s_scrolling_controls
 {
 	WINDOW					*window;
@@ -118,6 +121,7 @@ typedef struct 				s_live_bar
 typedef struct 				s_msg
 {
 	char					*text;
+	char					allocated;
 	int						left_lines;
 	int						total_lines;
 	char					prefix[PREFIX_LEN];
@@ -191,8 +195,15 @@ typedef struct				s_vdata
 	WINDOW					*debug_window;
 
 	t_console				console;
+	int						design;
+	bool					set_design[N_DESIGNS];
 
+	t_arg					*arg;
+	t_champ					*champs;
+	t_session				*game;
+	bool					music;
 }							t_vdata;
+
 void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *carries, t_champ *champs);
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
@@ -236,11 +247,35 @@ void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						players_line_refresh(t_vdata *vdata);
 
+void						visu_print_static(t_vdata *vdata, char *text);
+void						visu_print_allocated(t_vdata *vdata, char *text);
 void						console_initializing(t_vdata *vdata);
 void						console_finalizing(t_vdata *vdata);
-void						visu_print(t_vdata *vdata, char *msg);
 void						console_refresh(t_vdata *vdata);
 void						reget_text_lines_duo_to_new_width(t_vdata *vdata);
+void						console_clock_initializing(t_vdata *vdata);
 void						console_clock_refresh(t_vdata *vdata);
 void						console_controls_displaying(t_vdata *vdata);
+void						change_design(t_vdata *vdata, t_session *game, t_champ *champs);
+void						init_design(int design, int total_champs);
+void						refresh_scroll_names(t_vdata *vdata);
+void						console_commands(t_vdata *vdata);
+void						console_drawing(t_vdata *vdata);
+void						console_keys(t_vdata *vdata);
+int							get_text_lines(t_vdata *vdata, char *text);
+void						restore_lines(t_vdata *vdata, int carriage);
+void						subtract_lines(t_vdata *vdata, int lines_to_subtract);
+void						restore_last_line(t_vdata *vdata);
+int							get_total_text_lines(t_vdata *vdata);
+t_msg						*create_console_input(t_vdata *vdata);
+void						visu_print(t_vdata *vdata, char *text, char allocated);
+void						console_delete_msg(t_msg *msg);
 #endif
+
+
+// SETTED (1)    | NOT SETTED (0)
+// |ON (1)|OFF(0)| OFF (0)
+
+//  00 NOT SETTED OFF 0
+//  10 SETTED OFF     2
+//  11 SETTED ON      3
