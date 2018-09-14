@@ -23,7 +23,7 @@ void		show_alert_window(t_vdata *vdata, char *alert, char *options)
 	wrefresh(vdata->alert_window);
 }
 
-void			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
+int			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	if (KEY(ESC) && ERASE_KEY)
 	{
@@ -43,20 +43,13 @@ void			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		vdata->active_alert = 0;
 		if (KEY(Y))
 		{
-			if (vdata->music == 1)
-				system("killall afplay");
-			scrolling_finalizing(vdata);
-			delwin(vdata->left_window);
-			delwin(vdata->right_window);
-			delwin(vdata->alert_window);
-			delwin(vdata->input_window);
-
-			endwin();
-			exit(1); // TODO
+			visu_finalizing(vdata, NULL);
+			return (-1);
 		}
 		if (vdata->paused)
 			show_left(vdata, game, champs);
 	}
+	return (0);
 }
 
 void			custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs)
@@ -80,7 +73,7 @@ void			custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs)
 	vdata->active_alert = 0;
 }
 
-void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
+int			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	vdata->paused = 1;
 	show_left(vdata, game, champs);
@@ -97,15 +90,8 @@ void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 	}
 	if (KEY(Y))
 	{
-		scrolling_finalizing(vdata);
-		delwin(vdata->left_window);
-		delwin(vdata->right_window);
-		delwin(vdata->alert_window);
-		delwin(vdata->input_window);
-		if (vdata->music == 1)
-			system("killall afplay");
-		endwin();
-		exit(1); // TODO
+		visu_finalizing(vdata, NULL);
+			return (-1);
 	}
 	vdata->active_alert = 0;
 	show_left(vdata, game, champs);
@@ -113,13 +99,15 @@ void			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 	{
 		terminal_size_listener(vdata, game, champs);
 		scrolling_of_the_names(vdata);
-		exit_window(vdata, game, champs);
+		if (exit_window(vdata, game, champs) != 0)
+			return (-1);
 		vdata->key = getch();
 		vdata->scrolling_controls->key = vdata->key;
 	}
+	return (0);
 }
 
-void		disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs)
+int		disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	if (vdata->first_run)
 	{
@@ -138,16 +126,11 @@ void		disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs)
 			vdata->active_alert = 0;
 			if (KEY(N))
 			{
-				scrolling_finalizing(vdata);
-				delwin(vdata->left_window);
-				delwin(vdata->right_window);
-				delwin(vdata->alert_window);
-				delwin(vdata->input_window);
-				endwin();
-				exit(1); // TODO
+				visu_finalizing(vdata, NULL);
+				return (-1);
 			}
 			show_left(vdata, game, champs);
 			ERASE_KEY;
 	}
-
+	return (0);
 }

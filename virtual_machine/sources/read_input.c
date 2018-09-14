@@ -71,17 +71,11 @@ static t_champ	*read_file(t_champ **champs, char *filename)
 	return (champ);
 }
 
-int				count_champs(t_champ *champs)
+static int		get_next_id(t_champ *champs, t_arg *arg)
 {
-	int champs_count;
-
-	champs_count = 0;
-	while (champs)
-	{
-		champs_count++;
-		champs = champs->next;
-	}
-	return (champs_count);
+	while (get_champ_by_id(champs, arg->champ_id))
+		(arg->champ_id)--;
+	return (arg->champ_id);
 }
 
 t_champ			*read_input(int argc, char **args, t_arg *arg)
@@ -101,7 +95,7 @@ t_champ			*read_input(int argc, char **args, t_arg *arg)
 		if (flag_res == INVALID_FLAG || (flag_res == NOT_FLAG && !ichamp))
 			terminate(&champs);
 		if (flag_res == NOT_FLAG)
-			ichamp->id = (arg->champ_id)--; // TODO: fix id collisions
+			ichamp->id = get_next_id(champs, arg);
 		i++;
 	}
 	if (count_champs(champs) > MAX_PLAYERS)

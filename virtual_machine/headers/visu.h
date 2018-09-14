@@ -210,10 +210,10 @@ void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
 void						print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map, int index, t_champ *champs);
 int							visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs);
 void						set_champs_names_to_scrolling(t_vdata *vdata, t_champ *champs, int total_champs);
-int							visu_finalizing		(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg);
+int							visu_finalizing		(t_vdata *vdata, t_arg *arg);
 int							visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs,t_arg *arg);
 void						show_players(WINDOW *nbr_win, t_champ *champs, int *i);
-void						playback_controls(t_vdata *vdata, t_session *game, t_champ *champs);
+int							playback_controls(t_vdata *vdata, t_session *game, t_champ *champs);
 void						scrolling_controls(t_vdata *vdata, int x, int y);
 void						scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y);
 void						scrolling_of_the_names(t_vdata *vdata);
@@ -226,8 +226,8 @@ void						custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						show_alert_window(t_vdata *vdata, char *alert, char *options);
 void						custom_input_window(t_vdata *vdata, t_session *game, t_champ *champs);
-void						exit_window(t_vdata *vdata, t_session *game, t_champ *champs);
-void						gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
+int							exit_window(t_vdata *vdata, t_session *game, t_champ *champs);
+int							gameover_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						terminal_size_listener(t_vdata *vdata, t_session *game, t_champ *champs);
 
@@ -243,7 +243,7 @@ void						live_bars_initializing(t_vdata *vdata, t_champ *champs, int x, int y);
 
 void                        set_champs_for_visu(t_champ *champs, t_vdata *vdata);
 int							get_color(t_champ *champs, int id);
-void						disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
+int							disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs);
 
 void						players_line_refresh(t_vdata *vdata);
 
@@ -251,17 +251,17 @@ void						visu_print_static(t_vdata *vdata, char *text);
 void						visu_print_allocated(t_vdata *vdata, char *text);
 void						console_initializing(t_vdata *vdata);
 void						console_finalizing(t_vdata *vdata);
-void						console_refresh(t_vdata *vdata);
+int							console_refresh(t_vdata *vdata);
 void						reget_text_lines_duo_to_new_width(t_vdata *vdata);
 void						console_clock_initializing(t_vdata *vdata);
 void						console_clock_refresh(t_vdata *vdata);
 void						console_controls_displaying(t_vdata *vdata);
-void						change_design(t_vdata *vdata, t_session *game, t_champ *champs);
+int							change_design(t_vdata *vdata, t_session *game, t_champ *champs);
 void						init_design(int design, int total_champs);
 void						refresh_scroll_names(t_vdata *vdata);
-void						console_commands(t_vdata *vdata);
+int							console_commands(t_vdata *vdata);
 void						console_drawing(t_vdata *vdata);
-void						console_keys(t_vdata *vdata);
+int							console_keys(t_vdata *vdata);
 int							get_text_lines(t_vdata *vdata, char *text);
 void						restore_lines(t_vdata *vdata, int carriage);
 void						subtract_lines(t_vdata *vdata, int lines_to_subtract);
@@ -272,10 +272,8 @@ void						visu_print(t_vdata *vdata, char *text, char allocated);
 void						console_delete_msg(t_msg *msg);
 #endif
 
-
-// SETTED (1)    | NOT SETTED (0)
-// |ON (1)|OFF(0)| OFF (0)
-
-//  00 NOT SETTED OFF 0
-//  10 SETTED OFF     2
-//  11 SETTED ON      3
+// console_commands
+// gameover_window
+// console_input_keys
+// console_keys
+// console_refresh

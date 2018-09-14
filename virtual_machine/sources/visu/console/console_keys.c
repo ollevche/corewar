@@ -60,7 +60,7 @@ void static console_delete_keys(t_vdata *vdata)
 	}
 }
 
-void static	console_input_keys(t_vdata *vdata)
+int static	console_input_keys(t_vdata *vdata)
 {
 	if (KEY(LEFT))
 		if (vdata->console.carriage_index > 0)
@@ -89,7 +89,8 @@ void static	console_input_keys(t_vdata *vdata)
 			visu_print_allocated(vdata, ft_strdup(vdata->console.msgs->text));
 		else
 			visu_print_static(vdata, "");
-		console_commands(vdata);
+		if (console_commands(vdata) != 0)
+			return (-1);
 		vdata->console.carriage_index = 0;
 		vdata->console.carriage_lines = 1;
 		vdata->console.msgs->left_lines = 1;
@@ -99,6 +100,7 @@ void static	console_input_keys(t_vdata *vdata)
 		vdata->console.msgs->text[0] = ' ';
 		restore_lines(vdata, FALSE);
 	}
+	return (0);
 }
 
 void static	console_opening(t_vdata *vdata)
@@ -143,7 +145,7 @@ void static	console_activation(t_vdata *vdata)
 }
 
 int tempik = 1; //////////////////////////////////////////////
-void	console_keys(t_vdata *vdata)
+int	console_keys(t_vdata *vdata)
 {
 	if (vdata->key == 'Q') // TEMP DEBUG
 	{
@@ -160,10 +162,12 @@ void	console_keys(t_vdata *vdata)
 	if (vdata->console.active)
 	{
 		console_delete_keys(vdata);
-		console_input_keys(vdata);
+		if (console_input_keys(vdata) != 0)
+			return (-1);
 		if (KEY(DELETE) || KEY(BACKSPACE) || KEY(LEFT) || KEY(RIGHT))
 			restore_lines(vdata, true);
 		if (!vdata->input_paused)
 			ERASE_KEY;
 	}
+	return (0);
 }

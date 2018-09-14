@@ -36,7 +36,6 @@ void	log_operation(t_session *game, int new_pc, int old_pc);
 */
 
 t_champ	*read_input(int argc, char **args, t_arg *arg);
-int		count_champs(t_champ *champs);
 
 /*
 **	read_champ.c ▽
@@ -69,6 +68,7 @@ void	execute_carries(t_session *game, t_champ *champs);
 void	update_position(t_carry *carry, int val);
 void	update_opcode(t_session *game, t_carry *carry);
 int		move_pc(int pc, int val);
+int		count_champs(t_champ *champs);
 
 /*
 **	struct_funcs.c ▽

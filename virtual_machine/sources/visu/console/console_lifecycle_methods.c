@@ -43,9 +43,10 @@ void	console_initializing(t_vdata *vdata)
 	console_clock_initializing(vdata);
 }
 
-void	console_refresh(t_vdata *vdata)
+int		console_refresh(t_vdata *vdata)
 {
-	console_keys(vdata);
+	if (console_keys(vdata) != 0)
+		return (-1);
 	if (vdata->console.refresh)
 	{
 		vdata->console.refresh = 0;
@@ -54,6 +55,7 @@ void	console_refresh(t_vdata *vdata)
 		console_drawing(vdata);
 		wrefresh(vdata->console.window);
 	}
+	return (0);
 }
 
 void	console_finalizing(t_vdata *vdata)

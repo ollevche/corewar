@@ -55,15 +55,16 @@ int static console_cycle_command(t_vdata *vdata, char *command) //TODO
 	return (1);
 }
 
-void		console_commands(t_vdata *vdata)
+int		console_commands(t_vdata *vdata)
 {
 	char *command = vdata->console.msgs->text;
 	if (!vdata->console.input_index)
-		return ;
+		return (0);
 	else if (!ft_strncmp(command, "exit", 4))
 	{
 		vdata->key = ESC;
-		exit_window(vdata, vdata->game, vdata->champs);
+		if (exit_window(vdata, vdata->game, vdata->champs) != 0)
+			return (-1);
 	}
 	else if (!ft_strncmp(command, "-help", 5))
 		console_help_command(vdata);
@@ -71,7 +72,7 @@ void		console_commands(t_vdata *vdata)
 		console_clear_command(vdata);
 	else if (!ft_strncmp(command, "cycle", 5))
 		console_cycle_command(vdata, command);
-	
 	else
 		visu_print_allocated(vdata, ft_strjoin("command not found: ", vdata->console.msgs->text));
+	return (0);
 }
