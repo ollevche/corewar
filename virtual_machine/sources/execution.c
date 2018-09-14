@@ -39,8 +39,12 @@ static void	init_operations(t_operation operations[OP_COUNT + 2])
 	operations[17] = NULL;
 }
 
+/*
+** TODO: game has arg pointer now (refactor old code)
+*/
+
 static void	perform_operation(t_session *game, t_champ *champs, t_carry *carry,
-									t_operation operations[OP_COUNT + 2]) // TODO: game has arg pointer now (refactor old code)
+									t_operation operations[OP_COUNT + 2])
 {
 	int		prev_pc;
 	bool	is_valid;

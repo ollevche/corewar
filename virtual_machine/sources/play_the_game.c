@@ -46,18 +46,20 @@ static int	kill_carries(t_carry **carries, int period_start)
 **	(1) new period ->
 **	(2) checking some params (NBR_LIVE, MAX_CHECKS, dead carries) ->
 **	(3) setting params to correct values -> end
+**	int	periods; // since last cycle_to_die change
+**	int	cycles; // in current period
 */
 
 static void	control_game_flow(t_session *game, t_champ *champs)
 {
-	int	periods; // since last cycle_to_die change
-	int	cycles; // in current period
+	int	periods;
+	int	cycles;
 	int	killed;
 	int	period_start;
 
 	periods = (game->cycle - game->last_ctd) / game->cycle_to_die;
 	cycles = game->cycle - game->last_ctd - game->cycle_to_die * periods;
-	if (cycles == 0) // it's start of the period
+	if (cycles == 0)
 	{
 		period_start = game->cycle - game->cycle_to_die;
 		killed = kill_carries(&(game->carries), period_start);
