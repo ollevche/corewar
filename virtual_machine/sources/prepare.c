@@ -51,7 +51,7 @@ static bool	prepare_session(t_session **gameptr, int n, t_arg *arg)
 	RET_CHECK(*gameptr, false);
 	game = *gameptr;
 	ft_memset(game->map, 0, MEM_SIZE);
-	game->cycle = 0;
+	game->cycle = 1;
 	game->period_lives = 0;
 	game->cycle_to_die = CYCLE_TO_DIE;
 	game->last_ctd = 0;
@@ -83,6 +83,7 @@ static bool	place_code(t_champ *champs, t_session *game)
 		RET_CHECK(new_carry(&(game->carries), champs->id), false);
 		game->carries->pc = champ_mark;
 		update_opcode(game, game->carries);
+		game->carries->inactive++;
 		champ_mark += gap;
 		champs = champs->next;
 	}
