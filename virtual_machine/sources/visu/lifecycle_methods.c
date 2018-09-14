@@ -191,7 +191,7 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 	delwin(vdata->input_window);
 	endwin();
 
-	exit(1);
+	exit(1); // TODO
 	return (0);
 }
 
