@@ -116,7 +116,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		execute_carries(game, champs);
 		control_game_flow(game, champs);
 		if (!visu_drawing(&vdata, game, champs, arg))
-			break ;
+			continue ; // break ;
 		game->cycle++;
 	}
 	winner = game->last_alive ? game->last_alive : winner;
