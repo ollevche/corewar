@@ -96,6 +96,16 @@ static bool	is_dump(t_session *game, t_arg *arg)
 	return (true);
 }
 
+static bool testFunc(t_session *game, t_champ *champs, t_arg *arg)
+{
+	bool ret = game->carry_num > 0 && game->cycle_to_die >= 0;
+	log_cycles(game, arg);
+	execute_carries(game, champs);
+	control_game_flow(game, champs);
+	game->cycle++;
+	return (ret);
+}
+
 /*
 **	main game loop: 1 cycle = 1 iteration
 */
@@ -109,15 +119,11 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
 	RET_CHECK(prepare(champs, &game, arg), NULL);
 	winner = get_last_champ(champs);
-	while (game->carry_num > 0 && game->cycle_to_die >= 0
-			&& !is_dump(game, arg))
+	while (testFunc(game, champs, arg))
 	{
-		log_cycles(game, arg);
-		execute_carries(game, champs);
-		control_game_flow(game, champs);
-		if (!visu_drawing(&vdata, game, champs, arg))
-			continue ; // break ;
-		game->cycle++;
+		visu_drawing(&vdata, game, champs, arg); // if
+		if (is_dump(game, arg))
+			break ;
 	}
 	winner = game->last_alive ? game->last_alive : winner;
 	free_session(&game);
