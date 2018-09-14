@@ -19,9 +19,6 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 	t_champ	*arg_champ;
 
 	LAST_LIVE = CYCLE;
-	// LAST_ALIVE = get_champ_by_id(head, REGS[0]);
-	// LAST_ALIVE->period_lives++;
-	// PERIOD_LIVES++;
 	id = get_value_by_arg(game, DIR_CODE, PC, 1);
 	arg_champ = get_champ_by_id(head, id);
 	if (arg_champ)
@@ -29,7 +26,8 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 		LAST_ALIVE = arg_champ;
 		LAST_ALIVE->period_lives++;
 		if (!game->arg->is_visual && !game->arg->log)
-			printf("A process shows that player %s is alive\n",LAST_ALIVE->name);
+			ft_printf("A process shows that player %s is alive\n",
+															LAST_ALIVE->name);
 	}
 	PERIOD_LIVES++;
 	update_position(carry, 5);

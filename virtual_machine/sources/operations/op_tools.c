@@ -43,6 +43,11 @@ int			get_pc_move(int arg, int label_size)
 	return (1);
 }
 
+/*
+** original vm is broken (reads 2 bytes instead of 4) at lld
+** line 61
+*/
+
 static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 {
 	short ind_value;
@@ -50,12 +55,12 @@ static int	get_ind(t_session *game, int lpc, int pc, int op_code)
 	ind_value = read_int(game, lpc, 2, true);
 	if (OPTAB.ind_idx)
 		ind_value %= IDX_MOD;
-	if (op_code == 3) // || op_code == 11) // st or sti
+	if (op_code == 3)
 		return (ind_value);
 	lpc = move_pc(pc, ind_value);
-	if (op_code == 13) // NOTE: original vm is broken
+	if (op_code == 13)
 		return (read_int(game, lpc, 2, false));
-	return(read_int(game, lpc, 4, false));
+	return (read_int(game, lpc, 4, false));
 }
 
 bool		set_arg_values(int args[2][4], int *lpc, t_session *game,
