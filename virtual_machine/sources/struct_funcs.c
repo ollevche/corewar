@@ -42,16 +42,10 @@ t_champ	*new_champ(t_champ **champs)
 t_carry	*new_carry(t_carry **all_carries, int first_reg)
 {
 	t_carry	*carry;
-	int		i;
 
 	carry = (t_carry*)malloc(sizeof(t_carry));
 	RET_CHECK(carry, NULL);
-	// ft_memset(carry->regs, 0, REG_NUMBER);
-	// ft_bzero(carry->regs, REG_NUMBER);
-	carry->regs = (t_uint*)malloc(sizeof(t_uint) * (REG_NUMBER + 1));
-	i = -1;
-	while (++i < REG_NUMBER)
-		carry->regs[i] = 0;
+	ft_memset(carry->regs, 0, REG_NUMBER * sizeof(int));
 	carry->regs[0] = (t_uint)first_reg;
 	carry->pc = 0;
 	carry->carry = false;
