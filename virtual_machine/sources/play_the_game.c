@@ -126,6 +126,6 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	}
 	winner = game->last_alive ? game->last_alive : winner;
 	free_session(&game);
-	visu_finalizing(&vdata, game, champs, arg);
+	visu_finalizing(&vdata, arg);
 	return (winner);
 }

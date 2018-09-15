@@ -70,35 +70,45 @@ static void		music(t_vdata *vdata)
 		music_player();
 }
 
-static void		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
+static int		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	terminal_size_listener(vdata, game, champs);
 	noecho();
 	timeout(1000 / vdata->sec);
 	vdata->key = getch();
-	disclaimer_window(vdata, game, champs);
+	if (disclaimer_window(vdata, game, champs) != 0)
+		return (-1);
 	console_clock_refresh(vdata);
-	console_refresh(vdata);
+	if (console_refresh(vdata) != 0)
+		return (-1);
 	vdata->scrolling_controls->key = vdata->key;
 	music(vdata);
-	change_design(vdata, game, champs);
+	if (change_design(vdata, game, champs) != 0)
+		return (-1);
 	custom_cycle(vdata, game, champs);
 	one_step_forward(vdata);
-	exit_window(vdata, game, champs);
+	if (exit_window(vdata, game, champs) != 0)
+		return (-1);
 	speed_controls(vdata, game, champs);
 	scrolling_of_the_names(vdata);
+	return (0);
 }
 
-void	playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
+int	playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 {
-	key_listener(vdata, game, champs);
+	if (key_listener(vdata, game, champs) != 0)
+		return (-1);
 	if (KEY(SPACE) && ERASE_KEY)
 		vdata->paused = 1;
 	if (vdata->paused == 1)
 	{
 		show_right(vdata, game, champs);
 		while (!KEY(SPACE))
-			key_listener(vdata, game, champs);
+		{
+			if (key_listener(vdata, game, champs) != 0)
+				return (-1);
+		}
 	}
 	vdata->paused = (vdata->input_paused ? ((vdata->input_paused = 0) || 1) : 0);
+	return (0);
 }

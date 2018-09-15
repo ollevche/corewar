@@ -84,7 +84,7 @@ int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
 		return (1);
 	if (!initscr() || !appropriate_window(vdata))
 		return (0);
-	raw();
+	// raw();
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
 	set_defaults(vdata, champs);
@@ -166,21 +166,22 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 		show_right(vdata, game, champs);
 		players_line_refresh(vdata);
 		refresh_live_bars(vdata, FALSE);
-		playback_controls(vdata, game, champs);
+		if (playback_controls(vdata, game, champs) != 0)
+			return (-1);
 	}
 	if (game->carry_num <= 0 || game->cycle_to_die < 0)
-		gameover_window(vdata, game, champs);
+	{
+		if (gameover_window(vdata, game, champs) != 0)
+			return (-1);
+	}
 	return (0);
 }
 
-int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
+int		visu_finalizing(t_vdata *vdata, t_arg *arg)
 {
-	if (!arg->is_visual)
+	if (vdata == NULL || arg == NULL || !arg->is_visual)
 		return (1);
-
-	(void)champs;
-	(void)game;
-	// if (vdata->music == 1)
+	if (vdata->music == 1)
 		system("killall afplay");
 	console_finalizing(vdata);
 	scrolling_finalizing(vdata);
@@ -190,8 +191,7 @@ int		visu_finalizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *ar
 	delwin(vdata->alert_window);
 	delwin(vdata->input_window);
 	endwin();
-
-	exit(1); // TODO
+	vdata = NULL;
 	return (0);
 }
 
