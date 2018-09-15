@@ -42,7 +42,7 @@
 # define DEF_T		0 // default value
 # define LABEL_T	17 // label
 # define COMM_T		18 // comment command
-# define NAME_T		20 // name command
+# define NAME_T		20 // name command // 19?
 
 typedef unsigned char	t_uchar;
 

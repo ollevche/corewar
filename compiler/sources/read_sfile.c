@@ -43,7 +43,7 @@ t_item			*read_sfile(char *filename)
 	IF_RET(fd < 0, NULL);
 	head = extract_header(fd);
 	IF_RET(!head, NULL);
-	extract_instructions(fd, head);
+	extract_instructions(fd, head); // frees head?
 	IF_RET(!head, NULL);
 	IF_RET(!check_endnl(fd), NULL);
 	close(fd);

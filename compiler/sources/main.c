@@ -28,7 +28,7 @@
 **		doesn't check for a code size (10k lines of code is ok)
 **
 **	bonus:
-**		multiple files in one time
+**		multiple files at a time
 **
 */
 
