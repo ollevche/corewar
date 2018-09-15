@@ -119,7 +119,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		log_cycles(game, arg);
 		execute_carries(game, champs);
 		control_game_flow(game, champs);
-		if (arg->is_visual && visu_drawing(&vdata, game, champs, arg)) // TODO: returnings and leaks in visu
+		if (arg->is_visual && visu_drawing(&vdata, game, champs, arg)) // TODO: returnings / leaks / bottom bar in visu
 			break ;
 		game->cycle++;
 		if (is_dump(game, arg))
