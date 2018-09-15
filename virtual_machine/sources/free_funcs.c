@@ -57,6 +57,7 @@ void	free_carries(t_carry **carries)
 	{
 		trash = iter;
 		iter = iter->next;
+		free(trash->regs);
 		free(trash);
 	}
 	*carries = NULL;

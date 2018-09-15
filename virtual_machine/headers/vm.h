@@ -60,7 +60,7 @@ typedef unsigned int	t_uint;
 
 typedef struct			s_carry
 {
-	t_uint			regs[REG_NUMBER];
+	t_uint				*regs;
 	int				pc; // current position on the map
 	bool			carry; // was last op successful
 	int				inactive; // inactive for N cycles required by op
