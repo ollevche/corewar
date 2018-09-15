@@ -57,8 +57,8 @@ static bool	prepare_session(t_session **gameptr, int n, t_arg *arg)
 	game->last_ctd = 0;
 	game->last_alive = NULL;
 	game->carries = NULL;
-	game->total_champs = n;
 	game->carry_num = n;
+	game->total_champs = n;
 	game->arg = arg;
 	return (true);
 }

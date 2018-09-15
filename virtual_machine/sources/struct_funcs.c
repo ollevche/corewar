@@ -45,15 +45,15 @@ t_carry	*new_carry(t_carry **all_carries, int first_reg)
 
 	carry = (t_carry*)malloc(sizeof(t_carry));
 	RET_CHECK(carry, NULL);
-	carry->regs[0] = first_reg; // t_uint = int
+	carry->regs[0] = (t_uint)first_reg;
 	ft_memset(carry->regs + 1, 0, REG_NUMBER - 1);
 	carry->pc = 0;
 	carry->carry = false;
 	carry->inactive = 0;
 	carry->op_code = 0;
 	carry->last_live = -1;
-	carry->next = *all_carries;
 	carry->champ = first_reg;
+	carry->next = *all_carries;
 	*all_carries = carry;
 	return (carry);
 }

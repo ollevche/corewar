@@ -114,10 +114,10 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	while (!game_over)
 	{
 		game_over = game->carry_num < 1 || game->cycle_to_die < 0;
-		visu_drawing(&vdata, game, champs, arg); // if
 		log_cycles(game, arg);
 		execute_carries(game, champs);
 		control_game_flow(game, champs);
+		visu_drawing(&vdata, game, champs, arg); // if
 		game->cycle++;
 		if (is_dump(game, arg))
 			break ;
