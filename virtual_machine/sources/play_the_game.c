@@ -96,16 +96,6 @@ static bool	is_dump(t_session *game, t_arg *arg)
 	return (true);
 }
 
-static bool testFunc(t_session *game, t_champ *champs, t_arg *arg)
-{
-	bool ret = game->carry_num > 0 && game->cycle_to_die >= 0;
-	log_cycles(game, arg);
-	execute_carries(game, champs);
-	control_game_flow(game, champs);
-	game->cycle++;
-	return (ret);
-}
-
 /*
 **	main game loop: 1 cycle = 1 iteration
 */
@@ -115,13 +105,20 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	t_session	*game;
 	t_champ		*winner;
 	t_vdata		vdata;
+	bool		game_over;
 
 	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
 	RET_CHECK(prepare(champs, &game, arg), NULL);
 	winner = get_last_champ(champs);
-	while (testFunc(game, champs, arg))
+	game_over = false;
+	while (!game_over)
 	{
+		game_over = game->carry_num < 1 || game->cycle_to_die < 0;
 		visu_drawing(&vdata, game, champs, arg); // if
+		log_cycles(game, arg);
+		execute_carries(game, champs);
+		control_game_flow(game, champs);
+		game->cycle++;
 		if (is_dump(game, arg))
 			break ;
 	}
