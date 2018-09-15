@@ -103,7 +103,6 @@ void			scrolling_name(t_vdata *vdata, t_uchar *player_name, int x, int y)
 	t_scroll_name *name;
 
 	name = (t_scroll_name *)ft_memalloc(sizeof(t_scroll_name));
-	name->next = NULL;
 	if (vdata->scrolling_names)
 		name->next = vdata->scrolling_names;
 	vdata->scrolling_names = name;
@@ -273,7 +272,9 @@ void			scrolling_finalizing(t_vdata *vdata)
 		ft_strdel(&name->displayed_name);
 		ft_strdel(&name->hidden_name);
 		delwin(name->window);
+		free(name);
 		name = name->next;
 	}
 	delwin(vdata->scrolling_controls->window);
+	free(vdata->scrolling_controls);
 }

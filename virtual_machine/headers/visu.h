@@ -208,10 +208,10 @@ void	                    show_carries(t_vdata *vdata, t_session *game, t_carry *
 void    					show_right(t_vdata *vdata, t_session *game, t_champ *champs);
 void						show_left(t_vdata *vdata, t_session *game, t_champ *champs);
 void						print_player_code(t_vdata *vdata, int y, int x, t_uchar *map, int *spot_map, int index, t_champ *champs);
-int							visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs);
+//int							visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs);
 void						set_champs_names_to_scrolling(t_vdata *vdata, t_champ *champs, int total_champs);
 int							visu_finalizing		(t_vdata *vdata, t_arg *arg);
-int							visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs,t_arg *arg);
+int							visualizing(t_vdata *vdata, t_session *game, t_champ *champs,t_arg *arg);
 void						show_players(WINDOW *nbr_win, t_champ *champs, int *i);
 int							playback_controls(t_vdata *vdata, t_session *game, t_champ *champs);
 void						scrolling_controls(t_vdata *vdata, int x, int y);

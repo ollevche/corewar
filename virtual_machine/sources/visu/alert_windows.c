@@ -43,7 +43,7 @@ int			exit_window(t_vdata *vdata, t_session *game, t_champ *champs)
 		vdata->active_alert = 0;
 		if (KEY(Y))
 		{
-			visu_finalizing(vdata, NULL);
+			visu_finalizing(vdata, vdata->arg);
 			return (-1);
 		}
 		if (vdata->paused)
@@ -90,7 +90,7 @@ int			gameover_window(t_vdata *vdata, t_session *game, t_champ *champs)
 	}
 	if (KEY(Y))
 	{
-		visu_finalizing(vdata, NULL);
+		visu_finalizing(vdata, vdata->arg);
 			return (-1);
 	}
 	vdata->active_alert = 0;
@@ -126,7 +126,7 @@ int		disclaimer_window(t_vdata *vdata, t_session *game, t_champ *champs)
 			vdata->active_alert = 0;
 			if (KEY(N))
 			{
-				visu_finalizing(vdata, NULL);
+				visu_finalizing(vdata, vdata->arg);
 				return (-1);
 			}
 			show_left(vdata, game, champs);

@@ -54,14 +54,11 @@ static void		set_defaults(t_vdata *vdata, t_champ *champs)
 	vdata->last_win_lines_size = LINES;
 	vdata->active_alert = 0;
 	vdata->live_bars = NULL;
-
 	vdata->author_adv_switch = 1;
 	vdata->author_time = 0;
 	vdata->first_run = 1;
-
     ft_bzero(vdata->prev_map, sizeof(t_uchar) * MEM_SIZE);
     ft_bzero(vdata->prev_spot_map, sizeof(int) * MEM_SIZE);
-
 	ft_bzero(vdata->color_map_div, sizeof(long long) * 4);
 	vdata->design = 0;
 	ft_bzero(vdata->set_design, sizeof(bool) * 3);
@@ -78,21 +75,22 @@ int		get_total_champs(t_champ *champ)
 	return (++players);
 }
 
-int		visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs)
+static int visu_initializing(t_vdata *vdata, t_arg *arg, t_champ *champs, t_session *game)
 {
-	if (!arg->is_visual)
-		return (1);
+	if (game->cycle != 1)
+		return (-1);
 	if (!initscr() || !appropriate_window(vdata))
 		return (0);
-	// raw();
 	set_escdelay(0);
 	keypad(stdscr, TRUE);
 	set_defaults(vdata, champs);
+	vdata->arg = arg;
+	vdata->champs = champs;
+	vdata->game = game;
 	curs_set(0);
 	refresh();
 	start_color();
 	init_color(COLOR_WHITE, 400, 400, 400);
-
 
 	init_pair(GRAY, COLOR_WHITE, COLOR_BLACK);
 	init_pair(GRAY_B, COLOR_BLACK, COLOR_WHITE);
@@ -129,18 +127,10 @@ void    set_champs_for_visu(t_champ *champs, t_vdata *vdata)
 	}
 }
 
-int show_cycles = true;
-
-int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
+void	input_cycle_loading(t_vdata *vdata)
 {
-	if (vdata->first_run)
-	{
-		vdata->arg = arg;
-		vdata->champs = champs;
-		vdata->game = game;
-	}
-	if (!arg->is_visual)
-		return (1);
+	char		*cycles;
+	static int	show_cycles = true;
 
 	if (vdata->input_cycle && show_cycles)
 	{
@@ -152,12 +142,20 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 		else
 		{
 			scrolling_of_the_names(vdata);
-			char *cycles = ft_itoa(game->cycle);
+			cycles = ft_itoa(vdata->game->cycle);
 			show_cycles = true;	//SET TO FALSE TO RENDER THE LOADING WINDOW ONLY ONCE
 			show_alert_window(vdata, "     Loading... Press [ESC] to abort!", show_cycles ? cycles : "The window is rendered only ONCE");
 			ft_strdel(&cycles);
 		}
 	}
+}
+int		visualizing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
+{
+	if (!arg->is_visual)
+		return (1);
+	if (!visu_initializing(vdata, arg, champs, game))
+		return (0);
+	input_cycle_loading(vdata);
 	if (game->cycle == vdata->input_cycle)
 		vdata->input_cycle = 0;
 	if (!vdata->input_cycle)
@@ -167,14 +165,14 @@ int		visu_drawing(t_vdata *vdata, t_session *game, t_champ *champs, t_arg *arg)
 		players_line_refresh(vdata);
 		refresh_live_bars(vdata, FALSE);
 		if (playback_controls(vdata, game, champs) != 0)
-			return (-1);
+			return (0);
 	}
 	if (game->carry_num <= 0 || game->cycle_to_die < 0)
 	{
 		if (gameover_window(vdata, game, champs) != 0)
-			return (-1);
+			return (0);
 	}
-	return (0);
+	return (1);
 }
 
 int		visu_finalizing(t_vdata *vdata, t_arg *arg)

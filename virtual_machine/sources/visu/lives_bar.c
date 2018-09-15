@@ -98,8 +98,6 @@ void static	create_live_bar(t_vdata *vdata, t_champ *champs, int x, int y)
 	bar->prev_line = -1;
 	ft_bzero(bar->line, BAR_LEN);
 	champ = champs;
-	(void)temp_bar;
-	(void)vdata;
 	while (champ)
 	{
 		if (get_color(champs, champ->id) == player)
@@ -138,6 +136,7 @@ void		live_bars_finalizing(t_vdata *vdata)
 	while (bar)
 	{
 		delwin(bar->window);
+		free(bar);
 		bar = bar->next;
 	}
 }

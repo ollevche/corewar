@@ -89,7 +89,6 @@ void static		enter_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 
 void			custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs)
 {
-
 	backspace_listener(vdata);
 	number_listener(vdata);
 	input_entering_listener(vdata);
