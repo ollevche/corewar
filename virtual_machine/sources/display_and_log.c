@@ -21,7 +21,7 @@ void	display_contestants(t_champ *champs, t_arg *arg)
 	while (champs)
 	{
 		ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n",
-		champs->id, champs->code_len, champs->name, champs->comment);
+		champs->id * -1, champs->code_len, champs->name, champs->comment);  // NOTE: champ id should be og
 		champs = champs->next;
 	}
 }
@@ -30,7 +30,7 @@ void	display_winner(t_champ *winner, t_arg *arg)
 {
 	if (arg->is_visual)
 		return ;
-	ft_printf("Contestant %d, \"%s\", has won !\n", winner->id, winner->name);
+	ft_printf("Contestant %d, \"%s\", has won !\n", winner->id * -1, winner->name); // NOTE: winner id should be og
 }
 
 void	display_usage(void)
@@ -45,12 +45,14 @@ FLAGS:\n\
 	terminate(NULL);
 }
 
-void	log_cycles(t_session *game, t_arg *arg)
+void	log_cycles(t_session *game, t_arg *arg, bool game_over)
 {
 	if (!arg->log || arg->is_visual)
 		return ;
 	if (game->last_ctd && game->last_ctd == game->cycle - 1)
 		ft_printf("Cycle to die is now %d\n", game->cycle_to_die);
+	else if (game_over)
+		return ;
 	ft_printf("It is now cycle %d\n", game->cycle);
 }
 

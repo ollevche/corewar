@@ -28,7 +28,7 @@ void	terminate();
 void	display_contestants(t_champ *champs, t_arg *arg);
 void    display_winner(t_champ *winner, t_arg *arg);
 void	display_usage();
-void	log_cycles(t_session *game, t_arg *arg);
+void	log_cycles(t_session *game, t_arg *arg, bool game_over);
 void	log_operation(t_session *game, int new_pc, int old_pc);
 
 /*
