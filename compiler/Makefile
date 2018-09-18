@@ -44,10 +44,18 @@ $(LIBDIR)$(LIB):
 $(OBJDIR):
 	@mkdir $(OBJDIR)
 
+sclean:
+	@echo "removing $(NAME) object files"
+	@rm -rf $(OBJ) $(OBJDIR)
+
 clean:
 	@make -C $(LIBDIR) clean
 	@echo "removing $(NAME) object files"
 	@rm -rf $(OBJ) $(OBJDIR)
+
+sfclean: sclean
+	@echo "removing $(NAME) binary"
+	@rm -rf $(NAME)
 
 fclean:
 	@make -C $(LIBDIR) fclean
@@ -57,3 +65,5 @@ fclean:
 	@rm -rf $(NAME) $(LIB)
 
 re: fclean $(NAME)
+
+sre: sfclean $(NAME)
