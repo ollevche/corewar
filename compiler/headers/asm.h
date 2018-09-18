@@ -54,8 +54,24 @@ typedef struct			s_item
 	t_uchar			*bytecode; // bytecode representation of line
 	int				starts_at; // index of first byte in the whole code
 	int				args[2][3]; // argument types[0] and values[1]
+	char			*label_point[3];
 	struct s_item	*next;
 }						t_item;
+
+typedef struct			s_op
+{
+	char	name[PROG_NAME_LENGTH];
+	int		nb_params;
+	int		params_type[3];
+	int		id;
+	int		cycles;
+	char	description[50];
+	int		codage;
+	int		label_size;
+	bool	ind_idx;
+}						t_op;
+
+extern const t_op		g_optab[18];
 
 /*
 **	compile.c
@@ -92,5 +108,11 @@ t_item					*new_item(char *line, int line_num, int type);
 t_item					*add_item(t_item **head, char *ln, int nm, int tp);
 void					free_items(t_item **head);
 bool					has_item(int target_type, t_item *head);
+
+/*
+**	semantic.c
+*/
+
+bool	semantically_valid(t_item *item_h);
 
 #endif
