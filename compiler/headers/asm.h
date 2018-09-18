@@ -76,6 +76,12 @@ t_item					*read_sfile(char *filename);
 t_item					*extract_header(int fd);
 
 /*
+**
+*/
+
+bool					extract_instructions(int fd, t_item *head);
+
+/*
 **	util.c
 */
 
@@ -92,5 +98,6 @@ t_item					*new_item(char *line, int line_num, int type);
 t_item					*add_item(t_item **head, char *ln, int nm, int tp);
 void					free_items(t_item **head);
 bool					has_item(int target_type, t_item *head);
+t_item					*get_last(t_item *head);
 
 #endif

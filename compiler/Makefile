@@ -20,7 +20,7 @@ OBJDIR	=	objects/
 
 LIBDIR	=	../libft/
 
-SRC		=	main.c read_sfile.c extract_header.c \
+SRC		=	main.c read_sfile.c extract_header.c extract_instructions.c \
 			struct_funcs.c util.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
@@ -57,4 +57,3 @@ fclean:
 	@rm -rf $(NAME) $(LIB)
 
 re: fclean $(NAME)
-	

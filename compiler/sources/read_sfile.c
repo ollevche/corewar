@@ -12,6 +12,8 @@
 
 #include "asm.h"
 
+#define IF_CLOSE_RET(B, F, R) if (B) {close(F); return (R);}
+
 static bool		check_endnl(int fd)
 {
 	char	c;
@@ -20,7 +22,7 @@ static bool		check_endnl(int fd)
 	read(fd, &c, 1);
 	if (c == '\n')
 		return (true);
-	ft_printf("%s %s %s\n",ERROR_M, ENDLINE_ERR, ENDLINE_HINT);
+	ft_printf("%s %s %s\n", ERROR_M, ENDLINE_ERR, ENDLINE_HINT);
 	return (false);
 }
 
@@ -40,12 +42,11 @@ t_item			*read_sfile(char *filename)
 	t_item	*head;
 
 	fd = check_open(filename);
-	IF_RET(fd < 0, NULL);
+	IF_CLOSE_RET(fd < 0, fd, NULL);
+	IF_CLOSE_RET(!check_endnl(fd), fd, NULL);
 	head = extract_header(fd);
-	IF_RET(!head, NULL);
-	// extract_instructions(fd, head);
-	IF_RET(!head, NULL);
-	IF_RET(!check_endnl(fd), NULL);
+	IF_CLOSE_RET(!head, fd, NULL);
+	IF_CLOSE_RET(!extract_instructions(fd, head), fd, NULL);
 	close(fd);
 	return (head);
 }

@@ -65,3 +65,11 @@ bool		has_item(int target_type, t_item *head)
 	}
 	return (false);
 }
+
+t_item		*get_last(t_item *head)
+{
+	if (head)
+		while (head->next)
+			head = head->next;
+	return (head);
+}
