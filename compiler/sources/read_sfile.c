@@ -43,10 +43,11 @@ t_item			*read_sfile(char *filename)
 
 	fd = check_open(filename);
 	IF_CLOSE_RET(fd < 0, fd, NULL);
-	IF_CLOSE_RET(!check_endnl(fd), fd, NULL);
 	head = extract_header(fd);
 	IF_CLOSE_RET(!head, fd, NULL);
 	IF_CLOSE_RET(!extract_instructions(fd, head), fd, NULL);
+	if (!check_endnl(fd))
+		free_items(&head);
 	close(fd);
 	return (head);
 }

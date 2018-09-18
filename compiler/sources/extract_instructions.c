@@ -16,6 +16,7 @@ static bool	syntactically_valid(char *line, int line_num)
 {
 	//TODO: this
 	(void)line;
+	(void)line_num;
 	return (false);
 }
 
@@ -37,4 +38,5 @@ bool		extract_instructions(int fd, t_item *head)
 			free(line);
 		line_num++;
 	}
+	return (true);
 }
