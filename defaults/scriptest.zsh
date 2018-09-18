@@ -86,14 +86,9 @@ function check_it()
         diff $ftheirs $fours > $fdname
         echo "Diff is writen to $fdname"
         echo "Would you like to open ${fg[green]}VIM$reset_color ? (y/n)"
-        read -q -s answer
-        if [[ $answer == "y" ]]
-        then
-            vim -O $fours $ftheirs $fdname
-        fi
+        
         echo "Continue ? (y/n)"
-        answer=""
-        read -q -s answer
+        answer="y"
         if [[ $answer == "n" ]]
         then
             exit 0
