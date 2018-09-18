@@ -86,7 +86,7 @@ bool		compile(char *filename)
 	// 	SAFE_RET(items, false);
 	SAFE_RET(&items, true);
 }
-
+//TODO: init structs properly
 int			main(int argc, char **args)
 {
 	int i;
