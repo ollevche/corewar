@@ -12,7 +12,9 @@
 
 #include "asm.h"
 
-// refactor the file
+// TODO: refactor the file
+
+// TODO: fix comments in header
 
 static char	*extract_str(int fd, char **line, int *line_num, int ind)
 {

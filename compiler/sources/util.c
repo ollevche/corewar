@@ -51,3 +51,15 @@ bool	is_empty(char *line)
 	i = skip_wspaces(line);
 	return (line[i] == 0);
 }
+
+void	trim_comments(char *line) // NOTE: check free func for the line
+{
+	char *comment_start;
+
+	if (!line)
+		return ;
+	comment_start = ft_strchr(line, COMMENT_CHAR1);
+	*comment_start = '\0';
+	comment_start = ft_strchr(line, COMMENT_CHAR2);
+	*comment_start = '\0';
+}
