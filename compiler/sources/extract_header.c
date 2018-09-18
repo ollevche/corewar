@@ -113,14 +113,6 @@ static bool	has_doublings(t_item *head)
 	return (names < 2 && comments < 2);
 }
 
-static bool	is_empty(char *line)
-{
-	int i;
-
-	i = skip_wspaces(line);
-	return (line[i] == 0);
-}
-
 t_item		*extract_header(int fd)
 {
 	t_item	*head;

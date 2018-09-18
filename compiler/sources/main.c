@@ -21,14 +21,14 @@
 **		doesn't permit no name or no comment
 **		last line has to be empty ("\n")
 **		permits "" as name or comment
-**		checks a name and a comment by size
+**		checks name and comment by size
 **		permits separating words by space and tab (no matter len, 0 including)
 **		rule: one item per line
-**		empty line is a correct one
-**		doesn't check for a code size (10k lines of code is ok)
+**		empty line is correct
+**		doesn't check for code size (10k lines of code is ok)
 **
 **	bonus:
-**		multiple files in one time
+**		multiple files at a time
 **
 */
 
@@ -53,6 +53,7 @@ bool		compile(char *filename)
 	print_file(items); // DEL
 	// if (!to_bytecode(items))
 	// 	SAFE_RET(&items, false);
+	// fill_labels(items);
 	// if (!write_corfile(filename, items)) // ft_printf("Writing output program to %s\n", new_filename);
 	// 	SAFE_RET(items, false);
 	SAFE_RET(&items, true);

@@ -43,3 +43,11 @@ int		count_nwspaces(char *line)
 		i++;
 	return (i);
 }
+
+bool	is_empty(char *line)
+{
+	int i;
+
+	i = skip_wspaces(line);
+	return (line[i] == 0);
+}

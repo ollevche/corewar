@@ -42,7 +42,7 @@
 # define DEF_T		0 // default value
 # define LABEL_T	17 // label
 # define COMM_T		18 // comment command
-# define NAME_T		20 // name command
+# define NAME_T		19 // name command // og 20
 
 typedef unsigned char	t_uchar;
 
@@ -53,7 +53,7 @@ typedef struct			s_item
 	int				line_num; // line id
 	t_uchar			*bytecode; // bytecode representation of line
 	int				starts_at; // index of first byte in the whole code
-	bool			label_required; // is label used in line // improve it
+	int				args[2][3]; // argument types[0] and values[1]
 	struct s_item	*next;
 }						t_item;
 
@@ -82,6 +82,7 @@ t_item					*extract_header(int fd);
 char					*cut_word(char *line);
 int						skip_wspaces(char *line);
 int						count_nwspaces(char *line);
+bool					is_empty(char *line);
 
 /*
 **	struct_funcs.c
