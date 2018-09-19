@@ -59,7 +59,9 @@ void	trim_comments(char *line) // NOTE: check free func for the line
 	if (!line)
 		return ;
 	comment_start = ft_strchr(line, COMMENT_CHAR1);
-	*comment_start = '\0';
+	if (comment_start)
+		*comment_start = '\0';
 	comment_start = ft_strchr(line, COMMENT_CHAR2);
-	*comment_start = '\0';
+	if (comment_start)
+		*comment_start = '\0';
 }

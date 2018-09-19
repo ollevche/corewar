@@ -34,8 +34,7 @@
 # define HDR_DOUBL "Repeatable header commands are not acceptable"
 # define QUOTE_ERR "Expected quote at"
 # define UNDEF_ERR "Undefined token at"
-# define INVALID_COMM "Invalid command at"
-# define INVALID_ARG "Invalid argument at"
+# define SYNTAX_ERR "Syntax error near"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);

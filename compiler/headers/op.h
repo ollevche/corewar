@@ -38,6 +38,7 @@
 
 # define COMMENT_CHAR1		'#'
 # define COMMENT_CHAR2		';'
+# define REG_CHAR			'r'
 # define LABEL_CHAR			':'
 # define DIRECT_CHAR		'%'
 # define SEPARATOR_CHAR		','
