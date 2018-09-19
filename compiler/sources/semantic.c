@@ -31,7 +31,7 @@ int		is_command(char *line)
 			ret = g_optab[i].id;
 		i++;
 	}
-	if (ft_strchr(line, ':'))
+	if (ft_strchr(line, LABEL_CHAR))
 		ret = LABEL_T;
 	free(line);
 	return (ret);
@@ -41,11 +41,11 @@ int		validate_arg(t_item *item, char *l, int i)
 {
 	if (l == NULL && i < OPT.nb_params)
 		return (0);
-	if (*l == 'r' && (OPT.params_type[i - 1] & 1))
+	if (*l == REG_CHAR && (OPT.params_type[i - 1] & 1))
 		return (1);
-	if (*l == '%' && (OPT.params_type[i - 1] & 2))
+	if (*l == DIRECT_CHAR && (OPT.params_type[i - 1] & 2))
 		return (2);
-	if ((ft_isdigit(*l) || *l == ':') && (OPT.params_type[i - 1] & 4))
+	if ((ft_isdigit(*l) || *l == LABEL_CHAR) && (OPT.params_type[i - 1] & 4))
 		return (4);
 	return (0);
 }
@@ -66,7 +66,7 @@ char	**split_line(char *trimmed)
 	while (i < 5 && *l)
 	{
 		j = 0;
-		while (l[j] && l[j] != ',')
+		while (l[j] && l[j] != SEPARATOR_CHAR)
 			j++;
 		it_arr[i] = ft_strndup(l, j);
 		l += j + 1;
@@ -106,11 +106,11 @@ bool	semantically_valid(t_item *item_h)
 {
 	t_item *item;
 	(void)item_h;
-	// while (item && item->type != 0)
+	// while (item && item->type != 0) // NOTE: item types for instructions: [1-16]
 	// 	item = item->next;
 	// while (item)
 	// {
-		item = new_item(ft_strdup("zjmp %:loop"), 3, 0);
+		item = item_h;
 		if (!validate_line(item))
 			return (false);
 		for (int i = 0; i < 3; i++)
