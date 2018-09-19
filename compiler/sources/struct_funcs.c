@@ -23,6 +23,7 @@ t_item	*new_item(char *line, int line_num, int type)
 	item->line = line;
 	item->line_num = line_num;
 	item->bytecode = NULL;
+	item->starts_at = -1;
 	item->next = NULL;
 	return (item);
 }

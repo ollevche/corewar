@@ -54,8 +54,8 @@ typedef struct			s_item
 	int				line_num; // line id
 	t_uchar			*bytecode; // bytecode representation of line
 	int				starts_at; // index of first byte in the whole code
-	int				args[2][3]; // argument types[0] and values[1]
-	char			*label_point[3];
+	int				args[2][3]; // argument types[0] and values[1] // has no init value
+	char			*label_point[3]; // has no init value
 	struct s_item	*next;
 }						t_item;
 
@@ -122,6 +122,6 @@ t_item					*get_last(t_item *head);
 **	semantic.c
 */
 
-bool	semantically_valid(t_item *item_h);
+bool					semantically_valid(t_item *item_h);
 
 #endif
