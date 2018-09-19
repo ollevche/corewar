@@ -53,6 +53,7 @@ typedef struct			s_item
 	char			*line; // read line from a file
 	int				line_num; // line id
 	t_uchar			*bytecode; // bytecode representation of line
+	int				size;
 	int				starts_at; // index of first byte in the whole code
 	int				args[2][3]; // argument types[0] and values[1] // has no init value
 	char			*label_point[3]; // has no init value
