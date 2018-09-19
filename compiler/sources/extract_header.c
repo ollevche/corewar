@@ -12,9 +12,7 @@
 
 #include "asm.h"
 
-// TODO: refactor the file
-
-// TODO: fix comments in header
+// TODO: refactor the func (3 star exercise)
 
 static char	*extract_str(int fd, char **line, int *line_num, int ind)
 {
@@ -34,15 +32,13 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 		len = 0;
 		while ((*line)[ind + len] && (*line)[ind + len] != '"') // end of line or quote
 			len++;
-		str = ft_strjoinfree(str, ft_strndup(*line + ind, len)); // check it
-		if (!str)
+		if (!(str = ft_strjoinfree(str, ft_strndup(*line + ind, len))))
 			return (NULL);
 		ind += len;
 		if ((*line)[ind] == '"') // quote - break; end of line - read next line
 			break ;
 		free(*line);
-		*line = safe_gnl(fd);
-		if (!*line)
+		if (!(*line = safe_gnl(fd))) // there's no lines (quote still opened)
 		{
 			ft_printf("%s %s [%d:%d]\n", ERROR_M, QUOTE_ERR, *line_num, ind + 1);
 			free(str);
@@ -56,6 +52,7 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 	}
 	ind++; // at the next char after the quote
 	ind += skip_wspaces(*line + ind);
+	trim_comments(*line + ind);
 	if ((*line)[ind]) // check for an empty leftover of the line
 	{
 		ft_printf("%s %s [%d:%d]\n", ERROR_M, UNDEF_ERR, *line_num, ind + 1);
@@ -88,9 +85,7 @@ static int	extract_command(int fd, t_item **head, char **line, int *line_num)
 	free(command);
 	ind += skip_wspaces(*line + ind);
 	str = extract_str(fd, line, line_num, ind); // prints errors
-	if (!str)
-		return (ERR_T);
-	if (!add_item(head, str, *line_num, type))
+	if (!str || !add_item(head, str, *line_num, type))
 		return (ERR_T);
 	return (type);
 }

@@ -1,10 +1,8 @@
 
-all: asm
-
-asm:
+all:
 	make -C ../compiler
 	cp ../compiler/asm ./
 
-asmre:
+re:
 	make re -C ../compiler
 	cp ../compiler/asm ./
