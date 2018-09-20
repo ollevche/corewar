@@ -41,7 +41,8 @@ static bool	is_valid_name(char *line, int line_num, int *i)
 	is_valid = true;
 	if (!ft_check_str(name, LABEL_CHARS))
 	{
-		ft_printf("%s %s [%d:%d] ('%s')\n", // TODO: don't print if it's a label
+		if (name[ft_strlen(name) - 1] != LABEL_CHAR)
+			ft_printf("%s %s [%d:%d] ('%s')\n",
 					ERROR_M, SYNTAX_ERR, line_num, *i + 1, name);
 		is_valid = false;
 	}
