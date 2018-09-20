@@ -41,11 +41,12 @@ static bool	is_valid_name(char *line, int line_num, int *i)
 	is_valid = true;
 	if (!ft_check_str(name, LABEL_CHARS))
 	{
-		ft_printf("%s %s [%d:%d] ('%s')\n"
-			ERROR_M, SYNTAX_ERR, line_num, *i + 1, name);
+		ft_printf("%s %s [%d:%d] ('%s')\n", // TODO: don't print if it's a label
+					ERROR_M, SYNTAX_ERR, line_num, *i + 1, name);
 		is_valid = false;
 	}
-	*i += ft_strlen(name);
+	else
+		*i += ft_strlen(name);
 	free(name);
 	return (is_valid);
 }
@@ -55,17 +56,44 @@ static bool	valid_separator(bool is_last, char *str, int line_num, int i)
 	if (is_last && str)
 	{
 		ft_printf("%s %s [%d:%d] ('%s')\n",
-				ERROR_M, SYNTAX_ERR, line_num, i + 1, str);
+				ERROR_M, SYNTAX_ERR, line_num, i + 1, str ? str : "");
 		ft_memdel((void**)&str);
 		return (false);
 	}
-	if (!is_last)
+	if (!is_last) // TODO: improve it
 	{
 		ft_printf("%s %s [%d:%d] ('%s')\n",
-				ERROR_M, SYNTAX_ERR, line_num, i + 1, str);
+				ERROR_M, SYNTAX_ERR, line_num, i + 1, str ? str : "");
 		return (false);
 	}
 	return (true);
+}
+
+static bool	is_valid_label(char *line, int line_num, int i) // TODO: improve it
+{
+	char	*label;
+	char	*str;
+	bool	is_valid;
+	int		len;
+
+	label = cut_word(line);
+	is_valid = true;
+	len = ft_strlen(label);
+	if (label[len - 1] != LABEL_CHAR)
+		is_valid = false;
+	else
+	{
+		label[len - 1] = '\0';
+		is_valid = ft_check_str(label + 1, LABEL_CHARS);
+	}
+	str = cut_word(line + len + skip_wspaces(line + len));
+	if (is_valid)
+		is_valid = (str ? false : true);
+	if (!is_valid)
+		ft_printf("%s %s [%d:%d] ('%s')\n", ERROR_M, SYNTAX_ERR, line_num, i + 1, label);
+	free(str);
+	free(label);
+	return (is_valid);
 }
 
 static bool	syntactically_valid(char *line, int line_num)
@@ -76,7 +104,7 @@ static bool	syntactically_valid(char *line, int line_num)
 	int		i;
 
 	i = skip_wspaces(line);
-	IF_RET(!is_valid_name(line + i, line_num, &i), false);
+	IF_RET(!is_valid_name(line + i, line_num, &i), is_valid_label(line + i, line_num, i));
 	i += skip_wspaces(line + i);
 	is_valid = true;
 	is_last = false;
@@ -88,7 +116,7 @@ static bool	syntactically_valid(char *line, int line_num)
 		i += (is_valid ? skip_wspaces(line + i) : 0);
 		ft_memdel((void**)&str);
 	}
-	if (!is_valid)
+	if (!is_valid) // TODO: improve it
 		ft_printf("%s %s [%d:%d]\n", ERROR_M, SYNTAX_ERR, line_num, i + 1);
 	else if (!valid_separator(is_last, str, line_num, i))
 		is_valid = false;

@@ -60,20 +60,20 @@ static void	set_codage(t_item *item)
 	CODE[1] = codage;
 }
 
-static int	write_arg(int type, int value, t_uchar *code) // check it // nums are unsigned
+static int	write_arg(int type, int value, t_uchar *code, int label_size) // check it // nums are unsigned
 {
 	if (type == REG_CODE)
 	{
 		code[0] = value & 255;
 		return (1);
 	}
-	if (type == IND_CODE || (type == DIR_CODE && !g_optab[TYPE].label_size))
+	if (type == IND_CODE || (type == DIR_CODE && label_size))
 	{
 		code[1] = value & 255;
 		code[0] = value & 65280;
 		return (2);
 	}
-	if (type == DIR_CODE && g_optab[TYPE].label_size)
+	if (type == DIR_CODE && label_size)
 	{
 		code[3] = value & 255;
 		code[2] = value & 65280;
@@ -93,7 +93,7 @@ static void	set_args(t_item *item)
 	i = 0;
 	while (i < 3 && ARG_TYPES[i])
 	{
-		pos += write_arg(ARG_TYPES[i], ARG_VALUES[i], CODE + pos);
+		pos += write_arg(ARG_TYPES[i], ARG_VALUES[i], CODE + pos, g_optab[TYPE].label_size);
 		i++;
 	}
 }
