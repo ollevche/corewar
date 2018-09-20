@@ -3,119 +3,145 @@
 /*                                                        :::      ::::::::   */
 /*   extract_instructions.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sivasysh <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/06 16:18:38 by sivasysh          #+#    #+#             */
-/*   Updated: 2018/09/06 16:18:38 by sivasysh         ###   ########.fr       */
+/*   Created: 2018/09/18 15:05:54 by ollevche          #+#    #+#             */
+/*   Updated: 2018/09/18 15:05:54 by ollevche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-int	static	error(int error, int line_num, int column, char *str)
+static bool	is_valid_arg(char *arg, bool *is_last)
 {
-	if (error == 1)
-		return (ft_printf("Syntax error at token [TOKEN][%.3d:%.3d] SEPARATOR \",\"\n", line_num, column));
-	if (error == 2)
-		return (ft_printf("Syntax error at token [TOKEN][%.3d:%.3d] INDIRECT \"%s\"\n", line_num, column, str));
-	if (error == 3)
-		return (ft_printf("Syntax error at token [TOKEN][%.3d:%.3d] ENDLINE\n", line_num, column));
+	int len;
 
-	return (0);
+	len = ft_strlen(arg);
+	*is_last = arg[len - 1] != SEPARATOR_CHAR;
+	if (!*is_last)
+		arg[len - 1] = '\0';
+	if (*arg == REG_CHAR)
+		return (ft_isdigit(arg[1]) && (!arg[2]
+										|| (ft_isdigit(arg[2]) && !arg[3])));
+		if (*arg == DIRECT_CHAR) // norme
+		arg++;
+	if (!*arg)
+		return (false);
+	if (*arg == LABEL_CHAR)
+		return (ft_check_str(arg + 1, LABEL_CHARS));
+	return (ft_isnumber(arg));
 }
 
-// int			check_arg(char *arg)
-// {
-
-// }
-
-int			check_arguments(int index, t_item *item, char *start)
+static bool	is_valid_name(char *line, int line_num, int *i)
 {
-	char *arg;
+	char	*name;
+	bool	is_valid;
 
-
-	while(index && index > 1)
+	name = cut_word(line);
+	is_valid = true;
+	if (!ft_check_str(name, LABEL_CHARS))
 	{
-		arg = item->colums[index] + skip_wspaces(item->colums[index] + 1) + 1;
-		if (*arg == '\0')
-			return (error(3, item->line_num, arg + 1 - start, NULL));
-		while(*arg != ' ' && *arg)
-			arg++;
-		arg += skip_wspaces(arg);
-		//if (*arg != '\0')
-		//	return (error(2, item->line_num, arg + 1 - start, arg));
-		index--;
+		if (name[ft_strlen(name) - 1] != LABEL_CHAR)
+			ft_printf("%s %s [%d:%d] ('%s')\n",
+					ERROR_M, SYNTAX_ERR, line_num, *i + 1, name);
+		is_valid = false;
 	}
-
-	return (0);
+	else
+		*i += ft_strlen(name);
+	free(name);
+	return (is_valid);
 }
 
-int static	get_colums(char *line, t_item *item)
+static bool	valid_separator(bool is_last, char *str, int line_num, int i)
 {
-	int		index;
-	char	*start;
-	char	comma;
-
-
-
-	comma = 0;
-	start = line;
-	item->colums = (char**)ft_memalloc(sizeof(char *) * 5);
-	index = 0;
-
-
-
-	while(*line && index < 4)
+	if (is_last && str)
 	{
-		if (index < 2)
-		{
-			if (*line == ',')
-				return (error(1, item->line_num, line - start, NULL));
-			if(*line != ' ')
-			{
-				item->colums[index++] = line;
-				while(*line != ' ' && *line != '\0' && *line != ',')
-					line++;
-				continue ;
-			}			
-		}
-		else
-			if (*line == ',')
-				item->colums[index++] = line;
-		line++;
+		ft_printf("%s %s [%d:%d] ('%s')\n",
+				ERROR_M, SYNTAX_ERR, line_num, i + 1, str ? str : "");
+		ft_memdel((void**)&str);
+		return (false);
 	}
-
-	if (check_arguments(--index, item, start))
-		return (3);
-	
-
-
-// if (*(item->colums[index] + skip_wspaces(item->colums[index] + 1) + 1) == '\0')
-// 	exit(1);
-
-ft_printf("%s<<<<<\n", item->colums[index]);
-// ft_printf("\nindex: %d\n", skip_wspaces(item->colums[index] + 1));
-
-	return (0);
-
+	if (!is_last) // TODO: improve it
+	{
+		ft_printf("%s %s [%d:%d] ('%s')\n",
+				ERROR_M, SYNTAX_ERR, line_num, i + 1, str ? str : "");
+		return (false);
+	}
+	return (true);
 }
 
-void	extract_instructions(int fd, t_item *head)
+static bool	is_valid_label(char *line, int line_num, int i) // TODO: improve it
+{
+	char	*label;
+	char	*str;
+	bool	is_valid;
+	int		len;
+
+	label = cut_word(line);
+	is_valid = true;
+	len = ft_strlen(label);
+	if (label[len - 1] != LABEL_CHAR)
+		is_valid = false;
+	else
+	{
+		label[len - 1] = '\0';
+		is_valid = ft_check_str(label + 1, LABEL_CHARS);
+	}
+	str = cut_word(line + len + skip_wspaces(line + len));
+	if (is_valid)
+		is_valid = (str ? false : true);
+	if (!is_valid)
+		ft_printf("%s %s [%d:%d] ('%s')\n", ERROR_M, SYNTAX_ERR, line_num, i + 1, label);
+	free(str);
+	free(label);
+	return (is_valid);
+}
+
+static bool	syntactically_valid(char *line, int line_num)
+{
+	char	*str;
+	bool	is_valid;
+	bool	is_last;
+	int		i;
+
+	i = skip_wspaces(line);
+	IF_RET(!is_valid_name(line + i, line_num, &i), is_valid_label(line + i, line_num, i));
+	i += skip_wspaces(line + i);
+	is_valid = true;
+	is_last = false;
+	while (is_valid && (str = cut_word(line + i)) && !is_last)
+	{
+		if (!is_valid_arg(str, &is_last))
+			is_valid = false;
+		i += (is_valid ? ft_strlen(str) + 1 : 0);
+		i += (is_valid ? skip_wspaces(line + i) : 0);
+		ft_memdel((void**)&str);
+	}
+	if (!is_valid) // TODO: improve it
+		ft_printf("%s %s [%d:%d]\n", ERROR_M, SYNTAX_ERR, line_num, i + 1);
+	else if (!valid_separator(is_last, str, line_num, i))
+		is_valid = false;
+	return (is_valid);
+}
+
+bool		extract_instructions(int fd, t_item *head)
 {
 	char	*line;
-	t_item	*new_item;
 	int		line_num;
 
-	line_num = 3;
+	line_num = get_last(head)->line_num + 1;
 	while ((line = safe_gnl(fd)))
 	{
-
-		if (ft_strlen(line))
+		trim_comments(line);
+		if (!is_empty(line))
 		{
-			new_item = add_item(&head, line, line_num, 0);
-			if (get_colums(line, new_item))
-				exit(1);
+			add_item(&head, line, line_num, DEF_T);
+			if (!syntactically_valid(line, line_num))
+				return (false);
 		}
+		else
+			free(line);
 		line_num++;
 	}
+	return (true);
 }

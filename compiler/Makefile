@@ -20,9 +20,8 @@ OBJDIR	=	objects/
 
 LIBDIR	=	../libft/
 
-SRC		=	main.c read_sfile.c extract_header.c \
-			struct_funcs.c util.c \
-			extract_instructions.c
+SRC		=	main.c read_sfile.c extract_header.c extract_instructions.c \
+			struct_funcs.c util.c semantic.c deep_semantic.c to_bytecode.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 
@@ -45,10 +44,18 @@ $(LIBDIR)$(LIB):
 $(OBJDIR):
 	@mkdir $(OBJDIR)
 
+sclean:
+	@echo "removing $(NAME) object files"
+	@rm -rf $(OBJ) $(OBJDIR)
+
 clean:
 	@make -C $(LIBDIR) clean
 	@echo "removing $(NAME) object files"
 	@rm -rf $(OBJ) $(OBJDIR)
+
+sfclean: sclean
+	@echo "removing $(NAME) binary"
+	@rm -rf $(NAME)
 
 fclean:
 	@make -C $(LIBDIR) fclean
@@ -58,4 +65,5 @@ fclean:
 	@rm -rf $(NAME) $(LIB)
 
 re: fclean $(NAME)
-	
+
+sre: sfclean $(NAME)

@@ -22,6 +22,9 @@ t_item	*new_item(char *line, int line_num, int type)
 	item->type = type;
 	item->line = line;
 	item->line_num = line_num;
+	item->bytecode = NULL;
+	item->starts_at = -1;
+	item->next = NULL;
 	return (item);
 }
 
@@ -62,4 +65,12 @@ bool		has_item(int target_type, t_item *head)
 		head = head->next;
 	}
 	return (false);
+}
+
+t_item		*get_last(t_item *head)
+{
+	if (head)
+		while (head->next)
+			head = head->next;
+	return (head);
 }

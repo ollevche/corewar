@@ -34,6 +34,7 @@
 # define HDR_DOUBL "Repeatable header commands are not acceptable"
 # define QUOTE_ERR "Expected quote at"
 # define UNDEF_ERR "Undefined token at"
+# define SYNTAX_ERR "Syntax error near"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);
@@ -42,7 +43,7 @@
 # define DEF_T		0 // default value
 # define LABEL_T	17 // label
 # define COMM_T		18 // comment command
-# define NAME_T		20 // name command // 19?
+# define NAME_T		19 // name command // og 20
 
 typedef unsigned char	t_uchar;
 
@@ -52,11 +53,27 @@ typedef struct			s_item
 	char			*line; // read line from a file
 	int				line_num; // line id
 	t_uchar			*bytecode; // bytecode representation of line
+	int				size;
 	int				starts_at; // index of first byte in the whole code
-	bool			label_required; // is label used in line // improve it
-	char			**colums;
+	int				args[2][3]; // argument types[0] and values[1] // has no init value
+	char			*label_point[3]; // has no init value
 	struct s_item	*next;
 }						t_item;
+
+typedef struct			s_op
+{
+	char	name[PROG_NAME_LENGTH];
+	int		nb_params;
+	int		params_type[3];
+	int		id;
+	int		cycles;
+	char	description[50];
+	int		codage;
+	int		label_size;
+	bool	ind_idx;
+}						t_op;
+
+extern const t_op		g_optab[18];
 
 /*
 **	compile.c
@@ -77,12 +94,20 @@ t_item					*read_sfile(char *filename);
 t_item					*extract_header(int fd);
 
 /*
+**
+*/
+
+bool					extract_instructions(int fd, t_item *head);
+
+/*
 **	util.c
 */
 
 char					*cut_word(char *line);
 int						skip_wspaces(char *line);
 int						count_nwspaces(char *line);
+bool					is_empty(char *line);
+void					trim_comments(char *line);
 
 /*
 **	struct_funcs.c
@@ -92,6 +117,22 @@ t_item					*new_item(char *line, int line_num, int type);
 t_item					*add_item(t_item **head, char *ln, int nm, int tp);
 void					free_items(t_item **head);
 bool					has_item(int target_type, t_item *head);
+t_item					*get_last(t_item *head);
+
+/*
+**	semantic.c
+*/
+
+bool					semantically_valid(t_item *item_h);
+int						get_arg_type(t_item *item, char *l, int i, bool validate);
+
+/*
+**	deep_semantic.c
+*/
+
+bool					print_err_msg(t_item *item, char **it_arr, int i, int err_num);
+void					fill_values(t_item *item, char **it_arr);
+char					**split_line(char *trimmed);
 
 /*
 ** extract_instructions.c

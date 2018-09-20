@@ -21,35 +21,53 @@
 **		doesn't permit no name or no comment
 **		last line has to be empty ("\n")
 **		permits "" as name or comment
-**		checks a name and a comment by size
+**		checks name and comment by size
 **		permits separating words by space and tab (no matter len, 0 including)
 **		rule: one item per line
-**		empty line is a correct one
-**		doesn't check for a code size (10k lines of code is ok)
+**		empty line is correct
+**		doesn't check for code size (10k lines of code is ok)
 **
 **	bonus:
 **		multiple files at a time
 **
 */
 
-static void	print_file(t_item *item)
+const	t_op	g_optab[18] =
 {
-	int index;
-	while (item)
-	{
-		ft_printf("#%.3d\nline \"%s\"\n", item->line_num, item->line);
-		index = 0;
-		while(index < 5)
-		{	
-			if (item->colums && item->colums[index])
-				ft_printf("   %d \"%s\"\n", index, item->colums[index]);
-			index++;
-		}
+	{"", 0, {0}, 0, 0, "", 0, 0, false},
+	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, false},
+	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0, true},
+	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0, true},
+	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0, false},
+	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 0, false},
+	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
+		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 0, false},
+	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
+		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0, false},
+	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
+		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 0, false},
+	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 1, false},
+	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
+		"load index", 1, 1, true},
+	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
+		"store index", 1, 1, true},
+	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1, false},
+	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0, false},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
+		"long load index", 1, 1, true},
+	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1, false},
+	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, false},
+	{"", 0, {0}, 0, 0, "", 0, 0, false}
+};
 
-	ft_printf("\n");
-		item = item->next;
-	}
-}
+// static void	print_file(t_item *item)
+// {
+// 	while (item)
+// 	{
+// 		ft_printf("%.3d\t%s\n", item->line_num, item->line);
+// 		item = item->next;
+// 	}
+// }
 
 bool		compile(char *filename)
 {
@@ -58,11 +76,12 @@ bool		compile(char *filename)
 	items = read_sfile(filename);
 	if (!items)
 		SAFE_RET(&items, false);
-	// if (!semantically_valid(items))
-	// 	SAFE_RET(&items, false);
-	print_file(items); // DEL
+	if (!semantically_valid(items))
+		SAFE_RET(&items, false);
+	// print_file(items); // DEL
 	// if (!to_bytecode(items))
 	// 	SAFE_RET(&items, false);
+	// fill_labels(items); // TODO: check for label without code
 	// if (!write_corfile(filename, items)) // ft_printf("Writing output program to %s\n", new_filename);
 	// 	SAFE_RET(items, false);
 	SAFE_RET(&items, true);
@@ -79,5 +98,7 @@ int			main(int argc, char **args)
 			ft_printf("%s %s\n", NOT_COMPILED_ERR, args[i]);
 		i++;
 	}
+	// if (i == 1)
+	// 	print_usage();
 	return (0);
 }

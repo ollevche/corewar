@@ -43,3 +43,25 @@ int		count_nwspaces(char *line)
 		i++;
 	return (i);
 }
+
+bool	is_empty(char *line)
+{
+	int i;
+
+	i = skip_wspaces(line);
+	return (line[i] == 0);
+}
+
+void	trim_comments(char *line) // NOTE: check free func for the line
+{
+	char *comment_start;
+
+	if (!line)
+		return ;
+	comment_start = ft_strchr(line, COMMENT_CHAR1);
+	if (comment_start)
+		*comment_start = '\0';
+	comment_start = ft_strchr(line, COMMENT_CHAR2);
+	if (comment_start)
+		*comment_start = '\0';
+}

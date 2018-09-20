@@ -36,7 +36,9 @@
 # define IDX_MOD			(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE		(MEM_SIZE / 6)
 
-# define COMMENT_CHAR		'#'
+# define COMMENT_CHAR1		'#'
+# define COMMENT_CHAR2		';'
+# define REG_CHAR			'r'
 # define LABEL_CHAR			':'
 # define DIRECT_CHAR		'%'
 # define SEPARATOR_CHAR		','
@@ -62,7 +64,8 @@ typedef char				t_arg_type;
 # define T_REG				1
 # define T_DIR				2
 # define T_IND				4
-# define T_LAB				8
+# define T_LAB_DIR			8
+# define T_LAB_IND			9
 
 /*
 **	---
