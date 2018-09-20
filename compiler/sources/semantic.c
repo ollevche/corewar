@@ -42,18 +42,25 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 	int	ret;
 
 	ret = 0;
-	if (l == NULL && i <= OPT.nb_params)
-		return (-2);
-	if (*l == REG_CHAR)
-		ret = T_REG;
-	else if (*l == DIRECT_CHAR)
-		ret = (*(l + 1) == LABEL_CHAR && validate) ? T_LAB : T_DIR;
-	else if (ft_isdigit(*l))
-		ret = T_IND;
+	IF_RET((l == NULL && i <= OPT.nb_params), -2);
+	*l == REG_CHAR ? ret = T_REG : 0;
+	ft_isdigit(*l) ? ret = T_IND : 0;
+	if (*l == DIRECT_CHAR)
+	{
+		if (validate && (OPT.params_type[i - 1] & T_DIR))
+			ret = T_LAB_DIR;
+		else
+			ret = T_DIR;
+	}
 	else if (*l == LABEL_CHAR)
-		ret = validate ? T_LAB : T_IND;
-	if (validate && ret != T_LAB)
-		return (OPT.params_type[i - 1] & ret);
+	{
+		if (validate && (OPT.params_type[i - 1] & T_IND))
+			ret = T_LAB_IND;
+		else
+			ret = T_IND;
+	}
+	if (validate && ret != T_LAB_DIR && ret != T_LAB_IND)
+		ret = ret & (OPT.params_type[i - 1]);
 	return (ret);
 }
 
