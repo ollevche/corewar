@@ -107,7 +107,7 @@ bool	semantically_valid(t_item *item_h)
 			// printf("semantic error\n"); //
 			return (false);
 		}
-
+		// item->it_arr = it_arr;
 		for (int i = 0; i < 3; i++) //
 			printf("%d\n", ATYP(i)); //
 		printf("\n"); //

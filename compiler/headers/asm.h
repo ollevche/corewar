@@ -56,7 +56,7 @@ typedef struct			s_item
 	int				size;
 	int				starts_at; // index of first byte in the whole code
 	int				args[2][3]; // argument types[0] and values[1] // has no init value
-	char			*label_point[3]; // has no init value
+	char			**it_arr; // has no init value
 	struct s_item	*next;
 }						t_item;
 
