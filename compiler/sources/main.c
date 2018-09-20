@@ -95,7 +95,7 @@ int			main(int argc, char **args)
 	while (i < argc)
 	{
 		if (!compile(args[i]))
-			ft_printf("\n\n", NOT_COMPILED_ERR, args[i]);
+			ft_printf("%s %s\n", NOT_COMPILED_ERR, args[i]);
 		i++;
 	}
 	// if (i == 1)
