@@ -131,7 +131,7 @@ int						get_arg_type(t_item *item, char *l, int i, bool validate);
 */
 
 bool					print_err_msg(t_item *item, char **it_arr, int i, int err_num);
-bool					fill_values(t_item *item, char **it_arr);
+void					fill_values(t_item *item, char **it_arr);
 char					**split_line(char *trimmed);
 
 #endif

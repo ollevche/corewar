@@ -48,9 +48,9 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 		ret = T_REG;
 	else if (*l == DIRECT_CHAR)
 		ret = (*(l + 1) == LABEL_CHAR && validate) ? T_LAB : T_DIR;
-	if (ft_isdigit(*l))
+	else if (ft_isdigit(*l))
 		ret = T_IND;
-	if (*l == LABEL_CHAR)
+	else if (*l == LABEL_CHAR)
 		ret = validate ? T_LAB : T_IND;
 	if (validate && ret != T_LAB)
 		return (OPT.params_type[i - 1] & ret);
@@ -104,8 +104,7 @@ bool	semantically_valid(t_item *item_h)
 		for (int i = 0; i < 3; i++) //
 			printf("%d\n", ATYP(i)); //
 		printf("\n"); //
-		if (!fill_values(item, it_arr))
-			return (false);
+		!fill_values(item, it_arr);
 		for (int i = 0; i < 3; i++) //
 			printf("%d\n", AVAL(i)); //
 		printf("-------------------------\n"); //

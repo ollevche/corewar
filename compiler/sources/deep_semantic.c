@@ -16,7 +16,7 @@
 # define AVAL(i)	item->args[1][i]
 # define OPT		g_optab[item->type]
 
-bool	fill_values(t_item *item, char **it_arr)
+void	fill_values(t_item *item, char **it_arr)
 {
 	int i;
 
@@ -29,7 +29,6 @@ bool	fill_values(t_item *item, char **it_arr)
 			AVAL(i) = ft_atoi(it_arr[i + 1]);
 		i++;
 	}
-	return (1);
 }
 
 bool	print_err_msg(t_item *item, char **it_arr, int i, int err_num)
