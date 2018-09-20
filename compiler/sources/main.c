@@ -60,14 +60,14 @@ const	t_op	g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0, false}
 };
 
-static void	print_file(t_item *item)
-{
-	while (item)
-	{
-		ft_printf("%.3d\t%s\n", item->line_num, item->line);
-		item = item->next;
-	}
-}
+// static void	print_file(t_item *item)
+// {
+// 	while (item)
+// 	{
+// 		ft_printf("%.3d\t%s\n", item->line_num, item->line);
+// 		item = item->next;
+// 	}
+// }
 
 bool		compile(char *filename)
 {
@@ -76,11 +76,11 @@ bool		compile(char *filename)
 	items = read_sfile(filename);
 	if (!items)
 		SAFE_RET(&items, false);
-	// if (!semantically_valid(items))
-	// 	SAFE_RET(&items, false);
-	print_file(items); // DEL
-	if (!to_bytecode(items))
+	if (!semantically_valid(items))
 		SAFE_RET(&items, false);
+	// print_file(items); // DEL
+	// if (!to_bytecode(items))
+	// 	SAFE_RET(&items, false);
 	// fill_labels(items);
 	// if (!write_corfile(filename, items)) // ft_printf("Writing output program to %s\n", new_filename);
 	// 	SAFE_RET(items, false);
@@ -95,7 +95,7 @@ int			main(int argc, char **args)
 	while (i < argc)
 	{
 		if (!compile(args[i]))
-			ft_printf("%s %s\n", NOT_COMPILED_ERR, args[i]);
+			ft_printf("\n\n", NOT_COMPILED_ERR, args[i]);
 		i++;
 	}
 	// if (i == 1)

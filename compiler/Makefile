@@ -10,7 +10,7 @@
 #                                                                              #
 #******************************************************************************#
 
-NAME	=	asm
+NAME	=	compiler
 
 FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers -g # DEL
 
@@ -21,7 +21,7 @@ OBJDIR	=	objects/
 LIBDIR	=	../libft/
 
 SRC		=	main.c read_sfile.c extract_header.c extract_instructions.c \
-			struct_funcs.c util.c semantic.c
+			struct_funcs.c util.c semantic.c deep_semantic.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

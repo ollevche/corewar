@@ -37,66 +37,47 @@ int		is_command(char *line)
 	return (ret);
 }
 
-int		validate_arg(t_item *item, char *l, int i)
+int		get_arg_type(t_item *item, char *l, int i, bool validate)
 {
-	if (l == NULL && i < OPT.nb_params)
-		return (0);
-	if (*l == REG_CHAR && (OPT.params_type[i - 1] & 1))
-		return (1);
-	if (*l == DIRECT_CHAR && (OPT.params_type[i - 1] & 2))
-		return (2);
-	if ((ft_isdigit(*l) || *l == LABEL_CHAR) && (OPT.params_type[i - 1] & 4))
-		return (4);
-	return (0);
+	int	ret;
+
+	ret = 0;
+	if (l == NULL && i <= OPT.nb_params)
+		return (-2);
+	if (*l == REG_CHAR)
+		ret = T_REG;
+	else if (*l == DIRECT_CHAR)
+		ret = (*(l + 1) == LABEL_CHAR && validate) ? T_LAB : T_DIR;
+	if (ft_isdigit(*l))
+		ret = T_IND;
+	if (*l == LABEL_CHAR)
+		ret = validate ? T_LAB : T_IND;
+	if (validate && ret != T_LAB)
+		return (OPT.params_type[i - 1] & ret);
+	return (ret);
 }
 
-char	**split_line(char *trimmed)
-{
-	char	**it_arr;
-	int		i;
-	char	*l;
-	int		j;
-
-	if (!(it_arr = (char**)ft_memalloc(sizeof(char*) * (4 + 1 + 1))))
-		return (0);
-	it_arr[0] = cut_word(trimmed);
-	l = trimmed;
-	l += count_nwspaces(trimmed) + 1;
-	i = 1;
-	while (i < 5 && *l)
-	{
-		j = 0;
-		while (l[j] && l[j] != SEPARATOR_CHAR)
-			j++;
-		it_arr[i] = ft_strndup(l, j);
-		l += j + 1;
-		if (!*(l - 1))
-			break ;
-		l += skip_wspaces(l);
-		i++;
-	}
-	return (it_arr);
-}
-
-bool	validate_line(t_item *item)
+bool	validate_line(t_item *item, char ***it_arr)
 {
 	char	*trimmed;
 	int		i;
-	char	**it_arr;
 
 	trimmed = ft_strtrim(item->line);
-	it_arr = split_line(trimmed);
-	for (int i = 0; i < 5; i++)
-		printf("%s\n", it_arr[i]);
-	if (!(item->type = is_command(it_arr[0])))
-		return (0); // LEAKS
-	if (it_arr[OPT.nb_params + 1] != NULL)
-		return (0); // LEAKS
+	*it_arr = split_line(trimmed);
+	free(trimmed);
+
+	// for (int i = 0; i < 5; i++) //
+	// 	if ((*it_arr)[i]) //
+	// 		printf("%s\n", (*it_arr)[i]); //
+	// printf("\n"); //
+
 	i = 1;
+	if (!(item->type = is_command((*it_arr)[0])))
+		return (print_err_msg(item, *it_arr, i, -1));
 	while (i < OPT.nb_params + 1)
 	{
-		if (!(ATYP(i - 1) = validate_arg(item, it_arr[i], i)))
-			return (0);
+		if ((ATYP(i - 1) = get_arg_type(item, (*it_arr)[i], i, true)) <= 0)
+			return (print_err_msg(item, *it_arr, i, ATYP(i - 1)));
 		i++;
 	}
 	return (true);
@@ -104,20 +85,32 @@ bool	validate_line(t_item *item)
 
 bool	semantically_valid(t_item *item_h)
 {
-	t_item *item;
-	(void)item_h;
-	// while (item && item->type != 0) // NOTE: item types for instructions: [1-16]
-	// 	item = item->next;
-	// while (item)
-	// {
-		item = item_h;
-		if (!validate_line(item))
+	t_item	*item;
+	char	**it_arr;
+
+	item = item_h;
+	while (item && item->type != 0)
+		item = item->next;
+	it_arr = 0;
+	while (item)
+	{
+		if (!validate_line(item, &it_arr))
+		{
+			// free it_arr here
+			// printf("semantic error\n"); //
 			return (false);
-		for (int i = 0; i < 3; i++)
-			printf("%d\n", ATYP(i));
-		// if (!save_args(item))
-		// 	return (false);
-		// item = item->next;
-	// }
+		}
+
+		for (int i = 0; i < 3; i++) //
+			printf("%d\n", ATYP(i)); //
+		printf("\n"); //
+		if (!fill_values(item, it_arr))
+			return (false);
+		for (int i = 0; i < 3; i++) //
+			printf("%d\n", AVAL(i)); //
+		printf("-------------------------\n"); //
+
+		item = item->next;
+	}
 	return (true);
 }
