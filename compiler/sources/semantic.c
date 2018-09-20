@@ -48,7 +48,7 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 	if (*l == DIRECT_CHAR)
 	{
 		if (validate && (OPT.params_type[i - 1] & T_DIR))
-			ret = T_LAB_DIR;
+			ret = (*(l + 1) == LABEL_CHAR) ? T_LAB_DIR : T_DIR;
 		else
 			ret = T_DIR;
 	}
@@ -60,7 +60,7 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 			ret = T_IND;
 	}
 	if (validate && ret != T_LAB_DIR && ret != T_LAB_IND)
-		ret = ret & (OPT.params_type[i - 1]);
+		ret = ret & OPT.params_type[i - 1];
 	return (ret);
 }
 
