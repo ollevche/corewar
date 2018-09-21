@@ -123,6 +123,7 @@ t_item		*extract_header(int fd)
 	while ((line = safe_gnl(fd)))
 	{
 		line_num++;
+		trim_comments(line);
 		if (!is_empty(line))
 		{
 			last_read = extract_command(fd, &head, &line, &line_num);
