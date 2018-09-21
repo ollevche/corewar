@@ -39,6 +39,10 @@
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);
 
+# define ATYP(i)	item->args[0][i]
+# define AVAL(i)	item->args[1][i]
+# define OPT		g_optab[item->type]
+
 # define ERR_T		-1 // error value of TYPES
 # define DEF_T		0 // default value
 # define LABEL_T	17 // label
