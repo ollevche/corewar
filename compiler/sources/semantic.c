@@ -39,7 +39,7 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 	IF_RET((l == NULL && i <= OPT.nb_params), -2);
 	IF_RET((validate && l && i > OPT.nb_params), 0);
 	*l == REG_CHAR ? ret = T_REG : 0;
-	ft_isdigit(*l) ? ret = T_IND : 0;
+	ft_isdigit(*l) || *l == '-' ? ret = T_IND : 0;
 	if (*l == DIRECT_CHAR)
 	{
 		if (validate && (OPT.params_type[i - 1] & T_DIR))
