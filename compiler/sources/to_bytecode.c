@@ -35,7 +35,7 @@ static int	get_size(t_item *item)
 		else if (ARG_TYPES[i] == IND_CODE)
 			size += 2;
 		else if (ARG_TYPES[i] == DIR_CODE)
-			size += 2 + 2 * g_optab[TYPE].label_size;
+			size += 2 + 2 * (1 - g_optab[TYPE].label_size);
 		i++;
 	}
 	return (size);
@@ -64,21 +64,21 @@ static int	write_arg(int type, int value, t_uchar *code, int label_size) // chec
 {
 	if (type == REG_CODE)
 	{
-		code[0] = value & 255;
+		code[0] = value & 0xff;
 		return (1);
 	}
 	if (type == IND_CODE || (type == DIR_CODE && label_size))
 	{
-		code[1] = value & 255;
-		code[0] = value & 65280;
+		code[1] = value & 0xff;
+		code[0] = (value & 0xff00) >> 8;
 		return (2);
 	}
-	if (type == DIR_CODE && label_size)
+	if (type == DIR_CODE && !label_size)
 	{
-		code[3] = value & 255;
-		code[2] = value & 65280;
-		code[1] = value & 16711680;
-		code[0] = value & 4278190080;
+		code[3] = value & 0xff;
+		code[2] = (value & 0xff00) >> 8;
+		code[1] = (value & 0xff0000) >> 16;
+		code[0] = (value & 0xff000000) >> 24;
 		return (4);
 	}
 	return (0);

@@ -104,6 +104,12 @@ t_item					*extract_header(int fd);
 bool					extract_instructions(int fd, t_item *head);
 
 /*
+**	to_bytecode.c
+*/
+
+bool					to_bytecode(t_item *head);
+
+/*
 **	util.c
 */
 
