@@ -26,6 +26,8 @@ static int	get_size(t_item *item)
 	int	size;
 	int	i;
 
+	if (TYPE == COMM_T || TYPE == NAME_T) // check it
+		return (ft_strlen(item->line));
 	if (TYPE < 1 || TYPE > 16)
 		return (0);
 	size = OP_CODE_SIZE;

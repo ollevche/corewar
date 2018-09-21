@@ -74,8 +74,8 @@ bool		compile(char *filename)
 	fill_label_values(items);
 	if (!to_bytecode(items))
 		SAFE_RET(&items, false);
-	// if (!write_corfile(filename, items)) // ft_printf("Writing output program to %s\n", new_filename);
-	// 	SAFE_RET(items, false);
+	if (!write_corfile(filename, items))
+		SAFE_RET(&items, false);
 	SAFE_RET(&items, true);
 }
 

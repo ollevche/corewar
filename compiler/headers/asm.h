@@ -111,26 +111,6 @@ bool					to_bytecode(t_item *head);
 void					calculate_size(t_item *item);
 
 /*
-**	util.c
-*/
-
-char					*cut_word(char *line);
-int						skip_wspaces(char *line);
-int						count_nwspaces(char *line);
-bool					is_empty(char *line);
-void					trim_comments(char *line);
-
-/*
-**	struct_funcs.c
-*/
-
-t_item					*new_item(char *line, int line_num, int type);
-t_item					*add_item(t_item **head, char *ln, int nm, int tp);
-void					free_items(t_item **head);
-bool					has_item(int target_type, t_item *head);
-t_item					*get_last(t_item *head);
-
-/*
 **	semantic.c
 */
 
@@ -150,5 +130,31 @@ char					**split_line(char *trimmed);
 */
 
 bool					check_labels_existance(t_item *items);
+
+/*
+**	writing.c
+*/
+
+bool					write_corfile(char *filename, t_item *items);
+
+/*
+**	struct_funcs.c
+*/
+
+t_item					*new_item(char *line, int line_num, int type);
+t_item					*add_item(t_item **head, char *ln, int nm, int tp);
+void					free_items(t_item **head);
+bool					has_item(int target_type, t_item *head);
+t_item					*get_last(t_item *head);
+
+/*
+**	util.c
+*/
+
+char					*cut_word(char *line);
+int						skip_wspaces(char *line);
+int						count_nwspaces(char *line);
+bool					is_empty(char *line);
+void					trim_comments(char *line);
 
 #endif
