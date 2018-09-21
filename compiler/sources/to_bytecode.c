@@ -20,7 +20,7 @@
 #define ARG_TYPES		item->args[0]
 #define ARG_VALUES		item->args[1]
 
-static int	get_size(t_item *item)
+static int	get_size(t_item *item) // X_CODE = T_X; where X = (DIR || REG || IND)
 {
 	int	size;
 	int	i;

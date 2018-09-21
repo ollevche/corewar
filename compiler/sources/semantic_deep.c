@@ -59,9 +59,9 @@ char	**split_line(char *trimmed)
 	char	*l;
 	int		j;
 
-	if (!(it_arr = (char**)ft_memalloc(sizeof(char*) * (4 + 1 + 1))))
-		return (0);
+	IF_RET(!(it_arr = (char**)ft_memalloc(sizeof(char*) * (4 + 1 + 1))), 0);
 	it_arr[0] = cut_word(trimmed);
+	IF_RET(ft_strchr(it_arr[0], LABEL_CHAR), it_arr); // NOTE: might miss; test
 	l = trimmed;
 	l += count_nwspaces(trimmed) + 1;
     l += skip_wspaces(l);

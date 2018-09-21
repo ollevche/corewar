@@ -12,7 +12,8 @@
 
 #include "asm.h"
 
-bool	label_real(t_item *items, char *label_name)
+
+t_item	*find_label(t_item *items, char *label_name)
 {
 	t_item	*item;
 	char	*actual_name;
@@ -22,30 +23,46 @@ bool	label_real(t_item *items, char *label_name)
 	while (item)
 	{
 		if (item->type == LABEL_T && !ft_strequ(actual_name, item->line))
-			return (true);
+			return (item);
 		item = item->next;
 	}
-	return (false);
+	return (NULL);
 }
 
 bool	check_labels_existance(t_item *items)
 {
 	t_item	*item;
 	int		i;
-	bool	ret;
 
 	item = items;
-	ret = true;
 	while (item)
 	{
-		if (item->type == LABEL_T)
-			item->starts_at = item->next->line_num;
 		i = -1;
 		while (++i < 3)
 			if (ATYP(i) == T_LAB_DIR || ATYP(i) == T_LAB_IND)
-				if (!label_real(items, item->it_arr[i + 1]))
+				if (!find_label(items, item->it_arr[i + 1]))
 					return (print_err_msg(item, item->it_arr, i + 1, -4));
 		item = item->next;
 	}
 	return (true);
+}
+
+void	fill_label_values(t_item *items)
+{
+	t_item	*item;
+	t_item	*t;
+	int		i;
+
+	item = items;
+	while (item)
+	{
+		i = -1;
+		while (++i < 3)
+			if (ATYP(i) == T_LAB_DIR || ATYP(i) == T_LAB_IND)
+			{
+				t = find_label(items, item->it_arr[i + 1]);
+				AVAL(i) = t->starts_at - item->starts_at;
+			}
+		item = item->next;
+	}
 }

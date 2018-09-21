@@ -32,6 +32,7 @@
 **
 */
 
+void	fill_label_values(t_item *items);
 const	t_op	g_optab[18] =
 {
 	{"", 0, {0}, 0, 0, "", 0, 0, false},
@@ -79,11 +80,12 @@ bool		compile(char *filename)
 	if (!semantically_valid(items))
 		SAFE_RET(&items, false);
 	// print_file(items); // DEL
-	// if (!to_bytecode(items))
-	// 	SAFE_RET(&items, false);
-	// fill_labels(items); // TODO: check for label without code
+	if (!to_bytecode(items)) // this is set size. change this shit up, booooi
+		SAFE_RET(&items, false);
+	fill_label_values(items); // TODO: check for label without code
 	// if (!write_corfile(filename, items)) // ft_printf("Writing output program to %s\n", new_filename);
 	// 	SAFE_RET(items, false);
+	while ()
 	SAFE_RET(&items, true);
 }
 

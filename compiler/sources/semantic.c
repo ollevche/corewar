@@ -31,6 +31,32 @@ int		is_command(char *line)
 	return (ret);
 }
 
+int		analyze_arg(t_item *item, char *l, int i, bool validate)
+{
+	if (*l == DIRECT_CHAR)
+	{
+		if (validate)
+		{
+			if (!(OPT.params_type[i - 1] & T_DIR))
+				return (false);
+			if (*(l + 1) == LABEL_CHAR)
+				return (T_LAB_DIR);
+		}
+		return (T_DIR);
+	}
+	if (*l == LABEL_CHAR)
+	{
+		if (validate)
+		{
+			if (!(OPT.params_type[i - 1] & T_IND))
+				return (false);
+			return (T_LAB_IND);
+		}
+		return (T_IND);
+	}
+	return (false);
+}
+
 int		get_arg_type(t_item *item, char *l, int i, bool validate)
 {
 	int	ret;
@@ -38,25 +64,18 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 	ret = 0;
 	IF_RET((l == NULL && i <= OPT.nb_params), -2);
 	IF_RET((validate && l && i > OPT.nb_params), 0);
-	*l == REG_CHAR ? ret = T_REG : 0;
-	ft_isdigit(*l) || *l == '-' ? ret = T_IND : 0;
-	if (*l == DIRECT_CHAR)
+	if (*l == REG_CHAR)
+		ret = T_REG;
+	else if (ft_isdigit(*l) || *l == '-')
+		ret = T_IND;
+	if (ret != 0)
 	{
-		if (validate && (OPT.params_type[i - 1] & T_DIR))
-			ret = (*(l + 1) == LABEL_CHAR) ? T_LAB_DIR : T_DIR;
-		else
-			ret = T_DIR;
+		if (validate)
+			if (!(ret & OPT.params_type[i - 1]))
+				return (false);
+		return (ret);
 	}
-	else if (*l == LABEL_CHAR)
-	{
-		if (validate && (OPT.params_type[i - 1] & T_IND))
-			ret = T_LAB_IND;
-		else
-			ret = T_IND;
-	}
-	if (validate && ret != T_LAB_DIR && ret != T_LAB_IND)
-		ret = ret & OPT.params_type[i - 1];
-	return (ret);
+	return (analyze_arg(item, l, i, validate));
 }
 
 bool	validate_line(t_item *item, char ***it_arr)
@@ -86,7 +105,7 @@ bool	validate_line(t_item *item, char ***it_arr)
 		if (!(*it_arr)[i] && i > OPT.nb_params)
 			return (true);
 		if ((ATYP(i - 1) = get_arg_type(item, (*it_arr)[i], i, true)) <= 0)
-			return (print_err_msg(item, *it_arr, i, ATYP(i - 1)));
+			return (print_err_msg(item, *it_arr, i, -3));
 		i++;
 	}
 	return (true);
