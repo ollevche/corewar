@@ -94,7 +94,7 @@ t_item					*read_sfile(char *filename);
 t_item					*extract_header(int fd);
 
 /*
-**
+**	extract_instructions.c
 */
 
 bool					extract_instructions(int fd, t_item *head);
@@ -135,9 +135,9 @@ void					fill_values(t_item *item, char **it_arr);
 char					**split_line(char *trimmed);
 
 /*
-** extract_instructions.c
+**	labels.c
 */
 
-void					extract_instructions(int fd, t_item *head);
+bool					check_labels_existance(t_item *items);
 
 #endif

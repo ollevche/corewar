@@ -12,12 +12,6 @@
 
 #include "asm.h"
 
-# define FREE_RET(x, y) if (!(x)) { free(y); return (false); }
-
-# define ATYP(i)	item->args[0][i]
-# define AVAL(i)	item->args[1][i]
-# define OPT		g_optab[item->type]
-
 int		is_command(char *line)
 {
 	int i;
@@ -43,6 +37,7 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 
 	ret = 0;
 	IF_RET((l == NULL && i <= OPT.nb_params), -2);
+	IF_RET((validate && l && i > OPT.nb_params), 0);
 	*l == REG_CHAR ? ret = T_REG : 0;
 	ft_isdigit(*l) ? ret = T_IND : 0;
 	if (*l == DIRECT_CHAR)
@@ -73,16 +68,23 @@ bool	validate_line(t_item *item, char ***it_arr)
 	*it_arr = split_line(trimmed);
 	free(trimmed);
 
-	// for (int i = 0; i < 5; i++) //
-	// 	if ((*it_arr)[i]) //
-	// 		printf("%s\n", (*it_arr)[i]); //
-	// printf("\n"); //
+	for (int i = 0; i < 5; i++) //
+		if ((*it_arr)[i]) //
+			printf("|%s|\n", (*it_arr)[i]); //
+	printf("\n"); //
 
 	i = 1;
 	if (!(item->type = is_command((*it_arr)[0])))
 		return (print_err_msg(item, *it_arr, i, -1));
-	while (i < OPT.nb_params + 1)
+	if (item->type == LABEL_T)
 	{
+		item->line[ft_strlen(item->line) - 1] = '\0';
+		return (true);
+	}
+	while (i <= OPT.nb_params + 1)
+	{
+		if (!(*it_arr)[i] && i > OPT.nb_params)
+			return (true);
 		if ((ATYP(i - 1) = get_arg_type(item, (*it_arr)[i], i, true)) <= 0)
 			return (print_err_msg(item, *it_arr, i, ATYP(i - 1)));
 		i++;
@@ -90,33 +92,37 @@ bool	validate_line(t_item *item, char ***it_arr)
 	return (true);
 }
 
-bool	semantically_valid(t_item *item_h)
+bool	semantically_valid(t_item *items)
 {
 	t_item	*item;
 	char	**it_arr;
 
-	item = item_h;
+	item = items;
 	while (item && item->type != 0)
 		item = item->next;
-	it_arr = 0;
 	while (item)
 	{
+		it_arr = 0;
 		if (!validate_line(item, &it_arr))
 		{
 			// free it_arr here
 			// printf("semantic error\n"); //
 			return (false);
 		}
-		// item->it_arr = it_arr;
+		item->it_arr = it_arr;
+		printf("OPCODE: %s\n", OPT.name); //
+		printf("TYPS: "); //
 		for (int i = 0; i < 3; i++) //
-			printf("%d\n", ATYP(i)); //
+			printf("%d ", ATYP(i)); //
 		printf("\n"); //
 		fill_values(item, it_arr);
+		printf("VALS: "); //
 		for (int i = 0; i < 3; i++) //
-			printf("%d\n", AVAL(i)); //
-		printf("-------------------------\n"); //
-
+			printf("%d ", AVAL(i)); //
+		printf("\n-------------------------\n"); //
 		item = item->next;
 	}
+	if (!check_labels_existance(items))
+		return (false);
 	return (true);
 }
