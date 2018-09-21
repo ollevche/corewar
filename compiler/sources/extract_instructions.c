@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "asm.h"
-
+// TODO: refactor the file
 static bool	is_valid_arg(char *arg, bool *is_last)
 {
 	int len;
@@ -61,7 +61,7 @@ static bool	valid_separator(bool is_last, char *str, int line_num, int i)
 		ft_memdel((void**)&str);
 		return (false);
 	}
-	if (!is_last) // TODO: improve it
+	if (!is_last)
 	{
 		ft_printf("%s %s [%d:%d] ('%s')\n",
 				ERROR_M, SYNTAX_ERR, line_num, i + 1, str ? str : "");
@@ -70,7 +70,7 @@ static bool	valid_separator(bool is_last, char *str, int line_num, int i)
 	return (true);
 }
 
-static bool	is_valid_label(char *line, int line_num, int i) // TODO: improve it
+static bool	is_valid_label(char *line, int line_num, int i)
 {
 	char	*label;
 	char	*str;
@@ -97,7 +97,7 @@ static bool	is_valid_label(char *line, int line_num, int i) // TODO: improve it
 	return (is_valid);
 }
 
-static bool	syntactically_valid(char *line, int line_num)
+static bool	syntactically_valid(char *line, int line_num) // TODO: rewrite it (, is not part of arg)
 {
 	char	*str;
 	bool	is_valid;
@@ -117,7 +117,7 @@ static bool	syntactically_valid(char *line, int line_num)
 		i += (is_valid ? skip_wspaces(line + i) : 0);
 		ft_memdel((void**)&str);
 	}
-	if (!is_valid) // TODO: improve it
+	if (!is_valid)
 		ft_printf("%s %s [%d:%d]\n", ERROR_M, SYNTAX_ERR, line_num, i + 1);
 	else if (!valid_separator(is_last, str, line_num, i))
 		is_valid = false;

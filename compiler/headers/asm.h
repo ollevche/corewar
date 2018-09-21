@@ -108,6 +108,7 @@ bool					extract_instructions(int fd, t_item *head);
 */
 
 bool					to_bytecode(t_item *head);
+void					calculate_size(t_item *item);
 
 /*
 **	util.c

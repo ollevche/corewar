@@ -65,7 +65,7 @@ typedef char				t_arg_type;
 # define T_DIR				2
 # define T_IND				4
 # define T_LAB_DIR			8
-# define T_LAB_IND			9
+# define T_LAB_IND			16
 
 /*
 **	---

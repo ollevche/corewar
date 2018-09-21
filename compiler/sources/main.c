@@ -61,15 +61,6 @@ const	t_op	g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0, false}
 };
 
-// static void	print_file(t_item *item)
-// {
-// 	while (item)
-// 	{
-// 		ft_printf("%.3d\t%s\n", item->line_num, item->line);
-// 		item = item->next;
-// 	}
-// }
-
 bool		compile(char *filename)
 {
 	t_item	*items;
@@ -79,13 +70,12 @@ bool		compile(char *filename)
 		SAFE_RET(&items, false);
 	if (!semantically_valid(items))
 		SAFE_RET(&items, false);
-	// print_file(items); // DEL
-	if (!to_bytecode(items)) // this is set size. change this shit up, booooi
+	calculate_size(items);
+	fill_label_values(items);
+	if (!to_bytecode(items))
 		SAFE_RET(&items, false);
-	fill_label_values(items); // TODO: check for label without code
 	// if (!write_corfile(filename, items)) // ft_printf("Writing output program to %s\n", new_filename);
 	// 	SAFE_RET(items, false);
-	while ()
 	SAFE_RET(&items, true);
 }
 
@@ -101,6 +91,6 @@ int			main(int argc, char **args)
 		i++;
 	}
 	// if (i == 1)
-	// 	print_usage();
+	// 	print_usage(); // TODO: usage
 	return (0);
 }

@@ -19,26 +19,43 @@
 #define TYPE			item->type
 #define ARG_TYPES		item->args[0]
 #define ARG_VALUES		item->args[1]
+#define POS				item->starts_at
 
-static int	get_size(t_item *item) // X_CODE = T_X; where X = (DIR || REG || IND)
+static int	get_size(t_item *item)
 {
 	int	size;
 	int	i;
 
+	if (TYPE < 1 || TYPE > 16)
+		return (0);
 	size = OP_CODE_SIZE;
 	size += g_optab[TYPE].codage;
 	i = 0;
 	while (i < 3 && ARG_TYPES[i])
 	{
-		if (ARG_TYPES[i] == REG_CODE)
+		if (ARG_TYPES[i] == T_REG)
 			size += 1;
-		else if (ARG_TYPES[i] == IND_CODE)
+		else if (ARG_TYPES[i] == T_IND || ARG_TYPES[i] == T_LAB_IND)
 			size += 2;
-		else if (ARG_TYPES[i] == DIR_CODE)
+		else if (ARG_TYPES[i] == T_DIR || ARG_TYPES[i] == T_LAB_DIR)
 			size += 2 + 2 * (1 - g_optab[TYPE].label_size);
 		i++;
 	}
 	return (size);
+}
+
+void		calculate_size(t_item *item)
+{
+	int		total_size;
+
+	total_size = 0;
+	while (item)
+	{
+		SIZE = get_size(item);
+		POS = total_size;
+		total_size += SIZE;
+		item = item->next;
+	}
 }
 
 static void	set_codage(t_item *item)
@@ -54,26 +71,29 @@ static void	set_codage(t_item *item)
 	while (i < 3 && ARG_TYPES[i])
 	{
 		type = ARG_TYPES[i];
-		codage |= type << (6 - i * 2); // check it
+		if (type == T_LAB_DIR || type == T_LAB_IND)
+			type /= 4; // thx, T_LAB
+		codage |= type << (6 - i * 2);
 		i++;
 	}
 	CODE[1] = codage;
 }
 
-static int	write_arg(int type, int value, t_uchar *code, int label_size) // check it // nums are unsigned
+static int	write_arg(int type, int value, t_uchar *code, int label_size)
 {
-	if (type == REG_CODE)
+	if (type == T_REG)
 	{
 		code[0] = value & 0xff;
 		return (1);
 	}
-	if (type == IND_CODE || (type == DIR_CODE && label_size))
+	if (type == T_IND || (type == T_DIR && label_size) ||
+		type == T_LAB_IND || (type == T_LAB_DIR && label_size))
 	{
 		code[1] = value & 0xff;
 		code[0] = (value & 0xff00) >> 8;
 		return (2);
 	}
-	if (type == DIR_CODE && !label_size)
+	if ((type == T_DIR && !label_size) || (type == T_LAB_DIR && !label_size))
 	{
 		code[3] = value & 0xff;
 		code[2] = (value & 0xff00) >> 8;
@@ -101,25 +121,18 @@ static void	set_args(t_item *item)
 bool		to_bytecode(t_item *head)
 {
 	t_item	*item;
-	int		total_size;
 
 	item = head;
-	total_size = 0;
 	while (item)
 	{
 		if (TYPE > 0 && TYPE < 17)
 		{
-			SIZE = get_size(item);
 			CODE = (t_uchar*)malloc(sizeof(t_uchar) * SIZE);
 			IF_RET(!CODE, false);
-			CODE[0] = TYPE; // check conversion
+			CODE[0] = TYPE;
 			set_codage(item);
 			set_args(item);
 		}
-		else
-			SIZE = 0;
-		item->starts_at = total_size;
-		total_size += SIZE;
 		item = item->next;
 	}
 	return (true);
