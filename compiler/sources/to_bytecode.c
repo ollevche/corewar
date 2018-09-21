@@ -101,8 +101,10 @@ static void	set_args(t_item *item)
 bool		to_bytecode(t_item *head)
 {
 	t_item	*item;
+	int		total_size;
 
 	item = head;
+	total_size = 0;
 	while (item)
 	{
 		if (TYPE > 0 && TYPE < 17)
@@ -114,6 +116,10 @@ bool		to_bytecode(t_item *head)
 			set_codage(item);
 			set_args(item);
 		}
+		else
+			SIZE = 0;
+		item->starts_at = total_size;
+		total_size += SIZE;
 		item = item->next;
 	}
 	return (true);
