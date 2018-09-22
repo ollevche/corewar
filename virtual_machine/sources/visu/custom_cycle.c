@@ -12,7 +12,7 @@
 
 #include "visu.h"
 
-void static		backspace_listener(t_vdata *vdata)
+static void	backspace_listener(t_vdata *vdata)
 {
 	if (KEY(BACKSPACE) && vdata->input_entered && vdata->input_index > 0)
 	{
@@ -26,7 +26,7 @@ void static		backspace_listener(t_vdata *vdata)
 	}
 }
 
-void static		number_listener(t_vdata *vdata)
+static void	number_listener(t_vdata *vdata)
 {
 	if (KEY('0') && !vdata->input_index)
 		return ;
@@ -40,7 +40,7 @@ void static		number_listener(t_vdata *vdata)
 	}
 }
 
-void static		input_entering_listener(t_vdata *vdata)
+static void	input_entering_listener(t_vdata *vdata)
 {
 	if (KEY(E))
 	{
@@ -62,7 +62,7 @@ void static		input_entering_listener(t_vdata *vdata)
 	}
 }
 
-void static		enter_listener(t_vdata *vdata, t_session *game, t_champ *champs)
+static void	enter_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	if (KEY(ENTER) && vdata->input_entered && ERASE_KEY)
 	{
@@ -87,7 +87,7 @@ void static		enter_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	}
 }
 
-void			custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs)
+void		custom_cycle(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	backspace_listener(vdata);
 	number_listener(vdata);

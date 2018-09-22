@@ -12,15 +12,7 @@
 
 #include "visu.h"
 
-// static void		temp_get_key_number(t_vdata *vdata)
-// {
-// 	WINDOW *temp;
-// 	temp = newwin(3 , 33, 3, 3);
-// 	mvwprintw(temp, 1, 1, "%d", vdata->key);
-// 	wrefresh(temp);
-// }
-
-static void		speed_controls(t_vdata *vdata, t_session *game, t_champ *champs)
+static void	speed_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	if (KEY(LEFT) && vdata->sec > 5)
 	{
@@ -34,8 +26,6 @@ static void		speed_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 			vdata->sec -= (vdata->sec / 100) * 10;
 		else
 			vdata->sec -= 5;
-		if (vdata->paused)
-			show_right(vdata, game, champs);
 	}
 	if (KEY(RIGHT) && vdata->sec < 1000)
 	{
@@ -45,12 +35,12 @@ static void		speed_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 			vdata->sec += 50;
 		else
 			vdata->sec += 5;
-		if (vdata->paused)
-			show_right(vdata, game, champs);
 	}
+	if (vdata->paused && (KEY(RIGHT) || KEY(LEFT)))
+		show_right(vdata, game, champs);
 }
 
-static void		one_step_forward(t_vdata *vdata)
+static void	one_step_forward(t_vdata *vdata)
 {
 	if (KEY(S))
 	{
@@ -64,13 +54,13 @@ static void		one_step_forward(t_vdata *vdata)
 	}
 }
 
-static void		music(t_vdata *vdata)
+static void	music(t_vdata *vdata)
 {
 	if (KEY(M))
 		music_player();
 }
 
-static int		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
+static int	key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	terminal_size_listener(vdata, game, champs);
 	noecho();
@@ -94,7 +84,7 @@ static int		key_listener(t_vdata *vdata, t_session *game, t_champ *champs)
 	return (0);
 }
 
-int	playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
+int			playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 {
 	if (key_listener(vdata, game, champs) != 0)
 		return (-1);
@@ -109,6 +99,12 @@ int	playback_controls(t_vdata *vdata, t_session *game, t_champ *champs)
 				return (-1);
 		}
 	}
-	vdata->paused = (vdata->input_paused ? ((vdata->input_paused = 0) || 1) : 0);
+	if (vdata->input_paused)
+	{
+		vdata->input_paused = 0;
+		vdata->paused = 1;
+	}
+	else
+		vdata->paused = 0;
 	return (0);
 }

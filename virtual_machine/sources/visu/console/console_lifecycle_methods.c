@@ -14,7 +14,7 @@
 
 void	visu_print_static(t_vdata *vdata, char *text)
 {
-		visu_print(vdata, text, 0);
+	visu_print(vdata, text, 0);
 }
 
 void	visu_print_allocated(t_vdata *vdata, char *text)
@@ -41,6 +41,8 @@ void	console_initializing(t_vdata *vdata)
 	vdata->console.width = 68;
 	vdata->console.clock_time = 0;
 	console_clock_initializing(vdata);
+	visu_print_static(vdata, "Welcome to Corewar console!");
+	visu_print_static(vdata, "See the available commands by typing -help");
 }
 
 int		console_refresh(t_vdata *vdata)
