@@ -12,6 +12,8 @@
 
 #include "asm.h"
 
+#define	HAS_ITEM(T, H) (get_item_by_type(T, H) ? true : false)
+
 // TODO: refactor the func (3 star exercise)
 
 static char	*extract_str(int fd, char **line, int *line_num, int ind)
@@ -131,7 +133,7 @@ t_item		*extract_header(int fd)
 				break ;
 		}
 		free(line);
-		if (has_item(NAME_T, head) && has_item(COMM_T, head))
+		if (HAS_ITEM(NAME_T, head) && HAS_ITEM(COMM_T, head))
 			return (head);
 	}
 	if (last_read != ERR_T)

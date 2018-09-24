@@ -78,6 +78,7 @@ typedef struct			s_op
 }						t_op;
 
 extern const t_op		g_optab[18];
+extern int				g_codesize;
 
 /*
 **	compile.c
@@ -123,6 +124,7 @@ int						get_arg_type(t_item *item, char *l, int i, bool validate);
 
 bool					print_err_msg(t_item *item, char **it_arr, int i, int err_num);
 void					fill_values(t_item *item, char **it_arr);
+void					fill_label_values(t_item *items);
 char					**split_line(char *trimmed);
 
 /*
@@ -143,9 +145,9 @@ bool					write_corfile(char *filename, t_item *items);
 
 t_item					*new_item(char *line, int line_num, int type);
 t_item					*add_item(t_item **head, char *ln, int nm, int tp);
-void					free_items(t_item **head);
-bool					has_item(int target_type, t_item *head);
 t_item					*get_last(t_item *head);
+t_item					*get_item_by_type(int target_type, t_item *head);
+void					free_items(t_item **head);
 
 /*
 **	util.c

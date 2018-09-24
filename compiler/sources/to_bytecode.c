@@ -20,14 +20,17 @@
 #define ARG_TYPES		item->args[0]
 #define ARG_VALUES		item->args[1]
 #define POS				item->starts_at
+#define LINE			item->line
 
 static int	get_size(t_item *item)
 {
 	int	size;
 	int	i;
 
-	if (TYPE == COMM_T || TYPE == NAME_T) // check it
-		return (ft_strlen(item->line));
+	if (TYPE == NAME_T)
+		return (PROG_NAME_LENGTH);
+	if (TYPE == COMM_T)
+		return (COMMENT_LENGTH);
 	if (TYPE < 1 || TYPE > 16)
 		return (0);
 	size = OP_CODE_SIZE;
@@ -56,6 +59,8 @@ void		calculate_size(t_item *item)
 		SIZE = get_size(item);
 		POS = total_size;
 		total_size += SIZE;
+		if (TYPE > 0 && TYPE < 17)
+			g_codesize += SIZE;
 		item = item->next;
 	}
 }
@@ -116,7 +121,7 @@ static void	set_args(t_item *item)
 	i = 0;
 	while (i < 3 && ARG_TYPES[i])
 	{
-		pos += write_arg(ARG_TYPES[i], ARG_VALUES[i], CODE + pos, g_optab[TYPE].label_size);
+		pos += write_arg(ARG_TYPES[i], ARG_VALUES[i], CODE + pos, OPT.label_size);
 		i++;
 	}
 }
@@ -128,14 +133,19 @@ bool		to_bytecode(t_item *head)
 	item = head;
 	while (item)
 	{
-		if (TYPE > 0 && TYPE < 17)
+		if (SIZE)
 		{
 			CODE = (t_uchar*)malloc(sizeof(t_uchar) * SIZE);
 			IF_RET(!CODE, false);
+		}
+		if (TYPE > 0 && TYPE < 17)
+		{
 			CODE[0] = TYPE;
 			set_codage(item);
 			set_args(item);
 		}
+		else
+			ft_strncpy((char*)CODE, LINE, SIZE);
 		item = item->next;
 	}
 	return (true);
