@@ -62,7 +62,6 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 	int	ret;
 
 	ret = 0;
-	IF_RET((l == NULL && i <= OPT.nb_params), -2);
 	IF_RET((validate && l && i > OPT.nb_params), 0);
 	if (*l == REG_CHAR)
 		ret = T_REG;
@@ -100,11 +99,13 @@ bool	validate_line(t_item *item, char ***it_arr)
 		item->line[ft_strlen(item->line) - 1] = '\0';
 		return (true);
 	}
+	if ((*it_arr)[OPT.nb_params] == NULL)
+		return (print_err_msg(item, *it_arr, i, -2));
 	while (i <= OPT.nb_params + 1)
 	{
 		if (!(*it_arr)[i] && i > OPT.nb_params)
 			return (true);
-		if ((ATYP(i - 1) = get_arg_type(item, (*it_arr)[i], i, true)) <= 0)
+		if (!(ATYP(i - 1) = get_arg_type(item, (*it_arr)[i], i, true)))
 			return (print_err_msg(item, *it_arr, i, -3));
 		i++;
 	}
