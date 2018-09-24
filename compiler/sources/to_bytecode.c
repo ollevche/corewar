@@ -75,6 +75,7 @@ static void	set_codage(t_item *item)
 		type = ARG_TYPES[i];
 		if (type == T_LAB_DIR || type == T_LAB_IND)
 			type /= 4; // thx, T_LAB
+		type == T_IND ? type = IND_CODE : 0;
 		codage |= type << (6 - i * 2);
 		i++;
 	}
