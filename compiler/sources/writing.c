@@ -27,6 +27,30 @@ static char	*add_extension(char *filename)
 	return (new);
 }
 
+t_item		*write_header(int fd, t_item *items)
+{
+	t_item	*name;
+	t_item	*comment;
+	t_uchar	byte;
+
+	name = get_item_by_type(NAME_T, items);
+	comment = get_item_by_type(COMM_T, items);
+	write(fd, "\x00\xea\x83\xf3", 4);
+	write(fd, name->bytecode, name->size);
+	write(fd, "\x00\x00\x00\x00", 4);
+	byte = (g_codesize & 0xff000000) >> 24;
+	write(fd, &byte, 1);
+	byte = (g_codesize & 0xff0000) >> 16;
+	write(fd, &byte, 1);
+	byte = (g_codesize & 0xff00) >> 8;
+	write(fd, &byte, 1);
+	byte = g_codesize & 0xff;
+	write(fd, &byte, 1);
+	write(fd, comment->bytecode, comment->size);
+	write(fd, "\x00\x00\x00\x00", 4);
+	return (items->next->next);
+}
+
 bool		write_corfile(char *filename, t_item *items)
 {
 	int		fd;
@@ -37,12 +61,10 @@ bool		write_corfile(char *filename, t_item *items)
 	free(updated_fname);
 	fd = open(updated_fname, O_WRONLY | O_TRUNC | O_CREAT);
 	IF_RET(!fd, false);
+	items = write_header(fd, items);
 	while (items)
 	{
-		if (items->type == NAME_T || items->type == COMM_T) // TODO: write to bytecode
-			write(fd, items->line, items->size);
-		else if (items->type > 0 && items->type < 17)
-			write(fd, items->bytecode, items->size);
+		write(fd, items->bytecode, items->size);
 		items = items->next;
 	}
 	close(fd);

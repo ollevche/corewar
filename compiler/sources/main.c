@@ -32,8 +32,9 @@
 **
 */
 
-void	fill_label_values(t_item *items);
-const	t_op	g_optab[18] =
+int g_codesize = 0;
+
+const t_op g_optab[18] =
 {
 	{"", 0, {0}, 0, 0, "", 0, 0, false},
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, false},

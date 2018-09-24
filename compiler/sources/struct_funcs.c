@@ -54,17 +54,17 @@ void	free_items(t_item **head)
 	// TODO: this
 }
 
-bool		has_item(int target_type, t_item *head)
+t_item	*get_item_by_type(int target_type, t_item *head)
 {
 	if (head == NULL)
-		return (false);
+		return (NULL);
 	while (head)
 	{
 		if (head->type == target_type)
-			return (true);
+			return (head);
 		head = head->next;
 	}
-	return (false);
+	return (NULL);
 }
 
 t_item		*get_last(t_item *head)
