@@ -85,6 +85,7 @@ function check_it()
         echo "${fg[red]}KO!$reset_color"
         diff $ftheirs $fours > $fdname
         echo "Diff is writen to $fdname"
+        cat $fdname
         echo "Would you like to open ${fg[green]}VIM$reset_color ? (y/n)"
         
         echo "Continue ? (y/n)"
