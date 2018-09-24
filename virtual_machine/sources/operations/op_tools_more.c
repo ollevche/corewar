@@ -33,17 +33,17 @@ bool			check_cbyte(int args[2][4], int op_code, int size)
 	while (i < size)
 	{
 		if (args[0][i] == REG_CODE)
-			if (OP_ATYP(op_code, i) & T_REG)
-				return (true);
+			if (!(OP_ATYP(op_code, i) & T_REG))
+				return (false);
 		if (args[0][i] == DIR_CODE)
-			if (OP_ATYP(op_code, i) & T_DIR)
-				return (true);
+			if (!(OP_ATYP(op_code, i) & T_DIR))
+				return (false);
 		if (args[0][i] == IND_CODE)
-			if (OP_ATYP(op_code, i) & T_IND)
-				return (true);
+			if (!(OP_ATYP(op_code, i) & T_IND))
+				return (false);
 		i++;
 	}
-	return (false);
+	return (true);
 }
 
 bool			check_reg(int *value, t_carry *carry, int jmp)
