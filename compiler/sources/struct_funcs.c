@@ -24,6 +24,7 @@ t_item	*new_item(char *line, int line_num, int type)
 	item->line_num = line_num;
 	item->bytecode = NULL;
 	item->starts_at = -1;
+	item->it_arr = NULL;
 	item->next = NULL;
 	return (item);
 }
@@ -50,8 +51,30 @@ t_item	*add_item(t_item **head, char *line, int line_num, int type)
 
 void	free_items(t_item **head)
 {
-	(void)head;
-	// TODO: this
+	t_item	*trash;
+	t_item	*item;
+	int		i;
+
+	item = *head;
+	while (item)
+	{
+		trash = item;
+		item = item->next;
+		free(trash->line);
+		free(trash->bytecode);
+		if (trash->it_arr)
+		{
+			i = 0;
+			while (trash->it_arr[i])
+			{
+				free(trash->it_arr[i]);
+				i++;
+			}
+			free(trash->it_arr);
+		}
+		free(trash);
+	}
+	*head = NULL;
 }
 
 t_item	*get_item_by_type(int target_type, t_item *head)

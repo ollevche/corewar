@@ -62,6 +62,15 @@ const t_op g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0, false}
 };
 
+static void	print_file(t_item *item)
+{
+	while (item)
+	{
+		ft_printf("%.3d\t%s\n", item->line_num, item->line);
+		item = item->next;
+	}
+}
+
 bool		compile(char *filename)
 {
 	t_item	*items;
@@ -69,6 +78,7 @@ bool		compile(char *filename)
 	items = read_sfile(filename);
 	if (!items)
 		SAFE_RET(&items, false);
+	print_file(items); // DEL
 	if (!semantically_valid(items))
 		SAFE_RET(&items, false);
 	calculate_size(items);
@@ -91,7 +101,8 @@ int			main(int argc, char **args)
 			ft_printf("%s %s\n", NOT_COMPILED_ERR, args[i]);
 		i++;
 	}
-	// if (i == 1)
-	// 	print_usage(); // TODO: usage
+	if (i == 1)
+		ft_printf("USAGE:\n\t./asm filename filename1 filename2\n");
+	system("leaks asm"); // DEL
 	return (0);
 }

@@ -119,7 +119,7 @@ bool		extract_instructions(int fd, t_item *head)
 	int		line_num;
 	int		i;
 
-	line_num = get_last(head)->line_num + 1; // TODO: global line_num
+	line_num = get_last(head)->line_num + 1; // TODO: global line_num // NOTE: fixed somehow (???)
 	while ((line = safe_gnl(fd)))
 	{
 		i = 0;
