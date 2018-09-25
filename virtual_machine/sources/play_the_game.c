@@ -118,7 +118,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		log_cycles(game, arg, game_over);
 		execute_carries(game, champs);
 		control_game_flow(game, champs);
-		if (!visualizing(&vdata, game, champs, arg))
+		if (!visualizing(&vdata, game, champs, arg)) // TODO: test this
 			break ;
 		game->cycle++;
 		if (is_dump(game, arg))
