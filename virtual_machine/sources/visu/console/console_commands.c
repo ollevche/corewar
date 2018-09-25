@@ -12,7 +12,7 @@
 
 #include "visu.h"
 
-void static console_clear_command(t_vdata *vdata)
+static void	console_clear_command(t_vdata *vdata)
 {
 	if (vdata->console.msgs->next)
 	{
@@ -22,7 +22,7 @@ void static console_clear_command(t_vdata *vdata)
 	}
 }
 
-void static console_help_command(t_vdata *vdata)
+static void	console_help_command(t_vdata *vdata)
 {
 	char *message;
 
@@ -30,10 +30,9 @@ void static console_help_command(t_vdata *vdata)
 	visu_print_static(vdata, message);
 }
 
-int static console_cycle_command(t_vdata *vdata, char *command) //TODO
+static int	console_cycle_command(t_vdata *vdata, char *command)
 {
 	char	*line;
-
 
 	if (vdata->console.input_index <= 15 && (line = ft_strchr(command, ' ')))
 	{
@@ -51,13 +50,14 @@ int static console_cycle_command(t_vdata *vdata, char *command) //TODO
 	}
 	else
 		visu_print_static(vdata, "usage: cycle [up to 9-digit number]");
-
 	return (1);
 }
 
-int		console_commands(t_vdata *vdata)
+int			console_commands(t_vdata *vdata)
 {
-	char *command = vdata->console.msgs->text;
+	char *command;
+
+	command = vdata->console.msgs->text;
 	if (!vdata->console.input_index)
 		return (0);
 	else if (!ft_strncmp(command, "exit", 4))
@@ -73,6 +73,7 @@ int		console_commands(t_vdata *vdata)
 	else if (!ft_strncmp(command, "cycle", 5))
 		console_cycle_command(vdata, command);
 	else
-		visu_print_allocated(vdata, ft_strjoin("command not found: ", vdata->console.msgs->text));
+		visu_print_allocated(vdata,
+			ft_strjoin("command not found: ", vdata->console.msgs->text));
 	return (0);
 }

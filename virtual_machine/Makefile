@@ -35,19 +35,36 @@ OP		=	o_01_live.c o_02_ld.c o_03_st.c o_04_add.c o_05_sub.c o_06_and.c \
 			o_13_lld.c o_14_lldi.c o_15_lfork.c o_16_aff.c base_ops.c \
 			op_tools.c op_tools_more.c
 
-VISU	=	lifecycle_methods.c playback_controls.c print.c scrolling_names.c \
-			custom_cycle.c alert_windows.c terminal_size_changing.c lives_bar.c \
+VISU	=	lifecycle_methods.c \
+			playback_controls.c \
+			init_design.c \
+			print_1.c \
+			print_2.c \
+			print_3.c \
+			custom_cycle.c \
 			authors_line.c players_line.c \
+			alert_windows_1.c \
+			alert_windows_2.c \
+			lives_bar_1.c \
+			lives_bar_2.c \
+			scrolling_names_1.c \
+			scrolling_names_2.c \
+			scrolling_names_3.c \
+			rerender_terminal_1.c \
+			rerender_terminal_2.c \
 			console/console_commands.c \
 			console/console_clock.c \
 			console/console_controls.c \
 			console/console_drawing.c \
 			console/console_input.c \
-			console/console_keys.c \
+			console/console_keys_1.c \
+			console/console_keys_2.c \
 			console/console_lifecycle_methods.c \
 			console/console_management_1.c \
 			console/console_management_2.c \
-			console/console_rerender.c
+			console/console_rerender.c \
+			default_settings.c \
+			music.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

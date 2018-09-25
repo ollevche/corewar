@@ -29,9 +29,11 @@ void	console_clock_refresh(t_vdata *vdata)
 	if (vdata->console.opened && ((tv.tv_sec) - vdata->console.clock_time) >= 1)
 	{
 		gettimeofday(&tv, NULL);
-		ptm = localtime (&tv.tv_sec);
-		strftime(vdata->console.clock, sizeof(vdata->console.clock), "%Y-%m-%d %H:%M:%S", ptm);
-		mvwprintw(vdata->console.clock_window, 1, vdata->console.width / 2 - 9, vdata->console.clock);
+		ptm = localtime(&tv.tv_sec);
+		strftime(vdata->console.clock,
+			sizeof(vdata->console.clock), "%Y-%m-%d %H:%M:%S", ptm);
+		mvwprintw(vdata->console.clock_window, 1,
+			vdata->console.width / 2 - 9, vdata->console.clock);
 		wrefresh(vdata->console.clock_window);
 		vdata->console.clock_time = (tv.tv_sec);
 	}
