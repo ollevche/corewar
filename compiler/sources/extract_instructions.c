@@ -12,7 +12,25 @@
 
 #include "asm.h"
 
-#define IF_FREE_RET(B, F, R) if (B) {free(F); return (R);}
+#define FREE_RET(F, R) {free(F); return (R);}
+#define IF_FREE_RET(B, F, R) if (B) FREE_RET(F, R)
+
+static char	*cut_argument(char *line, int line_num, int i)
+{
+	char	*arg;
+	int		len;
+
+	len = 0;
+	while (line[len] && !IS_WSPACE(line[len]) && line[len] != SEPARATOR_CHAR)
+		len++;
+	if (len < 1)
+	{
+		ft_printf("%s [%03d:%03d]\n", NO_ARG_ERR, line_num, i + 1);
+		return (NULL);
+	}
+	arg = ft_strndup(line, len);
+	return (arg);
+}
 
 static int	validate_arg(char *line, int i, int line_num)
 {
@@ -22,27 +40,24 @@ static int	validate_arg(char *line, int i, int line_num)
 
 	(void)line_num;
 	i += skip_wspaces(line + i);
-	arg = cut_word(line + i);
+	arg = cut_argument(line + i, line_num, i);
+	IF_RET(!arg, -1);
 	len = ft_strlen(arg);
-	if (len < 1)
-	{
-		ft_printf("TODO: expected arg error\n");
-		IF_FREE_RET(true, arg, -1);
-	}
 	if (arg[len - 1] == SEPARATOR_CHAR)
 		arg[--len] = '\0';
 	if (arg[0] == REG_CHAR)
 		if (ft_isdigit(arg[1]) && (!arg[2] || (ft_isdigit(arg[2]) && !arg[3])))
-			return (i + len);
+			FREE_RET(arg, i + len);// return (i + len);
 	a = 0;
 	if (arg[a] == DIRECT_CHAR && arg[a + 1])
 		a++;
 	if (arg[a] == LABEL_CHAR && arg[a + 1])
 		if (ft_check_str(arg + a + 1, LABEL_CHARS))
-			return (i + len);
+			FREE_RET(arg, i + len);// return (i + len);
 	if (ft_isnumber(arg + a))
-		return (i + len);
-	ft_printf("TODO: invalid arg error\n");
+		FREE_RET(arg, i + len);// return (i + len);
+	ft_printf("%s [%03d:%03d] ('%s')\n", INVALID_ARG, line_num, i + 1, arg);
+	free(arg);
 	return (-1);
 }
 
@@ -54,10 +69,7 @@ static int	save_label(char *line, int line_num, t_item *head)
 	while (line[i] && ft_strchr(LABEL_CHARS, line[i]))
 		i++;
 	if (line[i] != LABEL_CHAR)
-	{
-		// ft_printf("TODO: undef token error\n"); // NOTE: there's no error if no label
 		return (0);
-	}
 	add_item(&head, ft_strndup(line, i + 1), line_num, DEF_T);
 	return (i + 1);
 }
@@ -74,7 +86,7 @@ static int	validate_command(char *line, int i, int line_num)
 	while (command[j] && ft_strchr(LABEL_CHARS, command[j]))
 		j++;
 	if (command[j])
-		ft_printf("TODO: symbol isn't acceptable error\n");
+		ft_printf("%s [%03d:%03d] ('%s')\n", INVALID_COMM, line_num, i + j + 1, command);
 	i = (command[j] ? -1 : i + j);
 	free(command);
 	return (i);
@@ -89,7 +101,7 @@ static int	save_instruction(char *line, int i, int line_num, t_item *head)
 	while (true)
 	{
 		i += skip_wspaces(line + i);
-		i = validate_arg(line, i, line_num); // checks for empty arg
+		i = validate_arg(line, i, line_num);
 		IF_RET(i < 0, -1);
 		i += skip_wspaces(line + i);
 		if (line[i] != SEPARATOR_CHAR)
@@ -97,7 +109,7 @@ static int	save_instruction(char *line, int i, int line_num, t_item *head)
 		i++;
 	}
 	if (line[i])
-		ft_printf("TODO: expected separator error\n");
+		ft_printf("%s [%03d:%03d]\n", NO_SEPARATOR, line_num, i);
 	return (line[i] ? -1 : i);
 }
 
@@ -107,7 +119,7 @@ bool		extract_instructions(int fd, t_item *head)
 	int		line_num;
 	int		i;
 
-	line_num = get_last(head)->line_num + 1;
+	line_num = get_last(head)->line_num + 1; // TODO: global line_num
 	while ((line = safe_gnl(fd)))
 	{
 		i = 0;

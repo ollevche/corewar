@@ -29,7 +29,7 @@ int		skip_wspaces(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] && (line[i] == '\t' || line[i] == ' '))
+	while (line[i] && IS_WSPACE(line[i]))
 		i++;
 	return (i);
 }
@@ -39,7 +39,7 @@ int		count_nwspaces(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] && line[i] != '\t' && line[i] != ' ')
+	while (line[i] && !IS_WSPACE(line[i]))
 		i++;
 	return (i);
 }

@@ -25,19 +25,22 @@
 **	messages:
 */
 
-# define ERROR_M "ERROR:" // TODO: remove this
 # define NOT_COMPILED_ERR "File not compiled:"
 # define READ_ERR "Can't read source file"
 # define ENDLINE_ERR "Unexpected end of input"
 # define ENDLINE_HINT "(Perhaps you forgot to end with a newline ?)"
 # define NOHDR_ERR "Expected header item ('.name' or '.comment') after line:"
 # define HDR_DOUBL "Repeatable header commands are not acceptable"
-# define QUOTE_ERR "Expected quotation mark at"
-# define UNDEF_ERR "Undefined token at"
-# define SYNTAX_ERR "Syntax error near"
+# define QUOTE_ERR "Syntax error: expected quotation mark at"
+# define UNDEF_ERR "Syntax error: undefined token at"
+# define NO_ARG_ERR "Syntax error: expected argument after"
+# define INVALID_ARG "Syntax error: invalid argument at"
+# define INVALID_COMM "Syntax error: invalid command character at"
+# define NO_SEPARATOR "Syntax error: expected separator after"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);
+# define IS_WSPACE(C) (C == '\t' || C == ' ')
 
 # define ATYP(i)	item->args[0][i]
 # define AVAL(i)	item->args[1][i]

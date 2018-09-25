@@ -23,7 +23,7 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 
 	if ((*line)[ind] != '"')
 	{
-		ft_printf("%s %s [%d:%d]\n", ERROR_M, QUOTE_ERR, *line_num, ind + 1);
+		ft_printf("%s [%03d:%03d]\n", QUOTE_ERR, *line_num, ind + 1);
 		return (NULL);
 	}
 	ind++; // at quote
@@ -42,7 +42,7 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 		free(*line);
 		if (!(*line = safe_gnl(fd))) // there's no lines (quote still opened)
 		{
-			ft_printf("%s %s [%d:%d]\n", ERROR_M, QUOTE_ERR, *line_num, ind + 1);
+			ft_printf("%s [%03d:%03d]\n", QUOTE_ERR, *line_num, ind + 1);
 			free(str);
 			return (NULL);
 		}
@@ -57,7 +57,7 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 	trim_comments(*line + ind);
 	if ((*line)[ind]) // check for an empty leftover of the line
 	{
-		ft_printf("%s %s [%d:%d]\n", ERROR_M, UNDEF_ERR, *line_num, ind + 1);
+		ft_printf("%s [%03d:%03d] ('%s')\n", UNDEF_ERR, *line_num, ind + 1, str);
 		free(str);
 		return (NULL);
 	}
@@ -79,7 +79,7 @@ static int	extract_command(int fd, t_item **head, char **line, int *line_num)
 		type = COMM_T;
 	else
 	{
-		ft_printf("%s %s [%d:%d] ('%s')\n", ERROR_M, UNDEF_ERR, *line_num, ind + 1, command);
+		ft_printf("%s [%03d:%03d] ('%s')\n", UNDEF_ERR, *line_num, ind + 1, command);
 		free(command);
 		return (ERR_T);
 	}
@@ -108,7 +108,7 @@ static bool	has_doublings(t_item *head)
 		head = head->next;
 	}
 	if (names > 1 || comments > 1)
-		ft_printf("%s %s\n", ERROR_M, HDR_DOUBL);
+		ft_printf("%s\n", HDR_DOUBL);
 	return (names < 2 && comments < 2);
 }
 
@@ -137,7 +137,7 @@ t_item		*extract_header(int fd)
 			return (head);
 	}
 	if (last_read != ERR_T)
-		ft_printf("%s %s %d\n", ERROR_M, NOHDR_ERR, line_num);
+		ft_printf("%s %d\n", NOHDR_ERR, line_num);
 	free(line);
 	SAFE_RET(&head, NULL); // it's error (no name or comment)
 }
