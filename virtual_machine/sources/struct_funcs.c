@@ -13,6 +13,12 @@
 #include "vm.h"
 #include "vm_funcs.h"
 
+/*
+**	norminette wont see REG_NUMBER, hence RN
+*/
+
+#define RN REG_NUMBER
+
 t_champ	*new_champ(t_champ **champs)
 {
 	t_champ *champ;
@@ -45,7 +51,7 @@ t_carry	*new_carry(t_carry **all_carries, int first_reg)
 
 	carry = (t_carry*)malloc(sizeof(t_carry));
 	RET_CHECK(carry, NULL);
-	ft_memset(carry->regs, 0, REG_NUMBER * sizeof(int));
+	ft_memset(carry->regs, 0, RN * sizeof(int));
 	carry->regs[0] = (t_uint)first_reg;
 	carry->pc = 0;
 	carry->carry = false;
