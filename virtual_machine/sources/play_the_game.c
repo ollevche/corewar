@@ -109,7 +109,6 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	t_vdata		vdata;
 	bool		game_over;
 
-	RET_CHECK(visu_initializing(&vdata, arg, champs), NULL);
 	RET_CHECK(prepare(champs, &game, arg), NULL);
 	winner = get_last_champ(champs);
 	game_over = false;
@@ -119,7 +118,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 		log_cycles(game, arg, game_over);
 		execute_carries(game, champs);
 		control_game_flow(game, champs);
-		if (arg->is_visual && visu_drawing(&vdata, game, champs, arg))
+		if (!visualizing(&vdata, game, champs, arg)) // TODO: test this
 			break ;
 		game->cycle++;
 		if (is_dump(game, arg))
@@ -127,6 +126,5 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	}
 	winner = game->last_alive ? game->last_alive : winner;
 	free_session(&game);
-	visu_finalizing(&vdata, arg);
 	return (winner);
 }

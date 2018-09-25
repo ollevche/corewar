@@ -12,12 +12,12 @@
 
 #include "visu.h"
 
-void static		width_patch(t_vdata *vdata, int *ratio, int total_ratio)
+static void	width_patch(t_vdata *vdata, int *ratio, int total_ratio)
 {
 	int player;
 
 	player = 0;
-	while(total_ratio < W_HEIGHT)
+	while (total_ratio < W_HEIGHT)
 	{
 		if (player > vdata->total_champs - 1)
 			player = 0;
@@ -27,16 +27,17 @@ void static		width_patch(t_vdata *vdata, int *ratio, int total_ratio)
 	}
 }
 
-void static		calculate_ratio(t_vdata *vdata, int *ratio, int ratio_sum)
+static void	calculate_ratio(t_vdata *vdata, int *ratio, int ratio_sum)
 {
 	int player;
 	int total_ratio;
 
 	total_ratio = 0;
 	player = 0;
-	while(player < vdata->total_champs)
+	while (player < vdata->total_champs)
 	{
-		ratio[player] = ((vdata->color_map_div[player] * 100 / ratio_sum) * W_HEIGHT ) / 100;
+		ratio[player] =
+		((vdata->color_map_div[player] * 100 / ratio_sum) * W_HEIGHT) / 100;
 		if (ratio[player] < 1 && vdata->color_map_div[player])
 			ratio[player] += 1;
 		total_ratio += ratio[player];
@@ -45,7 +46,7 @@ void static		calculate_ratio(t_vdata *vdata, int *ratio, int ratio_sum)
 	width_patch(vdata, ratio, total_ratio);
 }
 
-void	players_line_refresh(t_vdata *vdata)
+void		players_line_refresh(t_vdata *vdata)
 {
 	int				player;
 	int				ratio[4];
@@ -55,28 +56,21 @@ void	players_line_refresh(t_vdata *vdata)
 	player = 0;
 	ratio_sum = 0;
 	total_ratio = 0;
-	while(player < vdata->total_champs)
+	while (player < vdata->total_champs)
 		ratio_sum += vdata->color_map_div[player++];
 	calculate_ratio(vdata, ratio, ratio_sum);
 	player = 0;
 	werase(vdata->players_window);
-	while(player < vdata->total_champs)
+	while (player < vdata->total_champs)
 	{
-		wattron(vdata->players_window, COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
-		mvwprintw(vdata->players_window, total_ratio, 0, "%*s", ratio[player], "");
-		wattroff(vdata->players_window, COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
+		wattron(vdata->players_window,
+			COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
+		mvwprintw(
+			vdata->players_window, total_ratio, 0, "%*s", ratio[player], "");
+		wattroff(vdata->players_window,
+			COLOR_PAIR(player + 1 + vdata->design * 10) | A_REVERSE);
 		total_ratio += ratio[player];
 		player++;
 	}
 	wrefresh(vdata->players_window);
 }
-
-// werase(vdata->debug_window);
-// player = 0;
-// while(player < vdata->total_champs)
-// {
-// 	wprintw(vdata->debug_window, "Player %d: %d\n", player + 1, ratio[player]);
-// 	player++;
-// }
-// wprintw(vdata->debug_window, "ratio_sum: %d\n", ratio_sum);
-// wrefresh(vdata->debug_window);
