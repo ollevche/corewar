@@ -12,16 +12,16 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
-//TODO: replace printf calls with ft_printf
+
 void	display_contestants(t_champ *champs, t_arg *arg)
 {
 	if (arg->is_visual)
 		return ;
-	printf("Introducing contestants...\n");
+	ft_printf("Introducing contestants...\n");
 	while (champs)
 	{
-		printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n",
-		champs->id * -1, champs->code_len, champs->name, champs->comment);  // NOTE: champ id should be og
+		ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n",
+		champs->id, champs->code_len, champs->name, champs->comment);
 		champs = champs->next;
 	}
 }
@@ -30,12 +30,12 @@ void	display_winner(t_champ *winner, t_arg *arg)
 {
 	if (arg->is_visual)
 		return ;
-	printf("Contestant %d, \"%s\", has won !\n", winner->id * -1, winner->name); // NOTE: winner id should be og
+	ft_printf("Contestant %d, \"%s\", has won !\n", winner->id, winner->name);
 }
 
 void	display_usage(void)
 {
-	printf("USAGE:\n\
+	ft_printf("USAGE:\n\
 \t./corewar [-log] [-dump CYCLE] [-n CHAMP_ID] CHAMP_NAMES [-v]\n\
 FLAGS:\n\
 \t[-log]\t\tshows log (cycles + PC movements)\n\
@@ -50,10 +50,10 @@ void	log_cycles(t_session *game, t_arg *arg, bool game_over)
 	if (!arg->log || arg->is_visual)
 		return ;
 	if (game->last_ctd && game->last_ctd == game->cycle - 1)
-		printf("Cycle to die is now %d\n", game->cycle_to_die);
+		ft_printf("Cycle to die is now %d\n", game->cycle_to_die);
 	else if (game_over)
 		return ;
-	printf("It is now cycle %d\n", game->cycle);
+	ft_printf("It is now cycle %d\n", game->cycle);
 }
 
 void	log_operation(t_session *game, int new_pc, int old_pc)
@@ -63,17 +63,17 @@ void	log_operation(t_session *game, int new_pc, int old_pc)
 
 	if (!game->arg->log || game->arg->is_visual)
 		return ;
-	printf("ADV ");
+	ft_printf("ADV ");
 	adv = new_pc - old_pc;
 	if (adv < 0)
 		adv += MEM_SIZE;
-	printf("%d ", adv);
-	printf("(0x%04x -> 0x%04x) ", old_pc, old_pc + adv);
+	ft_printf("%d ", adv);
+	ft_printf("(0x%04x -> 0x%04x) ", old_pc, old_pc + adv);
 	i = 0;
 	while (i < adv)
 	{
-		printf("%02x ", MAP[move_pc(old_pc, i)]);
+		ft_printf("%02x ", MAP[move_pc(old_pc, i)]);
 		i++;
 	}
-	printf("\n");
+	ft_printf("\n");
 }
