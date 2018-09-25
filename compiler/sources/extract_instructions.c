@@ -11,136 +11,114 @@
 /* ************************************************************************** */
 
 #include "asm.h"
-// TODO: refactor the file
-static bool	is_valid_arg(char *arg, bool *is_last)
+
+#define IF_FREE_RET(B, F, R) if (B) {free(F); return (R);}
+
+static int	validate_arg(char *line, int i, int line_num)
 {
-	int len;
-
-	len = ft_strlen(arg);
-	*is_last = arg[len - 1] != SEPARATOR_CHAR;
-	if (!*is_last)
-		arg[len - 1] = '\0';
-	if (*arg == REG_CHAR)
-		return (ft_isdigit(arg[1]) && (!arg[2]
-										|| (ft_isdigit(arg[2]) && !arg[3])));
-		if (*arg == DIRECT_CHAR) // norme
-		arg++;
-	if (!*arg)
-		return (false);
-	if (*arg == LABEL_CHAR)
-		return (ft_check_str(arg + 1, LABEL_CHARS));
-	return (ft_isnumber(arg));
-}
-
-static bool	is_valid_name(char *line, int line_num, int *i)
-{
-	char	*name;
-	bool	is_valid;
-
-	name = cut_word(line);
-	is_valid = true;
-	if (!ft_check_str(name, LABEL_CHARS))
-	{
-		if (name[ft_strlen(name) - 1] != LABEL_CHAR)
-			ft_printf("%s %s [%d:%d] ('%s')\n",
-					ERROR_M, SYNTAX_ERR, line_num, *i + 1, name);
-		is_valid = false;
-	}
-	else
-		*i += ft_strlen(name);
-	free(name);
-	return (is_valid);
-}
-
-static bool	valid_separator(bool is_last, char *str, int line_num, int i)
-{
-	if (is_last && str)
-	{
-		ft_printf("%s %s [%d:%d] ('%s')\n",
-				ERROR_M, SYNTAX_ERR, line_num, i + 1, str ? str : "");
-		ft_memdel((void**)&str);
-		return (false);
-	}
-	if (!is_last)
-	{
-		ft_printf("%s %s [%d:%d] ('%s')\n",
-				ERROR_M, SYNTAX_ERR, line_num, i + 1, str ? str : "");
-		return (false);
-	}
-	return (true);
-}
-
-static bool	is_valid_label(char *line, int line_num, int i)
-{
-	char	*label;
-	char	*str;
-	bool	is_valid;
 	int		len;
+	int		a;
+	char	*arg;
 
-	label = cut_word(line);
-	is_valid = true;
-	len = ft_strlen(label);
-	if (label[len - 1] != LABEL_CHAR)
-		is_valid = false;
-	else
+	(void)line_num;
+	i += skip_wspaces(line + i);
+	arg = cut_word(line + i);
+	len = ft_strlen(arg);
+	if (len < 1)
 	{
-		label[len - 1] = '\0';
-		is_valid = ft_check_str(label + 1, LABEL_CHARS);
+		ft_printf("TODO: expected arg error\n");
+		IF_FREE_RET(true, arg, -1);
 	}
-	str = cut_word(line + len + skip_wspaces(line + len));
-	if (is_valid)
-		is_valid = (str ? false : true);
-	if (!is_valid)
-		ft_printf("%s %s [%d:%d] ('%s')\n", ERROR_M, SYNTAX_ERR, line_num, i + 1, label);
-	free(str);
-	free(label);
-	return (is_valid);
+	if (arg[len - 1] == SEPARATOR_CHAR)
+		arg[--len] = '\0';
+	if (arg[0] == REG_CHAR)
+		if (ft_isdigit(arg[1]) && (!arg[2] || (ft_isdigit(arg[2]) && !arg[3])))
+			return (i + len);
+	a = 0;
+	if (arg[a] == DIRECT_CHAR && arg[a + 1])
+		a++;
+	if (arg[a] == LABEL_CHAR && arg[a + 1])
+		if (ft_check_str(arg + a + 1, LABEL_CHARS))
+			return (i + len);
+	if (ft_isnumber(arg + a))
+		return (i + len);
+	ft_printf("TODO: invalid arg error\n");
+	return (-1);
 }
 
-static bool	syntactically_valid(char *line, int line_num) // TODO: rewrite it (, is not part of arg)
+static int	save_label(char *line, int line_num, t_item *head)
 {
-	char	*str;
-	bool	is_valid;
-	bool	is_last;
 	int		i;
 
 	i = skip_wspaces(line);
-	IF_RET(!is_valid_name(line + i, line_num, &i), is_valid_label(line + i, line_num, i));
-	i += skip_wspaces(line + i);
-	is_valid = true;
-	is_last = false;
-	while (is_valid && (str = cut_word(line + i)) && !is_last)
+	while (line[i] && ft_strchr(LABEL_CHARS, line[i]))
+		i++;
+	if (line[i] != LABEL_CHAR)
 	{
-		if (!is_valid_arg(str, &is_last))
-			is_valid = false;
-		i += (is_valid ? ft_strlen(str) + 1 : 0);
-		i += (is_valid ? skip_wspaces(line + i) : 0);
-		ft_memdel((void**)&str);
+		// ft_printf("TODO: undef token error\n"); // NOTE: there's no error if no label
+		return (0);
 	}
-	if (!is_valid)
-		ft_printf("%s %s [%d:%d]\n", ERROR_M, SYNTAX_ERR, line_num, i + 1);
-	else if (!valid_separator(is_last, str, line_num, i))
-		is_valid = false;
-	return (is_valid);
+	add_item(&head, ft_strndup(line, i + 1), line_num, DEF_T);
+	return (i + 1);
+}
+
+static int	validate_command(char *line, int i, int line_num)
+{
+	char	*command;
+	int		j;
+
+	(void)line_num;
+	i += skip_wspaces(line + i);
+	command = cut_word(line + i);
+	j = 0;
+	while (command[j] && ft_strchr(LABEL_CHARS, command[j]))
+		j++;
+	if (command[j])
+		ft_printf("TODO: symbol isn't acceptable error\n");
+	i = (command[j] ? -1 : i + j);
+	free(command);
+	return (i);
+}
+
+static int	save_instruction(char *line, int i, int line_num, t_item *head)
+{
+	add_item(&head, ft_strdup(line + i), line_num, DEF_T);
+	i += skip_wspaces(line + i);
+	i = validate_command(line, i, line_num);
+	IF_RET(i < 0, -1);
+	while (true)
+	{
+		i += skip_wspaces(line + i);
+		i = validate_arg(line, i, line_num); // checks for empty arg
+		IF_RET(i < 0, -1);
+		i += skip_wspaces(line + i);
+		if (line[i] != SEPARATOR_CHAR)
+			break ;
+		i++;
+	}
+	if (line[i])
+		ft_printf("TODO: expected separator error\n");
+	return (line[i] ? -1 : i);
 }
 
 bool		extract_instructions(int fd, t_item *head)
 {
 	char	*line;
 	int		line_num;
+	int		i;
 
 	line_num = get_last(head)->line_num + 1;
 	while ((line = safe_gnl(fd)))
 	{
+		i = 0;
 		trim_comments(line);
 		if (!is_empty(line))
-		{
-			add_item(&head, line, line_num, DEF_T);
-			if (!syntactically_valid(line, line_num))
-				return (false);
-		}
-		else
-			free(line);
+			i = save_label(line, line_num, head);
+		IF_FREE_RET(i < 0, line, false);
+		if (!is_empty(line + i))
+			i = save_instruction(line, i, line_num, head);
+		IF_FREE_RET(i < 0, line, false);
+		free(line);
 		line_num++;
 	}
 	return (true);

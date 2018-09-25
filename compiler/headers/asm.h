@@ -25,14 +25,14 @@
 **	messages:
 */
 
-# define ERROR_M "ERROR:"
+# define ERROR_M "ERROR:" // TODO: remove this
 # define NOT_COMPILED_ERR "File not compiled:"
 # define READ_ERR "Can't read source file"
 # define ENDLINE_ERR "Unexpected end of input"
 # define ENDLINE_HINT "(Perhaps you forgot to end with a newline ?)"
 # define NOHDR_ERR "Expected header item ('.name' or '.comment') after line:"
 # define HDR_DOUBL "Repeatable header commands are not acceptable"
-# define QUOTE_ERR "Expected quote at"
+# define QUOTE_ERR "Expected quotation mark at"
 # define UNDEF_ERR "Undefined token at"
 # define SYNTAX_ERR "Syntax error near"
 

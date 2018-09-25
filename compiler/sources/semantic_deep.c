@@ -34,7 +34,7 @@ bool	print_err_msg(t_item *item, char **it_arr, int i, int err_num)
 
     if (err_num == -1)
         printf("Invalid instruction at token [TOKEN][%03d:001] \
-                            INSTRUCTION \"%s\"", item->line_num, it_arr[0]);
+INSTRUCTION \"%s\"\n", item->line_num, it_arr[0]);
 	else if (err_num == -2)
 		printf("Invalid parameter count for instruction %s\n", it_arr[0]);
     else if (err_num == -3)
