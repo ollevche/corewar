@@ -54,6 +54,21 @@ INSTRUCTION \"%s\"\n", item->line_num, it_arr[0]);
 	return (false);
 }
 
+char	*extract_command(char *trimmed, int *i)
+{
+	char	*line;
+	char	*split_char;
+
+	line = cut_word(trimmed);
+	split_char = ft_strchr(line, DIRECT_CHAR);
+	if (!split_char)
+		split_char = ft_strchr(line, '-');
+	if (split_char)
+		*split_char = '\0';
+	*i = ft_strlen(line);
+	return (line);
+}
+
 char	**split_line(char *trimmed)
 {
 	char	**it_arr;
@@ -62,11 +77,14 @@ char	**split_line(char *trimmed)
 	int		j;
 
 	IF_RET(!(it_arr = (char**)ft_memalloc(sizeof(char*) * (4 + 1 + 1))), 0);
-	it_arr[0] = cut_word(trimmed);
-	IF_RET(ft_strchr(it_arr[0], LABEL_CHAR), it_arr);
+	i = 0;
+	it_arr[0] = extract_command(trimmed, &i);
+	// it_arr[0] = cut_word(trimmed);
+	// IF_RET(ft_strchr(it_arr[0], LABEL_CHAR), it_arr);
 	l = trimmed;
-	l += count_nwspaces(trimmed) + 1;
-	l += skip_wspaces(l);
+	// l += count_nwspaces(trimmed) + 1;
+	// l += skip_wspaces(l);
+	l += i;
 	i = 1;
 	while (i < 5 && *l)
 	{
