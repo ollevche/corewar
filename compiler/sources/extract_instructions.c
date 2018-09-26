@@ -47,31 +47,18 @@ static int	validate_arg(char *line, int i, int line_num)
 		arg[--len] = '\0';
 	if (arg[0] == REG_CHAR)
 		if (ft_isdigit(arg[1]) && (!arg[2] || (ft_isdigit(arg[2]) && !arg[3])))
-			FREE_RET(arg, i + len);// return (i + len);
+			FREE_RET(arg, i + len);
 	a = 0;
 	if (arg[a] == DIRECT_CHAR && arg[a + 1])
 		a++;
 	if (arg[a] == LABEL_CHAR && arg[a + 1])
 		if (ft_check_str(arg + a + 1, LABEL_CHARS))
-			FREE_RET(arg, i + len);// return (i + len);
+			FREE_RET(arg, i + len);
 	if (ft_isnumber(arg + a))
-		FREE_RET(arg, i + len);// return (i + len);
+		FREE_RET(arg, i + len);
 	ft_printf("%s [%03d:%03d] ('%s')\n", INVALID_ARG, line_num, i + 1, arg);
 	free(arg);
 	return (-1);
-}
-
-static int	save_label(char *line, int line_num, t_item *head)
-{
-	int		i;
-
-	i = skip_wspaces(line);
-	while (line[i] && ft_strchr(LABEL_CHARS, line[i]))
-		i++;
-	if (line[i] != LABEL_CHAR)
-		return (0);
-	add_item(&head, ft_strndup(line, i + 1), line_num, DEF_T);
-	return (i + 1);
 }
 
 static int	validate_command(char *line, int i, int line_num)
@@ -86,7 +73,8 @@ static int	validate_command(char *line, int i, int line_num)
 	while (command[j] && ft_strchr(LABEL_CHARS, command[j]))
 		j++;
 	if (command[j])
-		ft_printf("%s [%03d:%03d] ('%s')\n", INVALID_COMM, line_num, i + j + 1, command);
+		ft_printf("%s [%03d:%03d] ('%s')\n", INVALID_COMM, line_num,
+												i + j + 1, command);
 	i = (command[j] ? -1 : i + j);
 	free(command);
 	return (i);

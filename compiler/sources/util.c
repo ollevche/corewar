@@ -20,7 +20,7 @@ char	*cut_word(char *line)
 	word = NULL;
 	len = count_nwspaces(line);
 	if (len > 0)
-		word = ft_strndup(line, len); // strndup leak on len == 0
+		word = ft_strndup(line, len);
 	return (word);
 }
 
@@ -52,7 +52,7 @@ bool	is_empty(char *line)
 	return (line[i] == 0);
 }
 
-void	trim_comments(char *line) // NOTE: check free func for the line
+void	trim_comments(char *line)
 {
 	char *comment_start;
 

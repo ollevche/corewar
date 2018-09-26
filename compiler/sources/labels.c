@@ -65,3 +65,16 @@ void	fill_label_values(t_item *items)
 		item = item->next;
 	}
 }
+
+int		save_label(char *line, int line_num, t_item *head)
+{
+	int		i;
+
+	i = skip_wspaces(line);
+	while (line[i] && ft_strchr(LABEL_CHARS, line[i]))
+		i++;
+	if (line[i] != LABEL_CHAR)
+		return (0);
+	add_item(&head, ft_strndup(line, i + 1), line_num, DEF_T);
+	return (i + 1);
+}

@@ -90,7 +90,7 @@ t_item	*get_item_by_type(int target_type, t_item *head)
 	return (NULL);
 }
 
-t_item		*get_last(t_item *head)
+t_item	*get_last(t_item *head)
 {
 	if (head)
 		while (head->next)

@@ -46,23 +46,34 @@
 # define AVAL(i)	item->args[1][i]
 # define OPT		g_optab[item->type]
 
-# define ERR_T		-1 // error value of TYPES
-# define DEF_T		0 // default value
-# define LABEL_T	17 // label
-# define COMM_T		18 // comment command
-# define NAME_T		19 // name command // og 20
+# define ERR_T		-1
+# define DEF_T		0
+# define LABEL_T	17
+# define COMM_T		18
+# define NAME_T		19
 
 typedef unsigned char	t_uchar;
 
+/*
+**	int				type; // type of the line (command / label / comment / name)
+**	char			*line; // read line from a file
+**	int				line_num; // line id
+**	t_uchar			*bytecode; // bytecode representation of line
+**	int				size;
+**	int				starts_at; // index of first byte in the whole code
+**	int				args[2][3]; // argument types[0] and values[1]
+**	char			**it_arr; // has no init value
+*/
+
 typedef struct			s_item
 {
-	int				type; // type of the line (command / label / comment / name)
-	char			*line; // read line from a file
-	int				line_num; // line id
-	t_uchar			*bytecode; // bytecode representation of line
+	int				type;
+	char			*line;
+	int				line_num;
+	t_uchar			*bytecode;
 	int				size;
-	int				starts_at; // index of first byte in the whole code
-	int				args[2][3]; // argument types[0] and values[1] // has no init value
+	int				starts_at;
+	int				args[2][3];
 	char			**it_arr;
 	struct s_item	*next;
 }						t_item;
@@ -119,13 +130,15 @@ void					calculate_size(t_item *item);
 */
 
 bool					semantically_valid(t_item *item_h);
-int						get_arg_type(t_item *item, char *l, int i, bool validate);
+int						get_arg_type(t_item *item, char *l, int i,
+											bool validate);
 
 /*
 **	deep_semantic.c
 */
 
-bool					print_err_msg(t_item *item, char **it_arr, int i, int err_num);
+bool					print_err_msg(t_item *item, char **it_arr, int i,
+											int err_num);
 void					fill_values(t_item *item);
 void					fill_label_values(t_item *items);
 char					**split_line(char *trimmed);
@@ -135,6 +148,7 @@ char					**split_line(char *trimmed);
 */
 
 bool					check_labels_existance(t_item *items);
+int						save_label(char *line, int line_num, t_item *head);
 
 /*
 **	writing.c

@@ -79,7 +79,7 @@ static void	set_codage(t_item *item)
 	{
 		type = ARG_TYPES[i];
 		if (type == T_LAB_DIR || type == T_LAB_IND)
-			type /= 4; // thx, T_LAB
+			type /= 4;
 		type == T_IND ? type = IND_CODE : 0;
 		codage |= type << (6 - i * 2);
 		i++;
@@ -121,7 +121,8 @@ static void	set_args(t_item *item)
 	i = 0;
 	while (i < 3 && ARG_TYPES[i])
 	{
-		pos += write_arg(ARG_TYPES[i], ARG_VALUES[i], CODE + pos, OPT.label_size);
+		pos += write_arg(ARG_TYPES[i], ARG_VALUES[i],
+							CODE + pos, OPT.label_size);
 		i++;
 	}
 }
