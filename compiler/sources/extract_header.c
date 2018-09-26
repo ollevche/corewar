@@ -112,26 +112,26 @@ t_item		*extract_header(int fd)
 {
 	t_item	*head;
 	char	*line;
-	int		last_read;
+	int		last_rd;
 	int		line_num;
 
 	head = NULL;
 	line_num = 0;
-	last_read = DEF_T;
+	last_rd = DEF_T;
 	while ((line = safe_gnl(fd)) && ++line_num)
 	{
 		trim_comments(line);
 		if (!is_empty(line))
 		{
-			last_read = extract_command(fd, &head, &line, &line_num);
-			if (last_read == DEF_T || last_read == ERR_T || !has_doublings(head))
+			last_rd = extract_command(fd, &head, &line, &line_num);
+			if (last_rd == DEF_T || last_rd == ERR_T || !has_doublings(head))
 				break ;
 		}
 		free(line);
 		if (HAS_ITEM(NAME_T, head) && HAS_ITEM(COMM_T, head))
 			return (head);
 	}
-	if (last_read != ERR_T)
+	if (last_rd != ERR_T)
 		ft_printf("%s %d\n", NOHDR_ERR, line_num);
 	free(line);
 	SAFE_RET(&head, NULL); // it's error (no name or comment)
