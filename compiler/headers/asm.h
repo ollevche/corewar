@@ -123,6 +123,11 @@ bool					extract_instructions(int fd, t_item *head);
 */
 
 bool					to_bytecode(t_item *head);
+
+/*
+**	calculate_size.c
+*/
+
 void					calculate_size(t_item *item);
 
 /*
