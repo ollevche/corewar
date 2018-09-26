@@ -12,26 +12,6 @@
 
 #include "asm.h"
 
-/*
-**
-**	notes:
-**		permits non .s files
-**		displays usage if no files provided
-**		doesn't permit no code
-**		doesn't permit no name or no comment
-**		last line has to be empty ("\n")
-**		permits "" as name or comment
-**		checks name and comment by size
-**		permits separating words by space and tab (no matter len, 0 including)
-**		rule: one item per line
-**		empty line is correct
-**		doesn't check for code size (10k lines of code is ok)
-**
-**	bonus:
-**		multiple files at a time
-**
-*/
-
 int g_codesize = 0;
 
 const t_op g_optab[18] =
@@ -62,15 +42,6 @@ const t_op g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0, false}
 };
 
-// static void	print_file(t_item *item)
-// {
-// 	while (item)
-// 	{
-// 		ft_printf("%.3d\t%s\n", item->line_num, item->line);
-// 		item = item->next;
-// 	}
-// }
-
 bool		compile(char *filename)
 {
 	t_item	*items;
@@ -78,7 +49,6 @@ bool		compile(char *filename)
 	items = read_sfile(filename);
 	if (!items)
 		SAFE_RET(&items, false);
-	// print_file(items); // DEL
 	if (!semantically_valid(items))
 		SAFE_RET(&items, false);
 	calculate_size(items);
@@ -103,6 +73,5 @@ int			main(int argc, char **args)
 	}
 	if (i == 1)
 		ft_printf("USAGE:\n\t./asm filename filename1 filename2\n");
-	system("leaks asm"); // DEL
 	return (0);
 }
