@@ -44,6 +44,7 @@ static int		set_flag(char **args, int *i, t_arg *arg, t_champ *head)
 		if (set_numerical(args, i, arg, false) == VALID_FLAG)
 			if (!get_champ_by_id(head, arg->champ_id))
 				return (VALID_FLAG);
+		ft_printf("Id '%d' is already taken by another champ\n", arg->champ_id);
 		return (INVALID_FLAG);
 	}
 	else if (!ft_strcmp(args[*i], "-v"))
