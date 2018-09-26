@@ -54,19 +54,6 @@ INSTRUCTION \"%s\"\n", item->line_num, it_arr[0]);
 	return (false);
 }
 
-char	*ft_strtrim_free(char *str)
-{
-	char	*trimmed;
-
-	if (!str)
-		return (NULL);
-	trimmed = ft_strtrim(str);
-	free(str);
-	if (!trimmed)
-		return (NULL);
-	return (trimmed);
-}
-
 char	**split_line(char *trimmed)
 {
 	char	**it_arr;
