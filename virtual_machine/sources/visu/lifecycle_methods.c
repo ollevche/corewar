@@ -21,6 +21,7 @@ static int	visu_initializing(
 		return (-1);
 	if (!initscr())
 		return (0);
+	raw();
 	default_settings(vdata, arg, champs, game);
 	init_color(COLOR_WHITE, 400, 400, 400);
 	scrolling_controls(vdata, 69, 197);

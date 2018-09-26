@@ -26,7 +26,7 @@ static void	rerender_console_clock(t_vdata *vdata)
 
 static void	rerender_console_option_1(t_vdata *vdata)
 {
-	system("ft_printf \'\033[8;78;316t\'");
+	system("printf \'\033[8;78;316t\'");
 	vdata->console.width = 68;
 	wresize(vdata->console.window, 64, 68);
 	mvwin(vdata->console.window, 3, 247);
