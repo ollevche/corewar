@@ -35,7 +35,7 @@
 # define UNDEF_ERR "Syntax error: undefined token at"
 # define NO_ARG_ERR "Syntax error: expected argument after"
 # define INVALID_ARG "Syntax error: invalid argument at"
-# define INVALID_COMM "Syntax error: invalid command character at"
+# define INVALID_COMM "Syntax error: invalid character at"
 # define NO_SEPARATOR "Syntax error: expected separator after"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
