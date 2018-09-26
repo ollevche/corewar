@@ -18,15 +18,15 @@
 
 static int	extract_str_in_cycle(char **line, int *ind, char **str)
 {
-	int len;
+	int		len;
 
 	len = 0;
-	while ((*line)[*ind + len] && (*line)[*ind + len] != '"') // end of line or quote
+	while ((*line)[*ind + len] && (*line)[*ind + len] != '"')
 		len++;
 	if (!(*str = ft_strjoinfree(*str, ft_strndup(*line + *ind, len))))
 		return (0);
 	*ind += len;
-	if ((*line)[*ind] == '"') // quote - break; end of line - read next line
+	if ((*line)[*ind] == '"')
 		return (2);
 	free(*line);
 	return (1);
@@ -37,17 +37,17 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 	char	*str;
 	int		in_cycle;
 
-	if ((*line)[ind] != '"' && show_err(QUOTE_ERR, *line_num, ind, ""))
+	if ((*line)[ind] != '"' && show_err(QUOTE_ERR, *line_num, ind, 0))
 		return (NULL);
-	if (ind++ && !(str = ft_strnew(0))) //ind++; // at quote
+	if (ind++ && !(str = ft_strnew(0)))
 		return (NULL);
-	while ((*line)[ind] != '"') // all quotes are read
+	while ((*line)[ind] != '"')
 	{
 		if ((in_cycle = extract_str_in_cycle(&(*line), &ind, &str)) == 0)
 			return (NULL);
 		else if (in_cycle == 2)
 			break ;
-		if (!(*line = safe_gnl(fd)) && show_err(QUOTE_ERR, *line_num, ind, str)) // there's no lines (quote still opened)
+		if (!(*line = safe_gnl(fd)) && show_err(QUOTE_ERR, *line_num, ind, 0))
 			return (NULL);
 		(*line_num)++;
 		ind = 0;
@@ -56,14 +56,14 @@ static char	*extract_str(int fd, char **line, int *line_num, int ind)
 	}
 	ind += skip_wspaces(*line + ind + 1) + 1;
 	trim_comments(*line + ind);
-	if ((*line)[ind] && show_err(UNDEF_ERR, *line_num, ind, str)) // check for an empty leftover of the line
+	if ((*line)[ind] && show_err(UNDEF_ERR, *line_num, ind, &str))
 		return (NULL);
 	return (str);
 }
 
 static int	extract_command(int fd, t_item **head, char **line, int *line_num)
 {
-	int 	ind;
+	int		ind;
 	int		type;
 	char	*command;
 	char	*str;
@@ -76,13 +76,13 @@ static int	extract_command(int fd, t_item **head, char **line, int *line_num)
 		type = COMM_T;
 	else
 	{
-		show_err(UNDEF_ERR, *line_num, ind, command);
+		show_err(UNDEF_ERR, *line_num, ind + 1, &command);
 		return (ERR_T);
 	}
 	ind += ft_strlen(command);
 	free(command);
 	ind += skip_wspaces(*line + ind);
-	str = extract_str(fd, line, line_num, ind); // prints errors
+	str = extract_str(fd, line, line_num, ind);
 	if (!str || !add_item(head, str, *line_num, type))
 		return (ERR_T);
 	return (type);
@@ -118,9 +118,8 @@ t_item		*extract_header(int fd)
 	head = NULL;
 	line_num = 0;
 	last_read = DEF_T;
-	while ((line = safe_gnl(fd)))
+	while ((line = safe_gnl(fd)) && ++line_num)
 	{
-		line_num++;
 		trim_comments(line);
 		if (!is_empty(line))
 		{

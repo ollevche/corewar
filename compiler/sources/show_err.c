@@ -12,10 +12,14 @@
 
 #include "asm.h"
 
-int	show_err(char *err_type, int line_num, int ind, char *str)
+int	show_err(char *err_type, int line_num, int ind, char **str)
 {
-	ft_printf("%s [%03d:%03d]\n", err_type, line_num, ind + 1);
-	if (str[0] != '\0')
-		free(str);
+	if (str != NULL)
+	{
+		ft_printf("%s [%03d:%03d] ('%s')\n", UNDEF_ERR, line_num, ind + 1, *str);
+		free(*str);
+	}
+	else
+		ft_printf("%s [%03d:%03d]\n", err_type, line_num, ind + 1);
 	return (1);
 }
