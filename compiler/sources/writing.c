@@ -58,8 +58,8 @@ bool		write_corfile(char *filename, t_item *items)
 
 	updated_fname = add_extension(filename);
 	ft_printf("Writing output program to %s\n", updated_fname);
-	free(updated_fname);
 	fd = open(updated_fname, O_WRONLY | O_TRUNC | O_CREAT);
+	free(updated_fname);
 	IF_RET(!fd, false);
 	items = write_header(fd, items);
 	while (items)
