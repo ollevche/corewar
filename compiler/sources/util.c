@@ -12,6 +12,8 @@
 
 #include "asm.h"
 
+#define IS_COMMENT(C) (C == COMMENT_CHAR1 || C == COMMENT_CHAR2)
+
 char	*cut_word(char *line)
 {
 	int		len;
@@ -54,14 +56,19 @@ bool	is_empty(char *line)
 
 void	trim_comments(char *line)
 {
-	char *comment_start;
+	char	*comstart;
 
-	if (!line)
-		return ;
-	comment_start = ft_strchr(line, COMMENT_CHAR1);
-	if (comment_start)
-		*comment_start = '\0';
-	comment_start = ft_strchr(line, COMMENT_CHAR2);
-	if (comment_start)
-		*comment_start = '\0';
+	comstart = line;
+	while (*comstart && *comstart != '"' && !IS_COMMENT(*comstart))
+		comstart++;
+	if (*comstart == '"')
+	{
+		comstart++;
+		while (*comstart && *comstart != '"')
+			comstart++;
+	}
+	while (*comstart && !IS_COMMENT(*comstart))
+		comstart++;
+	if (IS_COMMENT(*comstart))
+		*comstart = '\0';
 }
