@@ -31,7 +31,7 @@
 # define RET_CHECK(X, R) if (!(X)) return (R);
 # define IS_REG(r) (r > 0 && r <= REG_NUMBER)
 # define JMP (lpc - PC)
-# define CHK_MV(x) if (!x) {update_position(carry, JMP + 1); return (1);} // OG 0
+# define CHK_MV(x) if (!x) {update_position(carry, JMP + 1); return (1);}
 # define MAPVAL(p, n) MAP[move_pc(p, n)]
 # define OP_ATYP(c, i)	g_optab[c].params_type[i]
 
@@ -58,15 +58,24 @@
 typedef unsigned char	t_uchar;
 typedef unsigned int	t_uint;
 
+/*
+**	int				pc; // current position on the map
+**	bool			carry; // was last op successful
+**	int				inactive; // inactive for N cycles required by op
+**	t_uchar			op_code; // current operation code
+**	int				last_live; // cycle, when last live was called
+**	int				champ; // 'father' champ
+*/
+
 typedef struct			s_carry
 {
 	t_uint			regs[REG_NUMBER];
-	int				pc; // current position on the map
-	bool			carry; // was last op successful
-	int				inactive; // inactive for N cycles required by op
-	t_uchar			op_code; // current operation code
-	int				last_live; // cycle, when last live was called
-	int				champ; // 'father' champ
+	int				pc;
+	bool			carry;
+	int				inactive;
+	t_uchar			op_code;
+	int				last_live;
+	int				champ;
 	struct s_carry	*next;
 }						t_carry;
 
@@ -91,19 +100,28 @@ typedef struct			s_arg
 
 /*
 **	game state info
+**
+**	int		spot_map[MEM_SIZE]; // a node stores owners id
+**	int		cycle;
+**	int		period_lives; // number of live calls in the last period
+**	int		cycle_to_die;
+**	int		last_ctd; // last change of cycle_to_die
+**	t_champ	*last_alive;
+**	t_carry	*carries; // all of the carries
+**	int		carry_num; // number of carries in a session
 */
 
 typedef struct			s_session
 {
 	t_uchar	map[MEM_SIZE];
-	int		spot_map[MEM_SIZE]; // a node stores owners id
+	int		spot_map[MEM_SIZE];
 	int		cycle;
-	int		period_lives; // number of live calls in the last period
+	int		period_lives;
 	int		cycle_to_die;
-	int		last_ctd; // last change of cycle_to_die
+	int		last_ctd;
 	t_champ	*last_alive;
-	t_carry	*carries; // all of the carries
-	int		carry_num; // number of carries in a session
+	t_carry	*carries;
+	int		carry_num;
 	int		total_champs;
 	t_arg	*arg;
 }						t_session;

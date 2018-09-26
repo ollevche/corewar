@@ -50,7 +50,6 @@ void		terminate(t_champ **champs)
 	free_champs(champs);
 	if (errno)
 		perror("Default error");
-	// system("leaks corewar"); // DEL
 	exit(EXIT_FAILURE);
 }
 
@@ -62,27 +61,21 @@ static void	init_arg(t_arg *arg)
 	arg->champ_id = -1;
 }
 
-int			main_og(int argc, char **args)
+int			main(int argc, char **args)
 {
 	t_champ	*champs;
 	t_champ	*winner;
 	t_arg	arg;
 
 	init_arg(&arg);
-	champs = read_input(argc, args, &arg); // exits
+	champs = read_input(argc, args, &arg);
 	if (!champs)
-		display_usage(); // exits
+		display_usage();
 	display_contestants(champs, &arg);
 	winner = play_the_game(champs, &arg);
 	if (!winner)
-		terminate(&champs); // exits
+		terminate(&champs);
 	display_winner(winner, &arg);
 	free_champs(&champs);
 	return (0);
-}
-
-int main(int argc, char **args) // DEL
-{
-	main_og(argc, args);
-	// system("leaks corewar");
 }

@@ -47,7 +47,7 @@ void		update_opcode(t_session *game, t_carry *carry)
 		carry->op_code = DEF_OPCODE;
 }
 
-int				count_champs(t_champ *champs)
+int			count_champs(t_champ *champs)
 {
 	int champs_count;
 

@@ -26,7 +26,7 @@ void	terminate();
 */
 
 void	display_contestants(t_champ *champs, t_arg *arg);
-void    display_winner(t_champ *winner, t_arg *arg);
+void	display_winner(t_champ *winner, t_arg *arg);
 void	display_usage();
 void	log_cycles(t_session *game, t_arg *arg, bool game_over);
 void	log_operation(t_session *game, int new_pc, int old_pc);
@@ -86,7 +86,7 @@ t_champ	*get_last_champ(t_champ *head);
 
 void	free_session(t_session **game);
 void	free_champs(t_champ **champs);
-void    free_carries(t_carry **carries);
+void	free_carries(t_carry **carries);
 
 /*
 **  operations ▽
@@ -115,14 +115,14 @@ int		set_arg_types(int coding_byte, int *args, int size);
 **  base_ops.c ▽
 */
 
-bool    base_fork(t_session *game, t_carry *carry, bool idx);
+bool	base_fork(t_session *game, t_carry *carry, bool idx);
 
 /*
 **	op_tools.c ▽
 */
 
 bool	set_arg_values(int args[2][4], int *lpc, t_session *game, int op_code);
-int 	get_value_by_arg(t_session *game, int arg, int lpc, int op_code);
+int		get_value_by_arg(t_session *game, int arg, int lpc, int op_code);
 bool	check_reg(int *value, t_carry *carry, int jmp);
 
 /*
@@ -130,7 +130,7 @@ bool	check_reg(int *value, t_carry *carry, int jmp);
 */
 
 bool	check_cbyte(int args[2][4], int op_code, int size);
-void    write_to_map(t_session *game, int pos, int value, int champ_id);
+void	write_to_map(t_session *game, int pos, int value, int champ_id);
 t_uint	read_int(t_session *game, int lpc, int n_bytes, bool plus_one);
 
 #endif
