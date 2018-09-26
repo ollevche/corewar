@@ -184,4 +184,10 @@ int						count_nwspaces(char *line);
 bool					is_empty(char *line);
 void					trim_comments(char *line);
 
+/*
+**	header_err.c
+*/
+
+int	show_err(char *err_type, int line_num, int ind, char *str);
+
 #endif

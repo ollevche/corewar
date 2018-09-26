@@ -16,51 +16,48 @@
 
 // TODO: refactor the func (3 star exercise)
 
+static int	extract_str_in_cycle(char **line, int *ind, char **str)
+{
+	int len;
+
+	len = 0;
+	while ((*line)[*ind + len] && (*line)[*ind + len] != '"') // end of line or quote
+		len++;
+	if (!(*str = ft_strjoinfree(*str, ft_strndup(*line + *ind, len))))
+		return (0);
+	*ind += len;
+	if ((*line)[*ind] == '"') // quote - break; end of line - read next line
+		return (2);
+	free(*line);
+	return (1);
+}
+
 static char	*extract_str(int fd, char **line, int *line_num, int ind)
 {
-	int		len;
 	char	*str;
+	int		in_cycle;
 
-	if ((*line)[ind] != '"')
-	{
-		ft_printf("%s [%03d:%03d]\n", QUOTE_ERR, *line_num, ind + 1);
+	if ((*line)[ind] != '"' && show_err(QUOTE_ERR, *line_num, ind, ""))
 		return (NULL);
-	}
-	ind++; // at quote
-	if (!(str = ft_strnew(0)))
+	if (ind++ && !(str = ft_strnew(0))) //ind++; // at quote
 		return (NULL);
 	while ((*line)[ind] != '"') // all quotes are read
 	{
-		len = 0;
-		while ((*line)[ind + len] && (*line)[ind + len] != '"') // end of line or quote
-			len++;
-		if (!(str = ft_strjoinfree(str, ft_strndup(*line + ind, len))))
+		if ((in_cycle = extract_str_in_cycle(&(*line), &ind, &str)) == 0)
 			return (NULL);
-		ind += len;
-		if ((*line)[ind] == '"') // quote - break; end of line - read next line
+		else if (in_cycle == 2)
 			break ;
-		free(*line);
-		if (!(*line = safe_gnl(fd))) // there's no lines (quote still opened)
-		{
-			ft_printf("%s [%03d:%03d]\n", QUOTE_ERR, *line_num, ind + 1);
-			free(str);
+		if (!(*line = safe_gnl(fd)) && show_err(QUOTE_ERR, *line_num, ind, str)) // there's no lines (quote still opened)
 			return (NULL);
-		}
 		(*line_num)++;
 		ind = 0;
-		str = ft_strjoin_nfree(str, "\n", 0);
-		if (!str)
+		if ((str = ft_strjoin_nfree(str, "\n", 0)) == NULL)
 			return (NULL);
 	}
-	ind++; // at the next char after the quote
-	ind += skip_wspaces(*line + ind);
+	ind += skip_wspaces(*line + ind + 1) + 1;
 	trim_comments(*line + ind);
-	if ((*line)[ind]) // check for an empty leftover of the line
-	{
-		ft_printf("%s [%03d:%03d] ('%s')\n", UNDEF_ERR, *line_num, ind + 1, str);
-		free(str);
+	if ((*line)[ind] && show_err(UNDEF_ERR, *line_num, ind, str)) // check for an empty leftover of the line
 		return (NULL);
-	}
 	return (str);
 }
 
@@ -79,8 +76,7 @@ static int	extract_command(int fd, t_item **head, char **line, int *line_num)
 		type = COMM_T;
 	else
 	{
-		ft_printf("%s [%03d:%03d] ('%s')\n", UNDEF_ERR, *line_num, ind + 1, command);
-		free(command);
+		show_err(UNDEF_ERR, *line_num, ind, command);
 		return (ERR_T);
 	}
 	ind += ft_strlen(command);
