@@ -80,7 +80,7 @@ void		terminal_size_listener(
 		vdata->last_win_lines_size != LINES)
 	{
 		if (!vdata->console.opened)
-			system("ft_printf \'\033[8;78;245t\'");
+			system("printf \'\033[8;78;245t\'");
 		vdata->last_win_cols_size = COLS;
 		vdata->last_win_lines_size = LINES;
 		refresh();

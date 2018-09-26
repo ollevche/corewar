@@ -46,12 +46,12 @@ static void	console_opening(t_vdata *vdata)
 		{
 			vdata->console.active = 0;
 			vdata->console.opened = 0;
-			system("ft_printf \'\033[8;78;245t\'");
+			system("printf \'\033[8;78;245t\'");
 		}
 		else
 		{
 			vdata->console.opened = 1;
-			system("ft_printf \'\033[8;78;316t\'");
+			system("printf \'\033[8;78;316t\'");
 		}
 	}
 }

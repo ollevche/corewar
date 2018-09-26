@@ -92,5 +92,5 @@ void		default_settings(
 	box(vdata->left_window, 0, 0);
 	box(vdata->right_window, 0, 0);
 	if (COLS != W_WIDTH || LINES != W_HEIGHT)
-		system("ft_printf \'\033[8;78;245t\'");
+		system("printf \'\033[8;78;245t\'");
 }

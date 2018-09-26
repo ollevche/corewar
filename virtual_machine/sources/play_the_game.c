@@ -114,7 +114,7 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 	game_over = false;
 	while (!game_over)
 	{
-		if (!visualizing(&vdata, game, champs, arg)) // TODO: test this
+		if (!visualizing(&vdata, game, champs, arg)) // TODO or not TODO: test this
 			break ;
 		game_over = game->carry_num < 1 || game->cycle_to_die < 0;
 		log_cycles(game, arg, game_over);
@@ -125,7 +125,6 @@ t_champ		*play_the_game(t_champ *champs, t_arg *arg)
 			break ;
 	}
 	winner = game->last_alive ? game->last_alive : winner;
-	// visualizing(&vdata, game, champs, arg);
 	free_session(&game);
 	return (winner);
 }
