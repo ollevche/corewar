@@ -38,6 +38,8 @@
 # define INVALID_COMM "Syntax error: invalid character at"
 # define NO_SEPARATOR "Syntax error: expected separator after"
 # define NO_INSTRUCTIONS "Error: File has no instructions"
+# define TOLO_NAME "Champion name too long: max length 128, champ length"
+# define TOLO_COMMENT "Champion comment too long max length 2048, champ length"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);

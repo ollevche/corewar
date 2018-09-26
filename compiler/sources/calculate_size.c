@@ -49,6 +49,23 @@ static int	get_size(t_item *item)
 	return (size);
 }
 
+static bool	check_length(t_item *item)
+{
+	int		size;
+	bool	is_name;
+
+	is_name = item->type == NAME_T;
+	if (!is_name && item->type != COMM_T)
+		return (true);
+	size = ft_strlen(item->line);
+	if (size >= (is_name ? PROG_NAME_LENGTH : COMMENT_LENGTH))
+	{
+		ft_printf("%s %d\n", (is_name ? TOLO_NAME : TOLO_COMMENT), size);
+		return (false);
+	}
+	return (true);
+}
+
 bool		calculate_size(t_item *item)
 {
 	int		total_size;
@@ -65,6 +82,8 @@ bool		calculate_size(t_item *item)
 		total_size += SIZE;
 		if (TYPE > 0 && TYPE < 17)
 			g_codesize += SIZE;
+		if (!check_length(item))
+			return (false);
 		item = item->next;
 	}
 	if (!instructions)
