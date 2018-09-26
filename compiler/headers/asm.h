@@ -37,6 +37,7 @@
 # define INVALID_ARG "Syntax error: invalid argument at"
 # define INVALID_COMM "Syntax error: invalid character at"
 # define NO_SEPARATOR "Syntax error: expected separator after"
+# define NO_INSTRUCTIONS "Error: File has no instructions"
 
 # define SAFE_RET(I, R) { free_items(I); return (R); }
 # define IF_RET(X, R) if (X) return (R);
@@ -128,7 +129,7 @@ bool					to_bytecode(t_item *head);
 **	calculate_size.c
 */
 
-void					calculate_size(t_item *item);
+bool					calculate_size(t_item *item);
 
 /*
 **	semantic.c

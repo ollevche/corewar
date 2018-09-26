@@ -51,7 +51,8 @@ bool		compile(char *filename)
 		SAFE_RET(&items, false);
 	if (!semantically_valid(items))
 		SAFE_RET(&items, false);
-	calculate_size(items);
+	if (!calculate_size(items))
+		SAFE_RET(&items, false);
 	fill_label_values(items);
 	if (!to_bytecode(items))
 		SAFE_RET(&items, false);

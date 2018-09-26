@@ -49,13 +49,17 @@ static int	get_size(t_item *item)
 	return (size);
 }
 
-void		calculate_size(t_item *item)
+bool		calculate_size(t_item *item)
 {
 	int		total_size;
+	int		instructions;
 
 	total_size = 0;
+	instructions = 0;
 	while (item)
 	{
+		if (item->type > 0 && item->type < 18)
+			instructions++;
 		SIZE = get_size(item);
 		POS = total_size;
 		total_size += SIZE;
@@ -63,4 +67,7 @@ void		calculate_size(t_item *item)
 			g_codesize += SIZE;
 		item = item->next;
 	}
+	if (!instructions)
+		ft_printf("%s\n", NO_INSTRUCTIONS);
+	return (instructions > 0);
 }

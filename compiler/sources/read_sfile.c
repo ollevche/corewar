@@ -17,9 +17,16 @@
 static bool		check_endnl(int fd)
 {
 	char	c;
+	int		i;
 
-	lseek(fd, -1, SEEK_END);
-	read(fd, &c, 1);
+	i = -1;
+	c = ' ';
+	while (IS_WSPACE(c))
+	{
+		lseek(fd, i, SEEK_END);
+		read(fd, &c, 1);
+		i--;
+	}
 	if (c == '\n')
 		return (true);
 	ft_printf("%s %s\n", ENDLINE_ERR, ENDLINE_HINT);
