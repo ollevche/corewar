@@ -64,6 +64,7 @@ static int	validate_arg(char *line, int i, int line_num)
 static int	validate_command(char *line, int i, int line_num)
 {
 	char	*command;
+	bool	is_invalid;
 	int		j;
 
 	(void)line_num;
@@ -72,10 +73,11 @@ static int	validate_command(char *line, int i, int line_num)
 	j = 0;
 	while (command[j] && ft_strchr(LABEL_CHARS, command[j]))
 		j++;
-	if (command[j])
+	is_invalid = command[j] && command[j] != '-' && command[j] != '%';
+	if (is_invalid)
 		ft_printf("%s [%03d:%03d] ('%s')\n", INVALID_COMM, line_num,
 												i + j + 1, command);
-	i = (command[j] ? -1 : i + j);
+	i = (is_invalid ? -1 : i + j);
 	free(command);
 	return (i);
 }
