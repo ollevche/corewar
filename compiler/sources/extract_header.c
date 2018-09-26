@@ -12,9 +12,7 @@
 
 #include "asm.h"
 
-#define	HAS_ITEM(T, H) (get_item_by_type(T, H) ? true : false)
-
-// TODO: refactor the func (3 star exercise)
+#define HAS_ITEM(T, H) (get_item_by_type(T, H) ? true : false)
 
 static int	extract_str_in_cycle(char **line, int *ind, char **str)
 {
@@ -134,5 +132,5 @@ t_item		*extract_header(int fd)
 	if (last_rd != ERR_T)
 		ft_printf("%s %d\n", NOHDR_ERR, line_num);
 	free(line);
-	SAFE_RET(&head, NULL); // it's error (no name or comment)
+	SAFE_RET(&head, NULL);
 }

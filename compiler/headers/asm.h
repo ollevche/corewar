@@ -188,6 +188,7 @@ void					trim_comments(char *line);
 **	header_err.c
 */
 
-int	show_err(char *err_type, int line_num, int ind, char **str);
+int						show_err(char *err_type, int line_num,
+								int ind, char **str);
 
 #endif

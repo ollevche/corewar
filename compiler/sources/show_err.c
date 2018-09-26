@@ -16,7 +16,8 @@ int	show_err(char *err_type, int line_num, int ind, char **str)
 {
 	if (str != NULL)
 	{
-		ft_printf("%s [%03d:%03d] ('%s')\n", UNDEF_ERR, line_num, ind + 1, *str);
+		ft_printf("%s [%03d:%03d] ('%s')\n", UNDEF_ERR, line_num,
+			ind + 1, *str);
 		free(*str);
 	}
 	else
