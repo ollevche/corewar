@@ -62,14 +62,14 @@ const t_op g_optab[18] =
 	{"", 0, {0}, 0, 0, "", 0, 0, false}
 };
 
-static void	print_file(t_item *item)
-{
-	while (item)
-	{
-		ft_printf("%.3d\t%s\n", item->line_num, item->line);
-		item = item->next;
-	}
-}
+// static void	print_file(t_item *item)
+// {
+// 	while (item)
+// 	{
+// 		ft_printf("%.3d\t%s\n", item->line_num, item->line);
+// 		item = item->next;
+// 	}
+// }
 
 bool		compile(char *filename)
 {
@@ -78,7 +78,7 @@ bool		compile(char *filename)
 	items = read_sfile(filename);
 	if (!items)
 		SAFE_RET(&items, false);
-	print_file(items); // DEL
+	// print_file(items); // DEL
 	if (!semantically_valid(items))
 		SAFE_RET(&items, false);
 	calculate_size(items);

@@ -63,7 +63,7 @@ typedef struct			s_item
 	int				size;
 	int				starts_at; // index of first byte in the whole code
 	int				args[2][3]; // argument types[0] and values[1] // has no init value
-	char			**it_arr; // has no init value
+	char			**it_arr;
 	struct s_item	*next;
 }						t_item;
 
@@ -126,7 +126,7 @@ int						get_arg_type(t_item *item, char *l, int i, bool validate);
 */
 
 bool					print_err_msg(t_item *item, char **it_arr, int i, int err_num);
-void					fill_values(t_item *item, char **it_arr);
+void					fill_values(t_item *item);
 void					fill_label_values(t_item *items);
 char					**split_line(char *trimmed);
 

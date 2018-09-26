@@ -12,7 +12,6 @@
 
 #include "asm.h"
 
-
 t_item	*find_label(t_item *items, char *label_name)
 {
 	t_item	*item;
@@ -22,7 +21,7 @@ t_item	*find_label(t_item *items, char *label_name)
 	actual_name = label_name + (*label_name == '%' ? 2 : 1);
 	while (item)
 	{
-		if (item->type == LABEL_T && !ft_strequ(actual_name, item->line))
+		if (item->type == LABEL_T && !ft_strequ(actual_name, item->it_arr[0]))
 			return (item);
 		item = item->next;
 	}

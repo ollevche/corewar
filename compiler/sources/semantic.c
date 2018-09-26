@@ -12,23 +12,22 @@
 
 #include "asm.h"
 
+#define IT_ARR item->it_arr
+
 int		is_command(char *line)
 {
 	int i;
-	int	ret;
 
 	i = 0;
-	ret = 0;
-	while (i < 16)
+	while (i <= 16)
 	{
 		if (!ft_strequ(line, g_optab[i].name))
-			ret = g_optab[i].id;
+			return (g_optab[i].id);
 		i++;
 	}
 	if (ft_strchr(line, LABEL_CHAR))
-		ret = LABEL_T;
-	free(line);
-	return (ret);
+		return (LABEL_T);
+	return (0);
 }
 
 int		analyze_arg(t_item *item, char *l, int i, bool validate)
@@ -77,36 +76,30 @@ int		get_arg_type(t_item *item, char *l, int i, bool validate)
 	return (analyze_arg(item, l, i, validate));
 }
 
-bool	validate_line(t_item *item, char ***it_arr)
+bool	validate_line(t_item *item)
 {
 	char	*trimmed;
 	int		i;
 
-	trimmed = ft_strtrim(item->line);
-	*it_arr = split_line(trimmed);
+	IF_RET(!(trimmed = ft_strtrim(item->line)), false);
+	IF_RET(!(IT_ARR = split_line(trimmed)), false);
 	free(trimmed);
-
-	for (int i = 0; i < 5; i++) //
-		if ((*it_arr)[i]) //
-			printf("|%s|\n", (*it_arr)[i]); //
-	printf("\n"); //
-
 	i = 1;
-	if (!(item->type = is_command((*it_arr)[0])))
-		return (print_err_msg(item, *it_arr, i, -1));
+	if (!(item->type = is_command(IT_ARR[0])))
+		return (print_err_msg(item, IT_ARR, i, -1));
 	if (item->type == LABEL_T)
 	{
-		item->line[ft_strlen(item->line) - 1] = '\0';
+		IT_ARR[0][ft_strlen(IT_ARR[0]) - 1] = '\0';
+		IF_RET(!*IT_ARR[0], print_err_msg(item, IT_ARR, i, -5));
 		return (true);
 	}
-	if ((*it_arr)[OPT.nb_params] == NULL)
-		return (print_err_msg(item, *it_arr, i, -2));
+	IF_RET(!IT_ARR[OPT.nb_params], print_err_msg(item, IT_ARR, i, -2));
 	while (i <= OPT.nb_params + 1)
 	{
-		if (!(*it_arr)[i] && i > OPT.nb_params)
+		if (!IT_ARR[i] && i > OPT.nb_params)
 			return (true);
-		if (!(ATYP(i - 1) = get_arg_type(item, (*it_arr)[i], i, true)))
-			return (print_err_msg(item, *it_arr, i, -3));
+		if (!(ATYP(i - 1) = get_arg_type(item, IT_ARR[i], i, true)))
+			return (print_err_msg(item, IT_ARR, i, -3));
 		i++;
 	}
 	return (true);
@@ -115,33 +108,18 @@ bool	validate_line(t_item *item, char ***it_arr)
 bool	semantically_valid(t_item *items)
 {
 	t_item	*item;
-	char	**it_arr;
 
 	item = items;
 	while (item && item->type != 0)
 		item = item->next;
 	while (item)
 	{
-		it_arr = 0;
-		if (!validate_line(item, &it_arr))
-		{
-			// free it_arr here
-			// printf("semantic error\n"); //
+		if (!validate_line(item))
 			return (false);
-		}
-		item->it_arr = it_arr;
-		printf("OPCODE: %s\n", OPT.name); //
-		printf("TYPS: "); //
-		for (int i = 0; i < 3; i++) //
-			printf("%d ", ATYP(i)); //
-		printf("\n"); //
-		fill_values(item, it_arr);
-		printf("VALS: "); //
-		for (int i = 0; i < 3; i++) //
-			printf("%d ", AVAL(i)); //
-		printf("\n-------------------------\n"); //
+		fill_values(item);
 		item = item->next;
 	}
+	item = items;
 	if (!check_labels_existance(items))
 		return (false);
 	return (true);
