@@ -23,13 +23,15 @@ static t_uchar	*read_code(int fd, char *filename, t_uint code_len)
 	RET_CHECK(read_ret >= 0, NULL);
 	if ((t_uint)read_ret != code_len)
 	{
-		ft_printf("Error: File %s has a code size that differ \
+		if (!errno)
+			ft_printf("Error: File %s has a code size that differ \
 from what its header says\n", filename);
 		return (NULL);
 	}
 	if (code_len > CHAMP_MAX_SIZE)
 	{
-		ft_printf("Error: File %s has too large a code \
+		if (!errno)
+			ft_printf("Error: File %s has too large a code \
 (%u bytes > %d bytes)\n", filename, code_len, CHAMP_MAX_SIZE);
 		return (NULL);
 	}
@@ -45,7 +47,9 @@ static bool		read_codelen(int fd, char *filename, t_uint *code_len)
 
 	if (read(fd, buf, CODELEN_SIZE) != CODELEN_SIZE)
 	{
-		ft_printf("Error: File %s is too small to be a champion\n", filename);
+		if (!errno)
+			ft_printf("Error: File %s is too small to be a champion\n",
+																	filename);
 		return (false);
 	}
 	*code_len = ft_byte_to_uint(buf[0], buf[1], buf[2], buf[3]);
@@ -60,7 +64,9 @@ static t_uchar	*read_string(int fd, char *filename, t_uint len)
 	ft_bzero(buf, len + 1);
 	if (read(fd, buf, len) != len)
 	{
-		ft_printf("Error: File %s is too small to be a champion\n", filename);
+		if (!errno)
+			ft_printf("Error: File %s is too small to be a champion\n",
+																	filename);
 		return (NULL);
 	}
 	string = (t_uchar*)ft_strdup((char*)buf);
@@ -74,13 +80,16 @@ static bool		validate_header(int fd, char *filename)
 
 	if (read(fd, buf, HEADER_SIZE) != HEADER_SIZE)
 	{
-		ft_printf("Error: File %s is too small to be a champion\n", filename);
+		if (!errno)
+			ft_printf("Error: File %s is too small to be a champion\n",
+																	filename);
 		return (false);
 	}
 	magic_bytes = ft_byte_to_uint(buf[0], buf[1], buf[2], buf[3]);
 	if (magic_bytes != COREWAR_EXEC_MAGIC)
 	{
-		ft_printf("Error: File %s has an invalid header\n", filename);
+		if (!errno)
+			ft_printf("Error: File %s has an invalid header\n", filename);
 		return (false);
 	}
 	return (true);
