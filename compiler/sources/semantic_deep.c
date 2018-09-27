@@ -33,24 +33,24 @@ bool	print_err_msg(t_item *item, char **it_arr, int i, int err_num)
 	int		type;
 
 	if (err_num == -1)
-		printf("Invalid instruction at token [TOKEN][%03d:001] \
+		ft_printf("Invalid instruction at token [TOKEN][%03d:001] \
 INSTRUCTION \"%s\"\n", item->line_num, it_arr[0]);
 	else if (err_num == -2)
-		printf("Invalid parameter count for instruction %s\n", it_arr[0]);
+		ft_printf("Invalid parameter count for instruction %s\n", it_arr[0]);
 	else if (err_num == -3)
 	{
 		type = get_arg_type(item, it_arr[i], i, false);
 		arg_types[0] = "register";
 		arg_types[1] = "direct";
 		arg_types[3] = "indirect";
-		printf("Invalid parameter %d type %s for instruction %s at line %d\n",
+		ft_printf("Invalid parameter %d type %s for instruction %s at line %d\n",
 						i - 1, arg_types[type - 1], it_arr[0], item->line_num);
 	}
 	else if (err_num == -4)
-		printf("No such label %s at line %d\n",
+		ft_printf("No such label %s at line %d\n",
 		it_arr[i] + (*(it_arr[i]) == '%' ? 2 : 1), item->line_num);
 	else if (err_num == -5)
-		printf("EMPTY LABEL\n");
+		ft_printf("EMPTY LABEL\n");
 	return (false);
 }
 
