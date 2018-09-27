@@ -30,7 +30,7 @@ void	display_winner(t_champ *winner, t_arg *arg)
 {
 	if (arg->is_visual)
 		return ;
-	ft_printf("Contestant %d, \"%s\", has won !\n", winner->id, winner->name);
+	ft_printf("Player %d (%s) won !\n", winner->id, winner->name);
 }
 
 void	display_usage(void)

@@ -26,8 +26,8 @@ bool	live(t_session *game, t_carry *carry, t_champ *head)
 		LAST_ALIVE = arg_champ;
 		LAST_ALIVE->period_lives++;
 		if (!game->arg->is_visual && !game->arg->log)
-			ft_printf("A process shows that player %s is alive\n",
-															LAST_ALIVE->name);
+			ft_printf("A process shows that player %d (%s) is alive\n",
+										LAST_ALIVE->id, LAST_ALIVE->name);
 	}
 	PERIOD_LIVES++;
 	update_position(carry, 5);
