@@ -39,6 +39,8 @@ static void	show_right_stage_regular(
 		mvwprintw(win, 14, START_X + 11, "\t\tNo one");
 	mvwprintw(win, y += 2, START_X, "[S] Makes one step forward");
 	mvwprintw(win, y += 2, START_X, "[C] Opens\\Closes Coreware console");
+	mvwprintw(win, y += 2, START_X, "[D] Changes design");
+	mvwprintw(win, y += 2, START_X, "[M] On\\Off music");
 	wattroff(win, COLOR_PAIR(GRAY));
 }
 
@@ -58,6 +60,8 @@ static void	show_right_stage_bold(t_vdata *vdata, int y, t_session *game)
 	mvwprintw(win, y += 1, START_X + 1, "E");
 	mvwprintw(win, y += 8, START_X + 1, "S");
 	mvwprintw(win, y += 2, START_X + 1, "C");
+	mvwprintw(win, y += 2, START_X + 1, "D");
+	mvwprintw(win, y += 2, START_X + 1, "M");
 	wattroff(win, COLOR_PAIR(GRAY) | A_BOLD);
 }
 
