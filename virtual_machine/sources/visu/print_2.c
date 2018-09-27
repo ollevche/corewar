@@ -12,6 +12,13 @@
 
 #include "visu.h"
 
+/*
+**	norme
+*/
+
+#define ID game->last_alive->id
+#define DESIGN vdata->design
+
 static void	show_right_stage_regular(
 	t_vdata *vdata, int y, t_session *game, t_champ *champs)
 {
@@ -29,11 +36,9 @@ static void	show_right_stage_regular(
 	mvwprintw(win, y += 1, START_X, "Last alive:");
 	if (game->last_alive)
 	{
-		wattron(win, COLOR_PAIR(get_color(champs,
-			game->last_alive->id) + (vdata->design * 10)));
+		wattron(win, COLOR_PAIR(get_color(champs, ID) + (DESIGN * 10)));
 		mvwprintw(win, y, START_X + 11, "\t\t%s", game->last_alive->name);
-		wattroff(win, COLOR_PAIR(get_color(champs,
-			game->last_alive->id) + (vdata->design * 10)));
+		wattroff(win, COLOR_PAIR(get_color(champs, ID) + (DESIGN * 10)));
 	}
 	else
 		mvwprintw(win, 14, START_X + 11, "\t\tNo one");
