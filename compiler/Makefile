@@ -12,7 +12,7 @@
 
 NAME	=	asm
 
-FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers -g # DEL
+FLAGS	=	-Wall -Werror -Wextra -I./headers -I$(LIBDIR)/headers
 
 SRCDIR	=	sources/
 

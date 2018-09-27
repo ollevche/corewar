@@ -12,7 +12,7 @@
 
 NAME	=	corewar
 
-FLAGS	=	-I./headers -I$(LIBDIR)/headers -Wall -Werror -Wextra -g # DEL -g
+FLAGS	=	-I./headers -I$(LIBDIR)/headers -Wall -Werror -Wextra
 
 SRCDIR	=	sources/
 
@@ -87,7 +87,7 @@ $(LIBDIR)$(LIB):
 $(OBJDIR):
 	@mkdir $(OBJDIR)
 	@mkdir $(OBJDIR)$(OPDIR)
-	@mkdir $(OBJDIR)$(VISUDIR)	
+	@mkdir $(OBJDIR)$(VISUDIR)
 	@mkdir $(OBJDIR)$(VISUDIR)console
 
 clean:
