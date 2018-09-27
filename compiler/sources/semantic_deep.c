@@ -43,7 +43,8 @@ INSTRUCTION \"%s\"\n", item->line_num, it_arr[0]);
 		arg_types[0] = "register";
 		arg_types[1] = "direct";
 		arg_types[3] = "indirect";
-		ft_printf("Invalid parameter %d type %s for instruction %s at line %d\n",
+		ft_printf("Invalid parameter %d type %s for instruction %s \
+at line %d\n",
 						i - 1, arg_types[type - 1], it_arr[0], item->line_num);
 	}
 	else if (err_num == -4)
