@@ -46,6 +46,7 @@ bool		compile(char *filename)
 {
 	t_item	*items;
 
+	g_codesize = 0;
 	items = read_sfile(filename);
 	if (!items)
 		SAFE_RET(&items, false);
