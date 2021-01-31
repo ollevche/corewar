@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "visu.h"
+#include <time.h>
 
 void	console_clock_initializing(t_vdata *vdata)
 {
@@ -24,7 +25,7 @@ void	console_clock_initializing(t_vdata *vdata)
 void	console_clock_refresh(t_vdata *vdata)
 {
 	struct tm		*ptm;
-	struct timeval	tv;
+	struct timeval	tv = (struct timeval){0};
 
 	if (vdata->console.opened && ((tv.tv_sec) - vdata->console.clock_time) >= 1)
 	{

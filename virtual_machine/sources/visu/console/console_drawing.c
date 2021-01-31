@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "visu.h"
+#include <time.h>
 
 static void	get_precision(t_vdata *vdata, t_msg *msg, int y, int x)
 {

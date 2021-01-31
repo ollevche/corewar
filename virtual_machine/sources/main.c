@@ -12,6 +12,7 @@
 
 #include "vm.h"
 #include "vm_funcs.h"
+#include "stdio.h"
 
 /*
 **	standard info block about operations
